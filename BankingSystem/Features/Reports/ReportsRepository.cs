@@ -43,7 +43,7 @@ namespace BankingSystem.Features.Reports
 
         public async Task<int> GetUserCountAsync(DateTime date)
         {
-            var userCount = await _db.Users.CountAsync(u => u.RegisteredAt >= date);
+            var userCount = await _db.Users.CountAsync(i => i.RegisteredAt >= date);
             return userCount;
         }
 
