@@ -99,18 +99,7 @@ namespace BankingSystem
 
 			app.Run();
 		}
-<<<<<<< HEAD
 	}  
 	
 }
 
-=======
-	}
-}
-
-/// hello giorgi
-
-/// hello lasha
-
-//this is git learning test
->>>>>>> 40345f412e4586c9e9e0aaf586d6f53bdde42ebc
