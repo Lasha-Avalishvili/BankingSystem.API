@@ -1,0 +1,67 @@
+﻿using BankingSystem.DB;
+using BankingSystem.DB.Entities;
+using BankingSystem.Features.InternetBank.User.Transactions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BankingSystem.Features.ATM.Withdraw
+{
+    public interface IWithdrawService
+    {
+        Task<TransactionEntity> Withdraw(WithdrawRequest withdrawRequest);
+    }
+
+    public class WithdrawService : IWithdrawService
+    {
+        private readonly IConvertService _convertService;
+        private readonly IWithdrawRepository _withdrawRepository;
+        public WithdrawService(IConvertService convertService, IWithdrawRepository withdrawRepository)
+        {
+            _convertService = convertService;
+            _withdrawRepository = withdrawRepository;
+        }
+
+        public async Task<TransactionEntity> Withdraw(WithdrawRequest withdrawRequest)
+        {
+            var senderAccount = await _withdrawRepository.GetSenderAccountAsync(withdrawRequest);
+
+            var transactions = await _withdrawRepository.GetCurrentDayTransactionsForUser(senderAccount.Id);
+            var dailyLimitInGel = 10000;
+            var convertedDailyLimit = _convertService.GetDailyLimitForEachCurrency(dailyLimitInGel, "GEL", senderAccount.Currency.ToString());
+            decimal sumTransactions = 0;
+            foreach (var a in transactions)
+            {
+                sumTransactions += a.Amount;
+            }
+            
+            
+           // if(convertedDailyLimit - sumTransactions == 0 || withdrawRequest.Amount > convertedDailyLimit - withdrawRequest.Amount)
+            //{
+            //    return "Error";
+           // }
+
+            var transaction = new TransactionEntity();
+            transaction.CreatedAt = DateTime.UtcNow;
+            transaction.Amount = withdrawRequest.Amount;
+            transaction.SenderAccount = senderAccount.IBAN;
+            transaction.RecipientAccount = null;
+            transaction.CurrencyFrom = senderAccount.Currency;
+            transaction.CurrencyTo = null;
+            transaction.ConvertRate = null;
+            var transactionFee = withdrawRequest.Amount * 2 / 100;
+            var convertedTransactionFeeInGel = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "GEL");
+            var convertedTransactionFeeInUsd = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "USD");
+            var convertedTransactionFeeInEur = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "EUR");
+            transaction.FeeInGEL = convertedTransactionFeeInGel;
+            transaction.FeeInUSD = convertedTransactionFeeInUsd;
+            transaction.FeeInEUR = convertedTransactionFeeInEur;
+            senderAccount.Balance -= (withdrawRequest.Amount + transactionFee);
+            transaction.TransactionType = TransactionType.ATM;
+
+            return transaction;
+        }
+    }
+}
