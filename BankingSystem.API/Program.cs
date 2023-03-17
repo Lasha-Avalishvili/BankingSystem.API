@@ -40,7 +40,8 @@ namespace BankingSystem
 			builder.Services.AddTransient<IWithdrawRepository, WithdrawRepository>();
 			builder.Services.AddTransient<IWithdrawService, WithdrawService>();
 			builder.Services.AddTransient<IChangeCardPINRepository, ChangeCardPINRepository>();
-			builder.Services.AddTransient<IGetStatRepository, GetStatRepository > ();
+			builder.Services.AddTransient<IReportsRepository, ReportsRepository > ();
+			builder.Services.AddTransient<IReportsService, ReportsService>();
             builder.Services.AddSwaggerGen(c =>
 			  {
 				  c.SwaggerDoc("v1", new OpenApiInfo
