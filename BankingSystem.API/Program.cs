@@ -95,11 +95,11 @@ namespace BankingSystem
             app.UseAuthorization();
 
 
-			app.MapControllers();
+			app.MapControllers();  // this si my commentf
 
 			app.Run();
 		}
-	}  // hello everybody
+	}  
 }
 
 /// hello giorgi
