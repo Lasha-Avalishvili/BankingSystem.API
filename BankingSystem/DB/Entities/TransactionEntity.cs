@@ -11,7 +11,7 @@
     {
         public long Id { get; set; }
         public long SenderAccountId { get; set; }
-        public long RecipientAccountId { get; set; }
+        public long? RecipientAccountId { get; set; }
         public DateTime CreatedAt { get; set; }
         public decimal Amount { get; set; }
         public string SenderAccount { get; set; }

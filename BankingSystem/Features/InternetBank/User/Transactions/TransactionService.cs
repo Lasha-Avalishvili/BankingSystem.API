@@ -22,8 +22,8 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
         public async Task<TransactionEntity> TransferFunds(TransactionRequest transactionRequest)
         {
             await _convertService.UpdateRates();
-           var senderAccount =  await _transactionRepository.GetSenderAccountAsync(transactionRequest);
-           var recipientAccount =  await _transactionRepository.GetRecipientAccountAsync(transactionRequest);
+            var senderAccount =  await _transactionRepository.GetSenderAccountAsync(transactionRequest);
+            var recipientAccount =  await _transactionRepository.GetRecipientAccountAsync(transactionRequest);
 
             var transaction = new TransactionEntity();
             transaction.CreatedAt = DateTime.UtcNow;

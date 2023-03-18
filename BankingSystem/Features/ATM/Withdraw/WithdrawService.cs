@@ -36,32 +36,41 @@ namespace BankingSystem.Features.ATM.Withdraw
             {
                 sumTransactions += a.Amount;
             }
-            
-            
-           // if(convertedDailyLimit - sumTransactions == 0 || withdrawRequest.Amount > convertedDailyLimit - withdrawRequest.Amount)
-            //{
-            //    return "Error";
-           // }
 
-            var transaction = new TransactionEntity();
-            transaction.CreatedAt = DateTime.UtcNow;
-            transaction.Amount = withdrawRequest.Amount;
-            transaction.SenderAccount = senderAccount.IBAN;
-            transaction.RecipientAccount = null;
-            transaction.CurrencyFrom = senderAccount.Currency;
-            transaction.CurrencyTo = null;
-            transaction.ConvertRate = null;
-            var transactionFee = withdrawRequest.Amount * 2 / 100;
-            var convertedTransactionFeeInGel = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "GEL");
-            var convertedTransactionFeeInUsd = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "USD");
-            var convertedTransactionFeeInEur = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "EUR");
-            transaction.FeeInGEL = convertedTransactionFeeInGel;
-            transaction.FeeInUSD = convertedTransactionFeeInUsd;
-            transaction.FeeInEUR = convertedTransactionFeeInEur;
-            senderAccount.Balance -= (withdrawRequest.Amount + transactionFee);
-            transaction.TransactionType = TransactionType.ATM;
 
-            return transaction;
+            if (convertedDailyLimit <= sumTransactions || withdrawRequest.Amount > convertedDailyLimit - sumTransactions)
+            {
+                throw new Exception("Something worng");
+            }
+            else if (senderAccount.Balance <= 0 || withdrawRequest.Amount > senderAccount.Balance)
+            {
+                throw new("not enught money");
+            }
+            else
+            {
+                var transaction = new TransactionEntity();
+                transaction.CreatedAt = DateTime.UtcNow;
+                transaction.SenderAccountId = senderAccount.Id;
+                transaction.RecipientAccountId = null;
+                transaction.Amount = withdrawRequest.Amount;
+                transaction.SenderAccount = senderAccount.IBAN;
+                transaction.RecipientAccount = null;
+                transaction.CurrencyFrom = senderAccount.Currency;
+                transaction.CurrencyTo = null;
+                transaction.ConvertRate = null;
+                var transactionFee = withdrawRequest.Amount * 2 / 100;
+                var convertedTransactionFeeInGel = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "GEL");
+                var convertedTransactionFeeInUsd = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "USD");
+                var convertedTransactionFeeInEur = await _convertService.ConvertCurrency(transactionFee, senderAccount.Currency.ToString(), "EUR");
+                transaction.FeeInGEL = convertedTransactionFeeInGel;
+                transaction.FeeInUSD = convertedTransactionFeeInUsd;
+                transaction.FeeInEUR = convertedTransactionFeeInEur;
+                senderAccount.Balance -= withdrawRequest.Amount + transactionFee;
+                transaction.TransactionType = TransactionType.ATM;
+
+                await _withdrawRepository.SaveChangesAsync(transaction);
+                return transaction;
+            }
         }
     }
 }

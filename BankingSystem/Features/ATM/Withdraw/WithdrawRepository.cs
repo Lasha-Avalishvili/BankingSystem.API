@@ -14,6 +14,7 @@ namespace BankingSystem.Features.ATM.Withdraw
     {
         Task<AccountEntity> GetSenderAccountAsync(WithdrawRequest withdrawRequest);
         Task<List<TransactionEntity>> GetCurrentDayTransactionsForUser(long userId);
+        Task SaveChangesAsync(TransactionEntity transaction);
     }
 
     public class WithdrawRepository : IWithdrawRepository
@@ -36,13 +37,17 @@ namespace BankingSystem.Features.ATM.Withdraw
 
         public async Task<List<TransactionEntity>> GetCurrentDayTransactionsForUser(long userId)
         {
-            DateTime currentDate = DateTime.UtcNow.Date;
+            var last24Hours = DateTime.UtcNow.AddHours(-24);
             var transactions = await _db.Transactions
-                .Where(t => t.SenderAccountId == userId)
-                .Where(t => t.TransactionType == TransactionType.ATM)
-                .Where(t =>t.CreatedAt == currentDate).ToListAsync();
+                .Where(t => t.SenderAccountId == userId && t.CreatedAt >= last24Hours)
+                .ToListAsync();
 
             return transactions;
+        }
+        public async Task SaveChangesAsync(TransactionEntity transaction)
+        {
+            await _db.Transactions.AddAsync(transaction);
+            await _db.SaveChangesAsync();
         }
     }
 }
