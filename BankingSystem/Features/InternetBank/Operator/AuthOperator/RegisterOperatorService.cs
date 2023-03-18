@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Operator.AuthOperator;
-using BankingSystem.Features.InternetBank.Operator;
 
-namespace BankingSystem.Features.InternetBank.Operator
+namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
 {
     public class RegisterOperatorService
     {
@@ -18,7 +16,7 @@ namespace BankingSystem.Features.InternetBank.Operator
             _repository = repository;
         }
 
-        public async Task<RegisterOperatorResponse> RegisterOperatorAsync(OperatorRegisterRequest request)
+        public async Task<RegisterOperatorResponse> RegisterOperatorAsync(RegisterOperatorRequest request)
         {
             var response = new RegisterOperatorResponse();
 
@@ -36,7 +34,8 @@ namespace BankingSystem.Features.InternetBank.Operator
                 await _repository.AddOperatorAsync(newOperator);
 
                 response.IsSuccessful = true;
-                response.Operator = newOperator;
+                response.FirstName= request.FirstName;
+                response.LastName= request.LastName;
             }
             catch (Exception ex)
             {

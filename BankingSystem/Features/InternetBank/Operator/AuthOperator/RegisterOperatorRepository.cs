@@ -1,17 +1,15 @@
 ﻿using Azure.Core;
 using BankingSystem.DB;
 using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Operator.AuthOperator;
-using BankingSystem.Features.InternetBank.Operator;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingSystem.Features.InternetBank.Operator
+namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
 {
     public interface IOperatorRepository
-    {     
+    {
         public Task AddOperatorAsync(OperatorEntity entity);
-        public Task<OperatorEntity> GetOperatorByNameAsync(OperatorLoginRequest request);
-        public Task<OperatorEntity> GetOperatorByPasswordAsync(OperatorLoginRequest request);
+        public Task<OperatorEntity> GetOperatorByNameAsync(LoginOperatorRequest request);
+        public Task<OperatorEntity> GetOperatorByPasswordAsync(LoginOperatorRequest request);
         Task SaveChangesAsync();
         bool OperatorExists(string personalNumber);
     }
@@ -34,13 +32,13 @@ namespace BankingSystem.Features.InternetBank.Operator
             return _db.Operators.Any(o => o.PersonalNumber == personalNumber);
         }
 
-        public async Task<OperatorEntity> GetOperatorByNameAsync(OperatorLoginRequest request)
+        public async Task<OperatorEntity> GetOperatorByNameAsync(LoginOperatorRequest request)
         {
-            var response = await _db.Operators.Where(o => o.FirstName == request.FirstName).FirstOrDefaultAsync();
+            var response = await _db.Operators.Where(o => o.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
             return response;
         }
 
-        public async Task<OperatorEntity> GetOperatorByPasswordAsync(OperatorLoginRequest request)
+        public async Task<OperatorEntity> GetOperatorByPasswordAsync(LoginOperatorRequest request)
         {
             var response = await _db.Operators.Where(o => o.Password == request.Password).FirstOrDefaultAsync();
             return response;

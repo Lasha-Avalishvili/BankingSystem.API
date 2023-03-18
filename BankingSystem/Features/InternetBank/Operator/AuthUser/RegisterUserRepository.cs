@@ -1,8 +1,8 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
+using BankingSystem.Features.InternetBank.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,38 +10,44 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
     public interface IUserRepository
     {
-        Task<UserEntity> RegisterUserAsync(UserRegisterRequest request);
-        Task<string> LoginUserAsync(UserLoginRequest request);
+        public Task AddUserAsync(UserEntity entity);
+       // Task<UserEntity> RegisterUserAsync(RegisterUserRequest request);
+        Task<string> LoginUserAsync(LoginUserRequest request);
         bool UserExists(string personalNumber);
         Task SaveChangesAsync();
 
     }
 
-    public class AuthUserRepository : IUserRepository
+    public class RegisterUserRepository : IUserRepository
     {
         private readonly AppDbContext _db;
         private readonly TokenGenerator _tokenGenerator;
-        public AuthUserRepository(AppDbContext db, TokenGenerator tokenGenerator)
+        public RegisterUserRepository(AppDbContext db, TokenGenerator tokenGenerator)
         {
             _db = db;
             _tokenGenerator = tokenGenerator;
         }
 
-        public async Task<UserEntity> RegisterUserAsync(UserRegisterRequest request)
+        public async Task AddUserAsync(UserEntity entity)
         {
-            var newUser = new UserEntity();
-            newUser.FirstName = request.FirstName;
-            newUser.LastName = request.LastName;
-            newUser.Email = request.Email;
-            newUser.RegisteredAt = DateTime.Now;
-            newUser.DateOfBirth = request.DateOfBirth;
-            newUser.PersonalNumber = request.PersonalNumber;
-            newUser.Password = request.Password;
-
-            await _db.Users.AddAsync(newUser);
-
-            return newUser;
+            await _db.Users.AddAsync(entity);
+            await _db.SaveChangesAsync();
         }
+        //public async Task<UserEntity> RegisterUserAsync(RegisterUserRequest request)
+        //{
+        //    var newUser = new UserEntity();
+        //    newUser.FirstName = request.FirstName;
+        //    newUser.LastName = request.LastName;
+        //    newUser.Email = request.Email;
+        //    newUser.RegisteredAt = DateTime.Now;
+        //    newUser.DateOfBirth = request.DateOfBirth;
+        //    newUser.PersonalNumber = request.PersonalNumber;
+        //    newUser.Password = request.Password;
+
+        //    await _db.Users.AddAsync(newUser);
+
+        //    return newUser;
+        //}
 
         public async Task SaveChangesAsync()
         {
@@ -53,7 +59,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             return _db.Users.Any(u => u.PersonalNumber == personalNumber);
         }
 
-        public async Task<string> LoginUserAsync(UserLoginRequest request)
+        public async Task<string> LoginUserAsync(LoginUserRequest request)
         {
             var user = await _db.Users.Where(u => u.FirstName == request.FirstName).FirstOrDefaultAsync();
 

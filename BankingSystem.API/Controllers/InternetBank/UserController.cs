@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
 using Microsoft.EntityFrameworkCore;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using System.Security.Claims;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
+using BankingSystem.Features.InternetBank.User;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
@@ -27,7 +27,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         }
 
         [HttpPost("login-user")]
-        public async Task<IActionResult> LoginUser([FromBody] UserLoginRequest request)
+        public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
         {
            var response = await _userRepository.LoginUserAsync(request);
 
