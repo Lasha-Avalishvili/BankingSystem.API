@@ -1,36 +1,44 @@
 ﻿using Azure.Core;
 using BankingSystem.DB;
 using BankingSystem.DB.Entities;
+using BankingSystem.Features.InternetBank.Operator.AuthOperator;
+using BankingSystem.Features.InternetBank.Operator;
 using Microsoft.EntityFrameworkCore;
 
-namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
+namespace BankingSystem.Features.InternetBank.Operator
 {
     public interface IOperatorRepository
     {
-        public Task<OperatorEntity> RegisterOperatorAsync(OperatorRegisterRequest request);
+        // public Task<RegisterOperatorResponce> RegisterOperatorAsync(OperatorRegisterRequest request);
+        public Task AddOperatorAsync(OperatorEntity entity);
         public Task<OperatorEntity> GetOperatorByNameAsync(OperatorLoginRequest request);
         public Task<OperatorEntity> GetOperatorByPasswordAsync(OperatorLoginRequest request);
         Task SaveChangesAsync();
         bool OperatorExists(string personalNumber);
     }
-    public class AuthOperatorRepository : IOperatorRepository
+    public class RegisterOperatorRepository : IOperatorRepository
     {
         private readonly AppDbContext _db;
-        public AuthOperatorRepository(AppDbContext db)
+        public RegisterOperatorRepository(AppDbContext db)
         {
             _db = db;
         }
 
-        public async Task<OperatorEntity> RegisterOperatorAsync(OperatorRegisterRequest request)
-        {
-            var newOperator = new OperatorEntity();
-            newOperator.FirstName = request.FirstName;
-            newOperator.LastName = request.LastName;
-            newOperator.Password = request.Password;
-            newOperator.PersonalNumber = request.PersonalNumber;
-            await _db.Operators.AddAsync(newOperator);
+        //public async Task<OperatorEntity> RegisterOperatorAsync(OperatorRegisterRequest request)
+        //{
+        //    var newOperator = new OperatorEntity();
+        //    newOperator.FirstName = request.FirstName;
+        //    newOperator.LastName = request.LastName;
+        //    newOperator.Password = request.Password;
+        //    newOperator.PersonalNumber = request.PersonalNumber;
+        //    await _db.Operators.AddAsync(newOperator);
 
-            return newOperator;
+        //    return newOperator;
+        //}
+        public async Task AddOperatorAsync(OperatorEntity entity)
+        {
+            await _db.Operators.AddAsync(entity);
+            await _db.SaveChangesAsync();
         }
 
         public bool OperatorExists(string personalNumber)

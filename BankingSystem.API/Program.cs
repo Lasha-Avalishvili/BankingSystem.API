@@ -3,10 +3,10 @@ using BankingSystem.DB;
 using BankingSystem.Features.ATM;
 using BankingSystem.Features.ATM.ChangePin;
 using BankingSystem.Features.ATM.Withdraw;
+using BankingSystem.Features.InternetBank.Operator;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
 using BankingSystem.Features.InternetBank.Operator.Auth;
-using BankingSystem.Features.InternetBank.Operator.AuthOperator;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.Reports;
@@ -30,7 +30,7 @@ namespace BankingSystem
 
 			AuthConfigurator.Configure(builder);
 
-			builder.Services.AddTransient<IOperatorRepository, AuthOperatorRepository>();
+			builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
 			builder.Services.AddTransient<IUserRepository, AuthUserRepository>();
 			builder.Services.AddTransient<IAddUserRepository, AddUserRepository>();
 			builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
@@ -42,6 +42,10 @@ namespace BankingSystem
 			builder.Services.AddTransient<IChangeCardPINRepository, ChangeCardPINRepository>();
 			builder.Services.AddTransient<IReportsRepository, ReportsRepository > ();
 			builder.Services.AddTransient<IReportsService, ReportsService>();
+            builder.Services.AddTransient<RegisterOperatorService>();
+            builder.Services.AddScoped<RegisterOperatorRepository>();
+
+
             builder.Services.AddSwaggerGen(c =>
 			  {
 				  c.SwaggerDoc("v1", new OpenApiInfo

@@ -1,6 +1,7 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
+using BankingSystem.Features.InternetBank.Operator;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
 using BankingSystem.Features.InternetBank.Operator.AuthOperator;
@@ -20,33 +21,41 @@ namespace BankingSystem.API.Controllers.InternetBank
     [ApiController]
     public class OperatorController : ControllerBase
     {
-        private TokenGenerator _tokenGenerator;
+        private readonly TokenGenerator _tokenGenerator;
         private readonly IOperatorRepository _operatorRepository;
         private readonly IAddUserRepository _addUserRepository;
         private readonly IUserRepository _userRepository;
+        private readonly RegisterOperatorService _registerOperatorService;
 
-
-        public OperatorController(TokenGenerator tokenGenerator, IOperatorRepository operatorRepository, IAddUserRepository addUserRepository, IUserRepository userRepository)
+        public OperatorController(TokenGenerator tokenGenerator, IOperatorRepository operatorRepository, IAddUserRepository addUserRepository, IUserRepository userRepository, RegisterOperatorService registerOperatorService)
         {
 
             _operatorRepository = operatorRepository;
             _tokenGenerator = tokenGenerator;
             _addUserRepository = addUserRepository;
             _userRepository = userRepository;
+            _registerOperatorService = registerOperatorService;
         }
 
-        [HttpPost("register-operator")]
-        public async Task<ActionResult<OperatorEntity>> RegisterOperator([FromBody] OperatorRegisterRequest request)
-        {
-            var exists = _operatorRepository.OperatorExists(request.PersonalNumber);
-            if (!exists)
-            {
-                var registeredOperator = await _operatorRepository.RegisterOperatorAsync(request);
-                await _operatorRepository.SaveChangesAsync();
+        //[HttpPost("register-operator")]
+        //public async Task<ActionResult<OperatorEntity>> RegisterOperator([FromBody] OperatorRegisterRequest request)
+        //{
+        //    var exists = _operatorRepository.OperatorExists(request.PersonalNumber);
+        //    if (!exists)
+        //    {
+        //        var registeredOperator = await _operatorRepository.RegisterOperatorAsync(request);
+        //        await _operatorRepository.SaveChangesAsync();
 
-                return Ok(registeredOperator);
-            }
-            return BadRequest("Operator with this personal number already exsists");
+        //        return Ok(registeredOperator);
+        //    }
+        //    return BadRequest("Operator with this personal number already exsists");
+        //}
+
+        [HttpPost("register-operator")]
+        public async Task<ActionResult<RegisterOperatorResponse>> RegisterOperator([FromBody] OperatorRegisterRequest request)
+        {
+            var result =await _registerOperatorService.RegisterOperatorAsync(request);
+            return Ok(result);
         }
 
         [HttpPost("login-operator")]
