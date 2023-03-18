@@ -13,7 +13,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
     public class RegisterUserService
     {
         private readonly RegisterUserRepository _repository;  
-
         public RegisterUserService(RegisterUserRepository repository)
         {
             _repository = repository;

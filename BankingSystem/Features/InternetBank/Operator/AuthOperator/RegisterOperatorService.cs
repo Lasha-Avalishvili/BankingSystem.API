@@ -9,8 +9,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
 {
     public class RegisterOperatorService
     {
-        private readonly RegisterOperatorRepository _repository; // change name
-
+        private readonly RegisterOperatorRepository _repository; 
         public RegisterOperatorService(RegisterOperatorRepository repository)
         {
             _repository = repository;

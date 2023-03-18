@@ -36,9 +36,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                 await _repository.AddAccountAsync(newAccount);
 
                 response.IsSuccessful = true;
-                //response.FirstName = newAccount.User.FirstName;
-                //response.LastName = newAccount.User.LastName;
-                //response.UserId = newAccount.User.Id;
                 response.AccountId = newAccount.Id;
 
             }
@@ -71,12 +68,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                 await _repository.AddCardAsync(newCard);
 
                 response.IsSuccessful = true;
-                //response.FirstName = newCard.Account.User.FirstName;  // is this okay? :) do we need? 
-                //response.LastName = newCard.Account.User.LastName;
-                //response.UserId = newCard.Account.User.Id;
-                //response.AccountId = newCard.Account.Id;
                 response.CardId = newCard.Id;
-
             }
             catch (Exception ex)
             {
@@ -86,7 +78,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
 
             return response;
         }
-
 
     }
 }

@@ -11,7 +11,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
     public interface IUserRepository
     {
         public Task AddUserAsync(UserEntity entity);
-       // Task<UserEntity> RegisterUserAsync(RegisterUserRequest request);
         Task<string> LoginUserAsync(LoginUserRequest request);
         bool UserExists(string personalNumber);
         Task SaveChangesAsync();
@@ -33,22 +32,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             await _db.Users.AddAsync(entity);
             await _db.SaveChangesAsync();
         }
-        //public async Task<UserEntity> RegisterUserAsync(RegisterUserRequest request)
-        //{
-        //    var newUser = new UserEntity();
-        //    newUser.FirstName = request.FirstName;
-        //    newUser.LastName = request.LastName;
-        //    newUser.Email = request.Email;
-        //    newUser.RegisteredAt = DateTime.Now;
-        //    newUser.DateOfBirth = request.DateOfBirth;
-        //    newUser.PersonalNumber = request.PersonalNumber;
-        //    newUser.Password = request.Password;
-
-        //    await _db.Users.AddAsync(newUser);
-
-        //    return newUser;
-        //}
-
         public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
