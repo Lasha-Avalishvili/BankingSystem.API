@@ -27,6 +27,8 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 
             var transaction = new TransactionEntity();
             transaction.CreatedAt = DateTime.UtcNow;
+            transaction.SenderAccountId = senderAccount.Id;
+            transaction.RecipientAccountId = recipientAccount.Id;   
             transaction.Amount = transactionRequest.Amount;
             transaction.SenderAccount = transactionRequest.SenderAccountIBAN;
             transaction.RecipientAccount = transactionRequest.RecipientAccountIBAN;
