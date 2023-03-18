@@ -8,8 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingSystem.Features.InternetBank.Operator
 {
     public interface IOperatorRepository
-    {
-        // public Task<RegisterOperatorResponce> RegisterOperatorAsync(OperatorRegisterRequest request);
+    {     
         public Task AddOperatorAsync(OperatorEntity entity);
         public Task<OperatorEntity> GetOperatorByNameAsync(OperatorLoginRequest request);
         public Task<OperatorEntity> GetOperatorByPasswordAsync(OperatorLoginRequest request);
@@ -24,17 +23,6 @@ namespace BankingSystem.Features.InternetBank.Operator
             _db = db;
         }
 
-        //public async Task<OperatorEntity> RegisterOperatorAsync(OperatorRegisterRequest request)
-        //{
-        //    var newOperator = new OperatorEntity();
-        //    newOperator.FirstName = request.FirstName;
-        //    newOperator.LastName = request.LastName;
-        //    newOperator.Password = request.Password;
-        //    newOperator.PersonalNumber = request.PersonalNumber;
-        //    await _db.Operators.AddAsync(newOperator);
-
-        //    return newOperator;
-        //}
         public async Task AddOperatorAsync(OperatorEntity entity)
         {
             await _db.Operators.AddAsync(entity);
