@@ -1,4 +1,5 @@
 ﻿using BankingSystem.DB;
+using BankingSystem.DB.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,37 +12,34 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Features.ATM.ChangePin
 {
-    public interface IChangeCardPINRepository
+    public interface IChangeCardPinRepository
     {
-        Task<string> ChangePINAsync(ChangeCardPINRequest changePINRequest, string userId);
+        Task<CardEntity> ChangePinAsync(ChangeCardPinRequest ChangePinRequest, string userId);
+        Task SaveChangesAsync();
     }
-    public class ChangeCardPINRepository : IChangeCardPINRepository
+    public class ChangeCardPinRepository : IChangeCardPinRepository
     {
         private readonly AppDbContext _db;
 
-        public ChangeCardPINRepository(AppDbContext db)
+        public ChangeCardPinRepository(AppDbContext db)
         {
             _db = db;
         }
 
-        public async Task<string> ChangePINAsync(ChangeCardPINRequest changePINRequest, string userId)
+        public async Task<CardEntity> ChangePinAsync(ChangeCardPinRequest changePinRequest, string userId)
         {
             var card = await _db.Cards
                 .Include(c => c.Account)
                 .ThenInclude(a => a.User)
-                .FirstOrDefaultAsync(c => c.CardNumber == changePINRequest.CardNumber);
+                .FirstOrDefaultAsync(c => c.CardNumber == changePinRequest.CardNumber);
 
+            
+            return card;
+        }
 
-
-            if (card != null && card.Account.UserId.ToString() == userId && changePINRequest.NewPIN != card.PIN)
-            {
-                Console.WriteLine(card.PIN);
-                card.PIN = changePINRequest.NewPIN;
-                _db.SaveChanges();
-                return await Task.FromResult("Your Card Pin Successfully Changed");
-            }
-
-            return "Something Wrong Please Try Again";
+        public async Task SaveChangesAsync()
+        {
+            await _db.SaveChangesAsync();
         }
     }
 }

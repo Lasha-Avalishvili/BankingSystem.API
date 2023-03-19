@@ -1,12 +1,7 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace BankingSystem.Features.ATM.Withdraw
 {

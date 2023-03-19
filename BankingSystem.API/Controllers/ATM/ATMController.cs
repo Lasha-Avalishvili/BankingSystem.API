@@ -2,6 +2,7 @@
 using BankingSystem.DB;
 using BankingSystem.Features.ATM.ChangePin;
 using BankingSystem.Features.ATM.Withdraw;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.API.Controllers.ATM
@@ -15,13 +16,14 @@ namespace BankingSystem.API.Controllers.ATM
     {
         private readonly IWithdrawRepository _withdrawRepository;
         private readonly IWithdrawService _withdrawService;
-        private readonly IChangeCardPINRepository _changePINRepository;
-        public WithdrawATMController(IWithdrawRepository withdrawRepository, IWithdrawService withdrawService, IChangeCardPINRepository changePINRepository)
+        private readonly IChangePinService _changePinService;
+        public WithdrawATMController(IWithdrawRepository withdrawRepository, IWithdrawService withdrawService, IChangePinService changePinService)
         {
             _withdrawRepository = withdrawRepository;
             _withdrawService = withdrawService;
-            _changePINRepository = changePINRepository;
+            _changePinService = changePinService;
         }
+        [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
         [HttpPost("withdraw")]
         public async Task<IActionResult> WithdrawATM([FromBody] WithdrawRequest withdrawRequest)
         {
@@ -30,18 +32,17 @@ namespace BankingSystem.API.Controllers.ATM
             return Ok(result);
         }
 
+        [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
         [HttpPost("change-pin")]
-        public async Task<string> ChangePIN([FromBody] ChangeCardPINRequest changeCardPINRequest)
+        public async Task<IActionResult> ChangePIN([FromBody] ChangeCardPinRequest changeCardPINRequest)
         {
-            var userId = HttpContext.User.FindFirstValue("userId");
-            if (userId == null)
+            var authenticatedUserId = User.FindFirstValue("userId");
+            if (authenticatedUserId != null)
             {
-                return "User Not Found";
+                var response = await _changePinService.ChangePin(changeCardPINRequest, authenticatedUserId);
+                return Ok(response);
             }
-
-            var response = await _changePINRepository.ChangePINAsync(changeCardPINRequest, userId);
-
-            return response;
+            return BadRequest();
         }
     }
 }

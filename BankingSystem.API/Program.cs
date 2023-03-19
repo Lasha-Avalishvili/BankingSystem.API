@@ -1,6 +1,5 @@
 
 using BankingSystem.DB;
-using BankingSystem.Features.ATM;
 using BankingSystem.Features.ATM.ChangePin;
 using BankingSystem.Features.ATM.Withdraw;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
@@ -41,8 +40,9 @@ namespace BankingSystem
 			builder.Services.AddTransient<IConvertService, ConvertService>();
 			builder.Services.AddTransient<IWithdrawRepository, WithdrawRepository>();
 			builder.Services.AddTransient<IWithdrawService, WithdrawService>();
-			builder.Services.AddTransient<IChangeCardPINRepository, ChangeCardPINRepository>();
-			builder.Services.AddTransient<IReportsRepository, ReportsRepository > ();
+            builder.Services.AddTransient<IChangePinService, ChangePinService>();
+            builder.Services.AddTransient<IChangeCardPinRepository, ChangeCardPinRepository>();
+            builder.Services.AddTransient<IReportsRepository, ReportsRepository > ();
 			builder.Services.AddTransient<IReportsService, ReportsService>();
             builder.Services.AddTransient<RegisterOperatorService>();
             builder.Services.AddScoped<RegisterOperatorRepository>();
@@ -50,6 +50,8 @@ namespace BankingSystem
             builder.Services.AddTransient<RegisterUserRepository>();
             builder.Services.AddTransient<IAddUserDetailsRepository, AddUserDetailsRepository>();
             builder.Services.AddTransient<AddUserDetailsService>();
+			
+
 
             builder.Services.AddSwaggerGen(c =>
 			  {
