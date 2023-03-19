@@ -8,7 +8,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
     {
         Task<AccountEntity> GetSenderAccountAsync(TransactionRequest transactionRequest);
         Task<AccountEntity> GetRecipientAccountAsync(TransactionRequest transactionRequest);
-        Task<string> SaveChangesAsync(TransactionEntity transaction);
+        Task SaveChangesAsync(TransactionEntity transaction);
     }
     public class TransactionRepository : ITransactionRepository
     {
@@ -43,13 +43,11 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             return recipientAccount;
         }
 
-        public async Task<string> SaveChangesAsync(TransactionEntity transaction)
+        public async Task SaveChangesAsync(TransactionEntity transaction)
         {
             await _db.Transactions.AddAsync(transaction);
 
             await _db.SaveChangesAsync();
-
-            return "Transaction Succesfully";
         }
     }
 }

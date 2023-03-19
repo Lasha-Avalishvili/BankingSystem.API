@@ -1,14 +1,9 @@
-﻿using BankingSystem.DB.Entities;
-using BankingSystem.DB;
-using BankingSystem.Features.InternetBank.Auth;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BankingSystem.Features.InternetBank.Operator.RegisterUser;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
-using BankingSystem.Features.InternetBank.User;
+using BankingSystem.Features.InternetBank.Operator.AuthUser;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
@@ -36,17 +31,16 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
 
         [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
         [HttpGet("get-accounts")]
-        public async Task<IActionResult> GetUserAccounts(int userId)
+        public async Task<IActionResult> GetUserAccounts()
         {
             var authenticatedUserId = User.FindFirstValue("userId");
-
-            if (authenticatedUserId == null || int.Parse(authenticatedUserId) != userId)
+            if (authenticatedUserId !=null)
             {
-                return NotFound();
+                var authenicatedUseridInt = int.Parse(authenticatedUserId);
+                var accounts = await _getUserInfoRepository.GetUserAccountsAsync(authenicatedUseridInt);
+                return Ok(accounts);
             }
-
-            var accounts = await _getUserInfoRepository.GetUserAccountsAsync(userId);
-            return Ok(accounts);
+            return BadRequest("Account not found");
         }
 
         [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
@@ -103,11 +97,11 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         [HttpPost("money-transfer")]
         public async Task<IActionResult> TransactionFunds([FromBody] TransactionRequest transactionRequest)
         {
-            var transaction = await _transactionService.TransferFunds(transactionRequest);
+            var authenticatedUserId = User.FindFirstValue("userId");
+
+            var transaction = await _transactionService.TransferFunds(transactionRequest, authenticatedUserId);
 
             return Ok(transaction);
         }
-
-
     }
 }

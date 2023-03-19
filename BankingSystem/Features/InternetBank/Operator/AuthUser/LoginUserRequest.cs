@@ -1,4 +1,4 @@
-﻿namespace BankingSystem.Features.InternetBank.User
+﻿namespace BankingSystem.Features.InternetBank.Operator.AuthUser
 {
     public class LoginUserRequest
     {

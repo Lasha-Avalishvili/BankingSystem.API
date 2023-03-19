@@ -1,8 +1,8 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
+using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
-using BankingSystem.Features.InternetBank.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

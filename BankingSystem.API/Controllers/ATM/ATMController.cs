@@ -25,9 +25,9 @@ namespace BankingSystem.API.Controllers.ATM
         [HttpPost("withdraw")]
         public async Task<IActionResult> WithdrawATM([FromBody] WithdrawRequest withdrawRequest)
         {
-            await _withdrawService.Withdraw(withdrawRequest);
+           var result = await _withdrawService.Withdraw(withdrawRequest);
 
-            return Ok("Transfer successful");
+            return Ok(result);
         }
 
         [HttpPost("change-pin")]
