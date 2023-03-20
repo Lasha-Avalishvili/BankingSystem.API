@@ -24,7 +24,7 @@ namespace BankingSystem.Features.ATM.ChangePin
             try
             {
                 var card = await _changePinRepository.ChangePinAsync(changeCardPinRequest, authenticatedUserId);
-                if (card != null && card.Account.UserId.ToString() == authenticatedUserId && changeCardPinRequest.NewPIN != card.PIN && changeCardPinRequest.PIN != null)
+                if (card != null && card.Account.UserId.ToString() == authenticatedUserId && changeCardPinRequest.NewPIN != card.PIN && changeCardPinRequest.NewPIN != null)
                 {
                     card.PIN = changeCardPinRequest.NewPIN;
 

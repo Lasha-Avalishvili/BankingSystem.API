@@ -8,7 +8,7 @@
         public DateTime CreatedAt { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string? FullName { get; set; }
-        public int CVV { get; set; }
+        public string CVV { get; set; }
         public string PIN { get; set; }
         public AccountEntity Account { get; set; }
     }
