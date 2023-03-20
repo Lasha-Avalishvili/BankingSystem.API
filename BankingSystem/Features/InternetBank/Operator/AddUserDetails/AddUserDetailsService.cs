@@ -7,6 +7,7 @@ using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
 using BankingSystem.Features.InternetBank.Operator.AuthOperator;
+using IbanNet;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
 {
@@ -26,25 +27,25 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
             {
                 var newAccount = new AccountEntity();
                 newAccount.UserId = request.UserId;
-                newAccount.IBAN = request.IBAN;
-                newAccount.Currency = request.Currency;
-                newAccount.Balance = request.Amount;
 
-                // Additional business logic related to registration can go here
-                // For example, validating the request data, sending a confirmation email to the user, etc.
-
-                await _repository.AddAccountAsync(newAccount);
-
-                response.IsSuccessful = true;
-                response.AccountId = newAccount.Id;
-
+                IIbanValidator validator = new IbanValidator();
+                ValidationResult validationResult = validator.Validate(request.IBAN);
+                if (validationResult.IsValid)
+                {
+                    newAccount.IBAN = request.IBAN;
+                    newAccount.Currency = request.Currency;
+                    newAccount.Balance = request.Amount;
+                    await _repository.AddAccountAsync(newAccount);
+                    response.IsSuccessful = true;
+                    response.AccountId = newAccount.Id;
+                }
+                
             }
             catch (Exception ex)
             {
                 response.IsSuccessful = false;
                 response.ErrorMessage = ex.Message;
             }
-
             return response;
         }
 
