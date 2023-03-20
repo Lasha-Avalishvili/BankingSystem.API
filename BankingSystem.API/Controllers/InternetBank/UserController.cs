@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
+using BankingSystem.Features.InternetBank.User;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
