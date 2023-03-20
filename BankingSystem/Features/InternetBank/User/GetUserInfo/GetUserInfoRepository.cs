@@ -6,10 +6,10 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
     public interface IGetUserInfoRepository
     {
-        Task<List<AccountEntity>> GetUserAccountsAsync(int userId);
-        Task<List<CardEntity>> GetUserCardsAsync(int userId);
-        Task<decimal> GetUserBalanceAsync(string iban, int userId);
-        Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban, int userId);
+        Task<List<AccountEntity>> GetUserAccountsAsync(string userId);
+        Task<List<CardEntity>> GetUserCardsAsync(int accountId);
+        
+        Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban);
 
         //bool UserExists(string cardNumber);
     }
@@ -22,44 +22,21 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             _db = db;
         }
 
-        public async Task<List<AccountEntity>> GetUserAccountsAsync(int userId)
+        public Task<List<AccountEntity>> GetUserAccountsAsync(string userId)
         {
-            var accounts = await _db.Accounts.Where(i => i.UserId == userId).ToListAsync();
+            var accounts = _db.Accounts.Where(i => i.UserId.ToString() == userId).ToListAsync();
             return accounts;
         }
 
-        public async Task<List<CardEntity>> GetUserCardsAsync(int userId)
+        public Task<List<CardEntity>> GetUserCardsAsync(int accountId)
         {
-            var cards = await _db.Cards.Where(i => i.AccountId == userId).ToListAsync();
+            var cards = _db.Cards.Where(c => c.AccountId == accountId).ToListAsync();
             return cards;
         }
 
-        public async Task<decimal> GetUserBalanceAsync(string iban, int userId)
+        public Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban)
         {
-            var accounts = await _db.Accounts.Where(i => i.UserId == userId).ToListAsync();
-            if (accounts == null)
-            {
-                throw new ArgumentException("Invalid account or user ID");
-            }
-            decimal balance = await _db.Accounts
-                .Where(a => a.IBAN == iban && a.UserId == userId)
-                .Select(a => a.Balance)
-                .FirstOrDefaultAsync();
-
-            return balance;
-        }
-        public async Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban, int userId)
-        {
-            var account = await _db.Accounts
-                .Where(a => a.IBAN == iban && a.UserId == userId)
-                .SingleOrDefaultAsync();
-
-            if (account == null)
-            {
-                return new List<TransactionEntity>();
-            }
-
-            var transactions = await _db.Transactions
+            var transactions = _db.Transactions
                 .Where(t => t.SenderAccount == iban || t.RecipientAccount == iban)
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();

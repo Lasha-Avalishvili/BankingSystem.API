@@ -1,8 +1,8 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
+using BankingSystem.Features.InternetBank.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,7 +44,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
 
         public async Task<string> LoginUserAsync(LoginUserRequest request)
         {
-            var user = await _db.Users.Where(u => u.FirstName == request.FirstName).FirstOrDefaultAsync();
+            var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
 
             if (user == null)
             {

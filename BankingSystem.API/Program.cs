@@ -50,6 +50,8 @@ namespace BankingSystem
             builder.Services.AddTransient<RegisterUserRepository>();
             builder.Services.AddTransient<IAddUserDetailsRepository, AddUserDetailsRepository>();
             builder.Services.AddTransient<AddUserDetailsService>();
+			builder.Services.AddTransient<GetUserInfoService> ();
+			builder.Services.AddTransient<GetUserInfoRepository>();
 			
 
 
