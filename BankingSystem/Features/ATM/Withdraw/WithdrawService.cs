@@ -30,6 +30,7 @@ namespace BankingSystem.Features.ATM.Withdraw
             try
             {
                 var senderAccount = await _withdrawRepository.GetSenderAccountAsync(withdrawRequest);
+                var card = await _withdrawRepository.GetSenderAccountAsync(withdrawRequest);
 
                 var transactions = await _withdrawRepository.GetCurrentDayTransactionsForUser(senderAccount.Id);
                 var dailyLimitInGel = 10000;
@@ -45,6 +46,11 @@ namespace BankingSystem.Features.ATM.Withdraw
                 {
                     response.IsSuccessful = false;
                     response.ErrorMessage = "Something Wrong: your request out of daily limit";
+                }
+                else if(senderAccount == null || card == null)
+                {
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Incorrect ID or PIN";
                 }
                 else if (senderAccount.Balance <= 0 || withdrawRequest.Amount > senderAccount.Balance)
                 {

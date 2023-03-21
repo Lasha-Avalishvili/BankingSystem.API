@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BankingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -122,13 +122,15 @@ namespace BankingSystem.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    SenderAccountId = table.Column<long>(type: "bigint", nullable: false),
+                    RecipientAccountId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SenderAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecipientAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipientAccount = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrencyFrom = table.Column<int>(type: "int", nullable: false),
-                    CurrencyTo = table.Column<int>(type: "int", nullable: false),
-                    ConvertRate = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CurrencyTo = table.Column<int>(type: "int", nullable: true),
+                    ConvertRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
                     FeeInGEL = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FeeInUSD = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FeeInEUR = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -214,10 +216,11 @@ namespace BankingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AccountId = table.Column<int>(type: "int", nullable: false),
                     CardNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CVV = table.Column<int>(type: "int", nullable: false),
-                    PIN = table.Column<int>(type: "int", nullable: false)
+                    CVV = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PIN = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

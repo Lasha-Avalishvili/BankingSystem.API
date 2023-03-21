@@ -22,7 +22,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
         public async Task<AddAccountResponse> AddAccountAsync(AddAccountRequest request)
         {
             var response = new AddAccountResponse();
-
             try
             {
                 var newAccount = new AccountEntity();
@@ -39,7 +38,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                     response.IsSuccessful = true;
                     response.AccountId = newAccount.Id;
                 }
-                
             }
             catch (Exception ex)
             {

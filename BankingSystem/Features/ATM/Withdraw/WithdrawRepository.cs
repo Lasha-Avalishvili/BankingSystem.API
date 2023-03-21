@@ -23,10 +23,9 @@ namespace BankingSystem.Features.ATM.Withdraw
 
         public async Task<AccountEntity> GetSenderAccountAsync(WithdrawRequest withdrawRequest)
         {
-            var card = await _db.Cards.FirstOrDefaultAsync(c => c.CardNumber == withdrawRequest.CardNumber);
+            var card = await _db.Cards.FirstOrDefaultAsync(c => c.CardNumber == withdrawRequest.CardNumber && c.PIN == withdrawRequest.PIN);
             var senderAccount = await _db.Accounts.FirstOrDefaultAsync(a => a.Id == card.AccountId);
-            //validate account and card
-
+       
             return senderAccount;
         }
 
