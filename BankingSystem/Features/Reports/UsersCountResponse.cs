@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Features.Reports
 {
-    public class ReportsResponse
+    public class UsersCountResponse
     {
         public int UsersThisYear { get; set; }
         public int UsersInOneYear { get; set;}

@@ -46,69 +46,84 @@ namespace BankingSystem.API.Controllers.Reports
                 }
         */
         [HttpGet("get-users-registered")]
-        public async Task<ReportsResponse> GetUsersRegistered()
+        public async Task<UsersCountResponse> GetUsersRegistered()
         {
             return await _reportsService.GetUsersRegistered(firstDayOfYear, lastYearSameDay, last30Days);
         }
 
-        /// <summary>
-        /// /
-        /// </summary>
-        /// <returns></returns>
 
-        [HttpGet("get-transactions-made-in-last-30-days")]
-        public async Task<ActionResult<string>> TransactionsLastMonth()
+        /*
+                [HttpGet("get-transactions-made-in-last-30-days")]
+                public async Task<ActionResult<string>> TransactionsLastMonth()
+                {
+                    var result = await _reportsService.CountTransactions(last30Days);
+                    var message = $"All transactions made in the last 30 days are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
+
+                    return Ok(message);
+                }
+
+                [HttpGet("get-transactions-made-in-last-6-months")]
+                public async Task<ActionResult<string>> TransactionsLast6Month()
+                {
+                    var result = await _reportsService.CountTransactions(last6Months);
+                    var message = $"All transactions made in the last 6 months are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
+
+                    return Ok(message);
+                }
+
+                [HttpGet("get-transactions-made-in-last-year")]
+                public async Task<ActionResult<string>> TransactionsLastYear()
+                {
+                    var result = await _reportsService.CountTransactions(lastYearSameDay);
+                    var message = $"All transactions made in the last year are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
+
+                    return Ok(message);
+                }
+        */
+
+        [HttpGet("get-transactions-count")]
+        public async Task<TransactionsCountResponse> TransactionsCount()
         {
-            var result = await _reportsService.CountTransactions(last30Days);
-            var message = $"All transactions made in the last 30 days are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
-
-            return Ok(message);
+            return await _reportsService.GetTransactionsCount(last6Months, lastYearSameDay, last30Days);
         }
 
-        [HttpGet("get-transactions-made-in-last-6-months")]
-        public async Task<ActionResult<string>> TransactionsLast6Month()
-        {
-            var result = await _reportsService.CountTransactions(last6Months);
-            var message = $"All transactions made in the last 6 months are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
+        /*
+                [HttpGet("get-income-in-last-30-days")]
+                public async Task<ActionResult<string>> IncomeLastMonth()
+                {
+                    var result = await _reportsService.CalculateFees(last30Days);
+                    var message = $"All transaction fees made in the last 30 days are {result.feeInGEL} GEL, {result.feeInUSD} $ and {result.feeInEUR} EUR";
 
-            return Ok(message);
+                    return Ok(message);
+                }
+
+                [HttpGet("get-income-in-last-6-months")]
+                public async Task<ActionResult<string>> IncomeLast6Month()
+                {
+                    var result = await _reportsService.CalculateFees(last6Months);
+                    var message = $"All transaction fees made in the last 6 months are {result.feeInGEL} GEL, {result.feeInUSD} $ and {result.feeInEUR} EUR";
+
+                    return Ok(message);
+                }
+
+                [HttpGet("get-income-in-last-year")]
+                public async Task<ActionResult<string>> IncomeLastYear()
+                {
+                    var result = await _reportsService.CalculateFees(lastYearSameDay);
+                    var message = $"All transaction fees made in the last year are {result.feeInGEL}  GEL,  {result.feeInUSD}  $ and  {result.feeInEUR} EUR";
+
+                    return Ok(message);
+                }
+
+                */
+
+        [HttpGet("calculate-income")]
+        public async Task<CalculateIncomeResponse> IncomeCalculated()
+        {
+            return await _reportsService.CalculateIncome(last6Months, lastYearSameDay, last30Days);
+            
         }
 
-        [HttpGet("get-transactions-made-in-last-year")]
-        public async Task<ActionResult<string>> TransactionsLastYear()
-        {
-            var result = await _reportsService.CountTransactions(lastYearSameDay);
-            var message = $"All transactions made in the last year are {result.all}, from these transactions {result.inner} are internal, {result.outer} are external, and {result.ATM} are ATM.";
-
-            return Ok(message);
-        }
-
-        [HttpGet("get-income-in-last-30-days")]
-        public async Task<ActionResult<string>> IncomeLastMonth()
-        {
-            var result = await _reportsService.CalculateFees(last30Days);
-            var message = $"All transaction fees made in the last 30 days are {result.feeInGEL} GEL, {result.feeInUSD} $ and {result.feeInEUR} EUR";
-
-            return Ok(message);
-        }
-
-        [HttpGet("get-income-in-last-6-months")]
-        public async Task<ActionResult<string>> IncomeLast6Month()
-        {
-            var result = await _reportsService.CalculateFees(last6Months);
-            var message = $"All transaction fees made in the last 6 months are {result.feeInGEL} GEL, {result.feeInUSD} $ and {result.feeInEUR} EUR";
-
-            return Ok(message);
-        }
-
-        [HttpGet("get-income-in-last-year")]
-        public async Task<ActionResult<string>> IncomeLastYear()
-        {
-            var result = await _reportsService.CalculateFees(lastYearSameDay);
-            var message = $"All transaction fees made in the last year are {result.feeInGEL}  GEL,  {result.feeInUSD}  $ and  {result.feeInEUR} EUR";
-
-            return Ok(message);
-        }
 
         [HttpGet("get-average-transaction-fee")]
         public async Task<ActionResult<string>> AverageTransactionFee()
