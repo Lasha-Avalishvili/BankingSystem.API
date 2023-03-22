@@ -13,6 +13,7 @@ namespace BankingSystem.Features.Reports
         public Task<(int inner, int outer, int ATM, int all)> CountTransactions(DateTime date);
         public Task<IncomeSummary> CalculateFees(DateTime date);
         public Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date);
+        public Task<ReportsResponse> GetUsersRegistered(DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days);
     }
     public class ReportsService : IReportsService
     {
@@ -83,6 +84,15 @@ namespace BankingSystem.Features.Reports
             }
 
             return transactionCountByDay;
+        }
+
+        public async Task <ReportsResponse> GetUsersRegistered (DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days) 
+        {
+            var userCount1 = await _reportsRepository.GetUserCountAsync(firstDayOfYear);
+            var userCount2 = await _reportsRepository.GetUserCountAsync(lastYearSameDay);
+            var userCount3 = await _reportsRepository.GetUserCountAsync(last30Days);
+            return new ReportsResponse { UsersInLast30Days = userCount3, UsersInOneYear = userCount2, UsersThisYear= userCount3 };
+
         }
 
     }

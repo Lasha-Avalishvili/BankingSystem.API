@@ -23,27 +23,38 @@ namespace BankingSystem.API.Controllers.Reports
             _reportsRepository = reportsRepository;
             _reportsService = reportsService;
         }
+        /*
+                [HttpGet("get-users-registered-this-year")]
+                public async Task<ActionResult<int>> UsersThisYear()
+                {
+                    var userCount = await _reportsRepository.GetUserCountAsync(firstDayOfYear);
+                    return userCount;
+                }
 
-        [HttpGet("get-users-registered-this-year")]
-        public async Task<ActionResult<int>> UsersThisYear()
+                [HttpGet("get-users-registered-in-one-year")]
+                public async Task<ActionResult<int>> UsersInOneYear()
+                {
+                    var userCount = await _reportsRepository.GetUserCountAsync(lastYearSameDay);
+                    return userCount;
+                }
+
+                [HttpGet("get-users-registered-in-last-30-days")]
+                public async Task<ActionResult<int>> UsersInLastMonth()
+                {
+                    var userCount = await _reportsRepository.GetUserCountAsync(last30Days);
+                    return userCount;
+                }
+        */
+        [HttpGet("get-users-registered")]
+        public async Task<ReportsResponse> GetUsersRegistered()
         {
-            var userCount = await _reportsRepository.GetUserCountAsync(firstDayOfYear);
-            return userCount;
+            return await _reportsService.GetUsersRegistered(firstDayOfYear, lastYearSameDay, last30Days);
         }
 
-        [HttpGet("get-users-registered-in-one-year")]
-        public async Task<ActionResult<int>> UsersInOneYear()
-        {
-            var userCount = await _reportsRepository.GetUserCountAsync(lastYearSameDay);
-            return userCount;
-        }
-
-        [HttpGet("get-users-registered-in-last-30-days")]
-        public async Task<ActionResult<int>> UsersInLastMonth()
-        {
-            var userCount = await _reportsRepository.GetUserCountAsync(last30Days);
-            return userCount;
-        }
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet("get-transactions-made-in-last-30-days")]
         public async Task<ActionResult<string>> TransactionsLastMonth()
