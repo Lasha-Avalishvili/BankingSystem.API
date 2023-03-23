@@ -14,10 +14,7 @@ namespace BankingSystem.Features.Reports
     {
         public Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date);
         public Task<int> GetUserCountAsync(DateTime date);
-        public Task<decimal> GettotalCashOutInGELAsync();
-        public Task<decimal> GettotalCashOutInUSDAsync();
-        public Task<decimal> GettotalCashOutInEURAsync();
-
+        public Task<decimal> GettotalCashOutInCurrencyAsync(Currency currency);
     }
 
     public class ReportsRepository : IReportsRepository
@@ -41,32 +38,14 @@ namespace BankingSystem.Features.Reports
                 .ToListAsync();
         }
 
-        public async Task<decimal> GettotalCashOutInGELAsync() // needs convertation
+        public async Task<decimal> GettotalCashOutInCurrencyAsync(Currency currency)
         {
-            var totalCashOutInGEL = await _db.Transactions
-                .Where(t => t.TransactionType == TransactionType.ATM)
-                .Where(t => t.CurrencyFrom == Currency.GEL)
-                .SumAsync(t => t.Amount);
-
-            return totalCashOutInGEL;
-        }
-        public async Task<decimal> GettotalCashOutInUSDAsync()
-        {
-            var totalCashOutInUSD = await _db.Transactions
+            var totalCashOutInCurrency = await _db.Transactions
                .Where(t => t.TransactionType == TransactionType.ATM)
-               .Where(t => t.CurrencyFrom == Currency.USD)
+               .Where(t => t.CurrencyFrom == currency)
                .SumAsync(t => t.Amount);
 
-            return totalCashOutInUSD;
-        }
-        public async Task<decimal> GettotalCashOutInEURAsync()
-        {
-            var totalCashOutInEUR = await _db.Transactions
-               .Where(t => t.TransactionType == TransactionType.ATM)
-               .Where(t => t.CurrencyFrom == Currency.EUR)
-               .SumAsync(t => t.Amount);
-
-            return totalCashOutInEUR;
+            return totalCashOutInCurrency;
         }
 
     }

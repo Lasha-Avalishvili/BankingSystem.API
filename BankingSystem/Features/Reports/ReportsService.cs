@@ -140,9 +140,9 @@ namespace BankingSystem.Features.Reports
         public async Task<totalCashoutFromATM> GetTotalCashout()
         {
             var result = new totalCashoutFromATM();
-            result.TotalCashoutInGEL = await _reportsRepository.GettotalCashOutInGELAsync();
-            result.TotalCashoutInUSD = await _reportsRepository.GettotalCashOutInUSDAsync();
-            result.TotalCashoutInEUR = await _reportsRepository.GettotalCashOutInEURAsync();
+            result.TotalCashoutInGEL = await _reportsRepository.GettotalCashOutInCurrencyAsync(Currency.GEL);
+            result.TotalCashoutInUSD = await _reportsRepository.GettotalCashOutInCurrencyAsync(Currency.USD);
+            result.TotalCashoutInEUR = await _reportsRepository.GettotalCashOutInCurrencyAsync(Currency.EUR);
 
             return result;
         }
