@@ -26,6 +26,12 @@ namespace BankingSystem.Features.Reports
             _db = db;
         }
 
+        public async Task<int> GetUserCountAsync(DateTime date)
+        {
+            var userCount = await _db.Users.CountAsync(i => i.RegisteredAt >= date);
+            return userCount;
+        }
+
         public Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date)
         {
             return _db.Transactions
@@ -33,7 +39,7 @@ namespace BankingSystem.Features.Reports
                 .ToListAsync();
         }
 
-        public async Task<decimal> GetATMCashoutsCountAsync()
+        public async Task<decimal> GetATMCashoutsCountAsync() // needs convertation
         {
             var result = await _db.Transactions
                 .Where(t => t.TransactionType == TransactionType.ATM)
@@ -41,11 +47,6 @@ namespace BankingSystem.Features.Reports
             return result;
         }
 
-        public async Task<int> GetUserCountAsync(DateTime date)
-        {
-            var userCount = await _db.Users.CountAsync(i => i.RegisteredAt >= date);
-            return userCount;
-        }
 
     }
 }

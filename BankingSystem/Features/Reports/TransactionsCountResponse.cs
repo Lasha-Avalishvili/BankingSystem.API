@@ -8,8 +8,8 @@ namespace BankingSystem.Features.Reports
 {
     public class TransactionsCountResponse
     {
-        public TransactionsCountSummary UsersThisYear { get; set; }
-        public TransactionsCountSummary UsersInOneYear { get; set; }
-        public TransactionsCountSummary UsersInLast30Days { get; set; }
+        public TransactionTypesCount TransactionsInLast30Days { get; set; }
+        public TransactionTypesCount TransactionsInLast6Months { get; set; }
+        public TransactionTypesCount TransactionsInOneYear { get; set; }
     }
 }
