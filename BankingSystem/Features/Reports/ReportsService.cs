@@ -11,14 +11,10 @@ namespace BankingSystem.Features.Reports
     public interface IReportsService
     {
         public Task<UsersCountResponse> GetUsersRegistered(DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days);
+        public Task<TransactionsCountResponse> GetTransactionsCount(DateTime last6Months, DateTime lastYearSameDay, DateTime last30Days); // new
         public Task<CalculateIncomeResponse> CalculateIncome(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay);
         public Task<AverageTransactionFeeResponse> CalculateAverageTransactionFee(DateTime date);
-
-
-        public Task<(int inner, int outer, int ATM, int all)> CountTransactions(DateTime date);
-        public Task<IncomeSummary> CalculateFees(DateTime date);
         public Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date);
-        public Task<TransactionsCountResponse> GetTransactionsCount(DateTime last6Months, DateTime lastYearSameDay, DateTime last30Days); // new
 
     }
     public class ReportsService : IReportsService
@@ -40,14 +36,14 @@ namespace BankingSystem.Features.Reports
 
         public async Task<TransactionsCountResponse> GetTransactionsCount(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay) 
         {
-            var transactionsIn30Days = await CountTransactionsB(last30Days);
-            var transactionsIn6Months = await CountTransactionsB(last6Months);
-            var transactionsInOneYear = await CountTransactionsB(lastYearSameDay);
+            var transactionsIn30Days = await CountTransactionsByDate(last30Days);
+            var transactionsIn6Months = await CountTransactionsByDate(last6Months);
+            var transactionsInOneYear = await CountTransactionsByDate(lastYearSameDay);
 
             return new TransactionsCountResponse {TransactionsInLast30Days = transactionsIn30Days, TransactionsInLast6Months = transactionsIn6Months, TransactionsInOneYear = transactionsInOneYear};
         }
 
-        public async Task<TransactionTypesCount> CountTransactionsB(DateTime date)
+        public async Task<TransactionTypesCount> CountTransactionsByDate(DateTime date)
         {
             var transactions = await _reportsRepository.GetTransactionsAsync(date);
             var groupedtransactions = transactions.GroupBy(t => t.TransactionType)
@@ -67,14 +63,14 @@ namespace BankingSystem.Features.Reports
 
         public async Task<CalculateIncomeResponse> CalculateIncome(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay)
         {
-            var incomeIn30Days = await CalculateFeesB(last30Days);
-            var incomeIn6Months = await CalculateFeesB(last6Months);
-            var incomeIn1Year = await CalculateFeesB(lastYearSameDay);
+            var incomeIn30Days = await CalculateFees(last30Days);
+            var incomeIn6Months = await CalculateFees(last6Months);
+            var incomeIn1Year = await CalculateFees(lastYearSameDay);
 
             return new CalculateIncomeResponse { IncomeInLast30Days = incomeIn30Days, IncomeInLast6Months = incomeIn6Months, IncomeIn1Year = incomeIn1Year };
         }
 
-        public async Task<FeeCurrencies> CalculateFeesB(DateTime date)
+        public async Task<FeeCurrencies> CalculateFees(DateTime date)
         {
             var transactions = await _reportsRepository.GetTransactionsAsync(date);
             var transactionFees = transactions.Select(t => new
@@ -126,60 +122,6 @@ namespace BankingSystem.Features.Reports
             return new AverageTransactionFeeResponse { AverageTransactionFee = avgFees };
         }
 
-
-
-
-
-
-        public async Task<(int inner, int outer, int ATM, int all)> CountTransactions(DateTime date)
-        {
-            var transactions = await _reportsRepository.GetTransactionsAsync(date);
-            var groupedtransactions = transactions.GroupBy(t => t.TransactionType)
-                .Select(g => new
-                {
-                    TransactionType = g.Key,
-                    Count = g.Count()
-                });
-
-            var all = groupedtransactions.Sum(t => t.Count);
-            var inner = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Inner)?.Count ?? 0;
-            var outer = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Outer)?.Count ?? 0;
-            var ATM = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.ATM)?.Count ?? 0;
-
-            return (inner, outer, ATM, all);
-        }
-
-        public async Task<IncomeSummary> CalculateFees(DateTime date)
-        {
-            var transactions = await _reportsRepository.GetTransactionsAsync(date);
-            var transactionFees = transactions.Select(t => new
-            {
-                t.FeeInUSD,
-                t.FeeInGEL,
-                t.FeeInEUR
-            })
-                .ToList();
-
-            var allFeeInUSD = transactionFees.Sum(t => t.FeeInUSD);
-            var allFeeInGEL = transactionFees.Sum(t => t.FeeInGEL);
-            var allFeeInEUR = transactionFees.Sum(t => t.FeeInEUR);
-
-            var totalCount = transactionFees.Count();
-            var avgFeeInGEL = totalCount > 0 ? allFeeInGEL / totalCount : 0;
-            var avgFeeInUSD = totalCount > 0 ? allFeeInUSD / totalCount : 0;
-            var avgFeeInEUR = totalCount > 0 ? allFeeInEUR / totalCount : 0;
-
-            return new IncomeSummary
-            {
-                feeInGEL = allFeeInGEL,
-                feeInUSD = allFeeInUSD,
-                feeInEUR = allFeeInEUR,
-                avgFeeInGEL = avgFeeInGEL,
-                avgFeeInUSD = avgFeeInUSD,
-                avgFeeInEUR = avgFeeInEUR
-            };
-        }
-
         public async Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date)
         {
             var transactions = await _reportsRepository.GetTransactionsAsync(date);
@@ -194,31 +136,12 @@ namespace BankingSystem.Features.Reports
             return transactionCountByDay;
         }
 
-
-       
-       
-
-       
-
-        
-
-
     }
     public class FeeCurrencies
     {
         public decimal GEL { get; set; }
         public decimal USD { get; set; }
         public decimal EUR { get; set; }
-    }
-
-    public class IncomeSummary
-    {
-        public decimal feeInGEL { get; set; }
-        public decimal feeInUSD { get; set; }
-        public decimal feeInEUR { get; set; }
-        public decimal avgFeeInGEL { get; set; }
-        public decimal avgFeeInUSD { get; set; }
-        public decimal avgFeeInEUR { get; set; }
     }
 
     public class TransactionTypesCount
@@ -229,6 +152,5 @@ namespace BankingSystem.Features.Reports
         public int total { get; set; }
     }
 
- 
 }
 

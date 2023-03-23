@@ -58,7 +58,6 @@ namespace BankingSystem.API.Controllers.Reports
         public async Task<ActionResult<decimal>> ATMCashouts()
         {
             var result = await _reportsRepository.GetATMCashoutsCountAsync();
-
             return result;
         }
 

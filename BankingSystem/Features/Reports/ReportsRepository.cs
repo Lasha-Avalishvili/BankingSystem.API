@@ -47,7 +47,6 @@ namespace BankingSystem.Features.Reports
             return result;
         }
 
-
     }
 }
 
