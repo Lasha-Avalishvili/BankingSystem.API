@@ -41,16 +41,15 @@ namespace BankingSystem.Features.ATM.Withdraw
                     sumTransactions += a.Amount;
                 }
 
-
-                if (convertedDailyLimit <= sumTransactions || withdrawRequest.Amount > convertedDailyLimit - sumTransactions)
-                {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "Something Wrong: your request out of daily limit";
-                }
-                else if(senderAccount == null || card == null)
+                if (senderAccount == null || card == null)
                 {
                     response.IsSuccessful = false;
                     response.ErrorMessage = "Incorrect ID or PIN";
+                }
+                else if (convertedDailyLimit <= sumTransactions || withdrawRequest.Amount > convertedDailyLimit - sumTransactions)
+                {
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Something Wrong: your request out of daily limit";
                 }
                 else if (senderAccount.Balance <= 0 || withdrawRequest.Amount > senderAccount.Balance)
                 {
@@ -86,7 +85,6 @@ namespace BankingSystem.Features.ATM.Withdraw
                     response.Amount = transaction.Amount;
                     response.SenderAccount =  transaction.SenderAccount;
                     response.RecipientAccount = transaction.RecipientAccount;
-
                 }
             }
             catch (Exception ex)

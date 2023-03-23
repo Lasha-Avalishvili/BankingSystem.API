@@ -15,6 +15,7 @@ namespace BankingSystem.Features.Reports
         public Task<CalculateIncomeResponse> CalculateIncome(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay);
         public Task<AverageTransactionFeeResponse> CalculateAverageTransactionFee(DateTime date);
         public Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date);
+        public Task<totalCashoutFromATM> GetTotalCashout();
 
     }
     public class ReportsService : IReportsService
@@ -136,7 +137,24 @@ namespace BankingSystem.Features.Reports
             return transactionCountByDay;
         }
 
+        public async Task<totalCashoutFromATM> GetTotalCashout()
+        {
+            var result = new totalCashoutFromATM();
+            result.TotalCashoutInGEL = await _reportsRepository.GettotalCashOutInGELAsync();
+            result.TotalCashoutInUSD = await _reportsRepository.GettotalCashOutInUSDAsync();
+            result.TotalCashoutInEUR = await _reportsRepository.GettotalCashOutInEURAsync();
+
+            return result;
+        }
     }
+
+    public class totalCashoutFromATM
+    {
+        public decimal TotalCashoutInGEL { get; set; }
+        public decimal TotalCashoutInUSD { get; set; }
+        public decimal TotalCashoutInEUR { get; set; }
+    }
+
     public class FeeCurrencies
     {
         public decimal GEL { get; set; }

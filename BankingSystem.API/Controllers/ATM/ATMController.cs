@@ -7,9 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.API.Controllers.ATM
 {
-    /// <summary>
-    /// ChangeCardPINController had authentication on top, why?
-    /// </summary>
     [ApiController]
     [Route("api/v1/[controller]")]
     public class WithdrawATMController : ControllerBase
