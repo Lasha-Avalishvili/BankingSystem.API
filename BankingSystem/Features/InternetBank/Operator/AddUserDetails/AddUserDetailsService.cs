@@ -29,7 +29,9 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
 
                 IIbanValidator validator = new IbanValidator();
                 ValidationResult validationResult = validator.Validate(request.IBAN);
-                if (validationResult.IsValid)
+                var accountExists = _repository.AccountExists(request.IBAN);
+
+                if (validationResult.IsValid && accountExists!=true)
                 {
                     newAccount.IBAN = request.IBAN;
                     newAccount.Currency = request.Currency;
@@ -37,14 +39,20 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                     await _repository.AddAccountAsync(newAccount);
                     response.IsSuccessful = true;
                     response.AccountId = newAccount.Id;
+                } else
+                {
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Invalid IBAN or Account already exists";
                 }
+                return response;
             }
-            catch (Exception ex)
+            catch(Exception ex) 
             {
                 response.IsSuccessful = false;
-                response.ErrorMessage = ex.Message;
+                response.ErrorMessage =  ex.Message; //"Invalid IBAN or Account already exists";
+                return response;
             }
-            return response;
+            
         }
 
         public async Task<AddCardResponse> AddCardAsync(AddCardRequest request)

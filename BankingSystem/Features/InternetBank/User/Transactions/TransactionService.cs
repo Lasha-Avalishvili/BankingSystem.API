@@ -40,7 +40,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
                 transaction.CurrencyTo = recipientAccount.Currency;
                 transaction.ConvertRate = _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
 
-                if (senderAccount.Id != int.Parse(authenticatedUserId))
+                if (senderAccount.UserId != int.Parse(authenticatedUserId))
                 {
                     response.IsSuccessful = false;
                     response.ErrorMessage = "you can operate only with your iban";

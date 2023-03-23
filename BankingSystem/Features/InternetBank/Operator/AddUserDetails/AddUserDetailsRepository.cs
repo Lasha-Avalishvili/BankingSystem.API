@@ -9,7 +9,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddAccountForUser
     {
         public Task AddAccountAsync(AccountEntity entity);
         public Task AddCardAsync(CardEntity entity);
-        bool AccountExists(string iban); // use this in service for validation
+        public bool AccountExists(string iban); // use this in service for validation
     }
     public class AddUserDetailsRepository : IAddUserDetailsRepository
     {

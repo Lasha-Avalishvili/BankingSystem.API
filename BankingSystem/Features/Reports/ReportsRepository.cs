@@ -44,6 +44,7 @@ namespace BankingSystem.Features.Reports
             var result = await _db.Transactions
                 .Where(t => t.TransactionType == TransactionType.ATM)
                 .SumAsync(t => t.Amount);
+
             return result;
         }
 
