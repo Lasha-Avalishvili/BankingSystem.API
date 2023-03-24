@@ -20,11 +20,11 @@ namespace BankingSystem.API.Controllers.ATM
             _withdrawService = withdrawService;
             _changePinService = changePinService;
         }
-        [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
+     //   [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]  // es rat gvinda??
         [HttpPost("withdraw")]
-        public async Task<IActionResult> WithdrawATM([FromBody] WithdrawRequest withdrawRequest)
+        public async Task<IActionResult> WithdrawATM([FromBody] WithdrawFromAtmRequest request)
         {
-           var result = await _withdrawService.Withdraw(withdrawRequest);
+           var result = await _withdrawService.WithdawFromAtm(request);
 
             return Ok(result);
         }

@@ -10,7 +10,7 @@
     public class AccountEntity
     {
         public int Id { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }  // why was it nullable?
         public UserEntity User { get; set; }    
         public string IBAN { get; set; }
         public decimal Balance { get; set; }
