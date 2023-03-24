@@ -10,9 +10,7 @@ namespace BankingSystem.Features.ATM.Withdraw
         public Task<CardEntity> AuthorizeCardAsync(string cardNumber, string PIN);
         public Task<AccountEntity> FindAccountAsync(int accountId);
         public Task<decimal> GetUserAtmTransactions(int userId, Currency currency);
-        Task<AccountEntity> GetSenderAccountAsync(WithdrawRequest withdrawRequest);
-        Task<List<TransactionEntity>> GetCurrentDayTransactionsForUser(long userId);
-        Task SaveChangesAsync(TransactionEntity transaction);
+        public Task SaveChangesAsync(TransactionEntity transaction);
     }
 
     public class WithdrawRepository : IWithdrawRepository
@@ -36,20 +34,6 @@ namespace BankingSystem.Features.ATM.Withdraw
             return account;
         }
 
-
-
-
-
-
-
-        public async Task<AccountEntity> GetSenderAccountAsync(WithdrawRequest withdrawRequest)
-        {
-            var card = await _db.Cards.FirstOrDefaultAsync(c => c.CardNumber == withdrawRequest.CardNumber && c.PIN == withdrawRequest.PIN);
-            var senderAccount = await _db.Accounts.FirstOrDefaultAsync(a => a.Id == card.AccountId);
-       
-            return senderAccount;
-        }
-
         public async Task<decimal> GetUserAtmTransactions(int userId, Currency currency) 
         {
             var ATMCashout = await _db.Transactions
@@ -57,24 +41,16 @@ namespace BankingSystem.Features.ATM.Withdraw
                 t => t.SenderAccountId,
                 a => a.Id,
            (t, a) => new { Transaction = t, Account = a })
-        .Where(x => x.Account.UserId == userId) // filter by user ID
+        .Where(x => x.Account.UserId == userId) 
         .Where(x => x.Transaction.TransactionType == TransactionType.ATM)
         .Where(x => x.Transaction.CurrencyFrom == currency)
         .Where(x => x.Transaction.CreatedAt > DateTime.UtcNow.AddHours(-24))
         .SumAsync(x => x.Transaction.Amount);
 
-            return ATMCashout; // always returning 0
+            return ATMCashout;
             
         }
-        public async Task<List<TransactionEntity>> GetCurrentDayTransactionsForUser(long userId)
-        {
-            var last24Hours = DateTime.UtcNow.AddHours(-24);
-            var transactions = await _db.Transactions                 // we need to check only ATM transactions
-                .Where(t => t.SenderAccountId == userId && t.CreatedAt >= last24Hours)  // senderAccountId vs userId ??
-                .ToListAsync();
 
-            return transactions;
-        }
         public async Task SaveChangesAsync(TransactionEntity transaction)
         {
             await _db.Transactions.AddAsync(transaction);

@@ -14,7 +14,7 @@ namespace BankingSystem.Features.InternetBank.Auth
         {
             _settings = settings.Value;
         }
-        public string GenerateForUser(string userId)
+        public string GenerateForUser(string userId) // dd rolee for admin here
         {
             var claims = new List<Claim>
             {

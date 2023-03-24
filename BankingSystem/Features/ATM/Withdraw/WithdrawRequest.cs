@@ -14,6 +14,5 @@ namespace BankingSystem.Features.ATM.Withdraw
         [RegularExpression(@"^\d{16}$", ErrorMessage = "Card number must be 16 digits")]
         public string CardNumber { get; set; }
         [RegularExpression(@"^\d{4}$", ErrorMessage = "PIN must be 4 digits")]
-        public string PIN { get; set; }
-    }
+        public string PIN { get; set; }    }
 }
