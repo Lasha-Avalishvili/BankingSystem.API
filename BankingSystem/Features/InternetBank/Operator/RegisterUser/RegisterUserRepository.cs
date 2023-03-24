@@ -11,10 +11,9 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
     public interface IUserRepository
     {
         public Task AddUserAsync(UserEntity entity);
-        Task<string> LoginUserAsync(LoginUserRequest request);
-        bool UserExists(string personalNumber);
-        Task SaveChangesAsync();
-
+        public Task<string> LoginUserAsync(LoginUserRequest request);
+        public Task SaveChangesAsync();
+        public Task<bool> UserExists(string personalNumber);
     }
 
     public class RegisterUserRepository : IUserRepository
@@ -37,11 +36,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             await _db.SaveChangesAsync();
         }
 
-        public bool UserExists(string personalNumber)
-        {
-            return _db.Users.Any(u => u.PersonalNumber == personalNumber);
-        }
-
         public async Task<string> LoginUserAsync(LoginUserRequest request)
         {
             var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
@@ -59,6 +53,11 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             }
 
             return _tokenGenerator.GenerateForUser(user.Id.ToString());
+        }
+
+        public async Task<bool> UserExists(string personalNumber)
+        {
+            return await _db.Users.AnyAsync(u => u.PersonalNumber == personalNumber);
         }
     }
 }

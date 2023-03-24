@@ -77,13 +77,12 @@ namespace BankingSystem.Features.ATM.Withdraw
                 transaction.SenderAccountId = account.Id; 
                 transaction.ConvertRate = _convertService.GetRate(account.Currency.ToString(), request.Currency.ToString());
 
-                await _withdrawRepository.SaveChangesAsync(transaction); // es kai mara eqaunts ar unda savechanges??
+                await _withdrawRepository.SaveChangesAsync(transaction); 
 
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;
                 response.Amount = transaction.Amount;
                 response.AccountIBAN = transaction.SenderAccount;
-
             }
             catch (Exception ex)
             {
@@ -92,7 +91,5 @@ namespace BankingSystem.Features.ATM.Withdraw
             }
             return response;
         }
-
-
     }
 }

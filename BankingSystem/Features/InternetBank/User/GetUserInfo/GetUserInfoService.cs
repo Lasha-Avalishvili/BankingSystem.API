@@ -28,8 +28,6 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             var account = await _repository.GetUserAccountsAsync(authenticatedUserId);
             bool authorized = account.Any(a => a.UserId.ToString() == authenticatedUserId);
             // if(authorized==true) it mean user owns this account 
-            //
-
             try
             {
 
@@ -104,7 +102,5 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             return response;
 
         }
-
-
     }
 }

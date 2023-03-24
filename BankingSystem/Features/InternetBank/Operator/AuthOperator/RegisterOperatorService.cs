@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankingSystem.DB.Entities;
+﻿using BankingSystem.DB.Entities;
 
 namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
 {
@@ -18,32 +13,36 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
         public async Task<RegisterOperatorResponse> RegisterOperatorAsync(RegisterOperatorRequest request)
         {
             var response = new RegisterOperatorResponse();
-
             try
             {
-                var newOperator = new OperatorEntity();
-                newOperator.FirstName = request.FirstName;
-                newOperator.LastName = request.LastName;
-                newOperator.Password = request.Password;
-                newOperator.PersonalNumber = request.PersonalNumber;
+                var operatorByPersonalNumber = await _repository.OperatorExists(request.PersonalNumber);
+                if(operatorByPersonalNumber == true)
+                {
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Operator with this personal number already exists";
+                }
+                else
+                {
+                    var newOperator = new OperatorEntity();
+                    newOperator.FirstName = request.FirstName;
+                    newOperator.LastName = request.LastName;
+                    newOperator.Password = request.Password;
+                    newOperator.PersonalNumber = request.PersonalNumber;
 
-                // Additional business logic related to registration can go here
-                // For example, validating the request data, sending a confirmation email to the user, etc.
+                    await _repository.AddOperatorAsync(newOperator);
 
-                await _repository.AddOperatorAsync(newOperator);
-
-                response.IsSuccessful = true;
-                response.FirstName= request.FirstName;
-                response.LastName= request.LastName;
+                    response.IsSuccessful = true;
+                    response.FirstName = request.FirstName;
+                    response.LastName = request.LastName;
+                }
+                return response;
             }
             catch (Exception ex)
             {
                 response.IsSuccessful = false;
                 response.ErrorMessage = ex.Message;
             }
-
             return response;
         }
-
     }
 }

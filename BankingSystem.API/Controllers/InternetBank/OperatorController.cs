@@ -1,5 +1,4 @@
-﻿using BankingSystem.DB;
-using BankingSystem.DB.Entities;
+﻿using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
@@ -7,14 +6,8 @@ using BankingSystem.Features.InternetBank.Operator.AddUserDetails;
 using BankingSystem.Features.InternetBank.Operator.AuthOperator;
 using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
-using IbanNet;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using Microsoft.OpenApi.Validations;
 
 namespace BankingSystem.API.Controllers.InternetBank
 {
@@ -40,34 +33,19 @@ namespace BankingSystem.API.Controllers.InternetBank
             _addUserDetailsService = addUserDetailsService;
         }
 
-        //[HttpPost("register-operator")]
-        //public async Task<ActionResult<OperatorEntity>> RegisterOperator([FromBody] OperatorRegisterRequest request)
-        //{
-        //    var exists = _operatorRepository.OperatorExists(request.PersonalNumber);
-        //    if (!exists)
-        //    {
-        //        var registeredOperator = await _operatorRepository.RegisterOperatorAsync(request);
-        //        await _operatorRepository.SaveChangesAsync();
-
-        //        return Ok(registeredOperator);
-        //    }
-        //    return BadRequest("Operator with this personal number already exsists");
-        //}
-
         [HttpPost("register-operator")]
         public async Task<ActionResult<RegisterOperatorResponse>> RegisterOperator([FromBody] RegisterOperatorRequest request)
         {
             var result =await _registerOperatorService.RegisterOperatorAsync(request);
             return Ok(result);
-            // no validation for the same personal number
         }
 
         [HttpPost("login-operator")]
         public async Task<IActionResult> Login([FromBody] LoginOperatorRequest request)
         {
-            var operatorByName = await _operatorRepository.GetOperatorByNameAsync(request);
+            var operatorByPersonalNumber = await _operatorRepository.GetOperatorByPersonalNumberAsync(request);
 
-            if (operatorByName == null)
+            if (operatorByPersonalNumber == null)
             {
                 return NotFound("Operator not found");
             }
@@ -88,30 +66,8 @@ namespace BankingSystem.API.Controllers.InternetBank
         {
             var result = await _registerUserService.RegisterUserAsync(request);
             return Ok(result);
-            // no validation for the same personal number
         }
 
-        //[Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
-        //[HttpPost("add-user-account")]
-        //public async Task<ActionResult<AccountEntity>> AddAccount([FromBody] AddAccountRequest request)
-        //{
-        //    var isExists = _addUserRepository.AccountExists(request.IBAN);
-        //    if (isExists == true)
-        //    {
-        //        return BadRequest("User Account With This IBN Already Exists");
-        //    }
-        //    IIbanValidator validator = new IbanValidator();
-        //    ValidationResult validationResult = validator.Validate(request.IBAN);
-        //    if (validationResult.IsValid)
-        //    {
-        //        var account = await _addUserRepository.AddAccountAsync(request);
-        //        await _addUserRepository.SaveChangesAsync();
-
-        //        return Ok(account);
-        //    }
-        //    return BadRequest("IBAN isn't correct");
-        //}
-        //[Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("add-user-account")]
         public async Task<ActionResult<AccountEntity>> AddAccount([FromBody] AddAccountRequest request)
         {
@@ -119,19 +75,12 @@ namespace BankingSystem.API.Controllers.InternetBank
             return Ok(result);
         }
 
-
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("add-user-card")]
         public async Task<ActionResult<CardEntity>> AddCard([FromBody] AddCardRequest request)
         {
             var result = await _addUserDetailsService.AddCardAsync(request);
-            
-
             return Ok(result);
         }
-
-
-
-
     }
 }

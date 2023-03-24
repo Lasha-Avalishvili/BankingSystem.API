@@ -28,7 +28,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
         {
            var response = await _userRepository.LoginUserAsync(request);
-
             return Ok(response);
         }
 
@@ -64,7 +63,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public async Task<IActionResult> TransactionFunds([FromBody] TransactionRequest transactionRequest)
         {
             var authenticatedUserId = User.FindFirstValue("userId");
-
             var transaction = await _transactionService.TransferFunds(transactionRequest, authenticatedUserId);
 
             return Ok(transaction);

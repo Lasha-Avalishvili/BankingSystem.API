@@ -18,7 +18,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
         {
             _repository = repository;
         }
-
         public async Task<AddAccountResponse> AddAccountAsync(AddAccountRequest request)
         {
             var response = new AddAccountResponse();
@@ -29,7 +28,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
 
                 IIbanValidator validator = new IbanValidator();
                 ValidationResult validationResult = validator.Validate(request.IBAN);
-                var accountExists = _repository.AccountExists(request.IBAN);
+                var accountExists = await _repository.AccountExists(request.IBAN);
 
                 if (validationResult.IsValid && accountExists!=true)
                 {
@@ -49,42 +48,44 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
             catch(Exception ex) 
             {
                 response.IsSuccessful = false;
-                response.ErrorMessage =  ex.Message; //"Invalid IBAN or Account already exists";
+                response.ErrorMessage =  ex.Message;
                 return response;
             }
-            
         }
 
         public async Task<AddCardResponse> AddCardAsync(AddCardRequest request)
         {
             var response = new AddCardResponse();
-
             try
             {
-                var newCard = new CardEntity();
-                newCard.AccountId = request.AccountId;
-                newCard.FullName = request.FullName;
-                newCard.CardNumber = request.CardNumber;
-                newCard.ExpirationDate = request.ExpirationDate;
-                newCard.CVV = request.CVV;
-                newCard.PIN = request.PIN;
+                var cardByCardNumber = await _repository.CardtExists(request.CardNumber);
+                if(cardByCardNumber == true)
+                {
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Card with this number already exists";
+                }
+                else
+                {
+                    var newCard = new CardEntity();
+                    newCard.AccountId = request.AccountId;
+                    newCard.FullName = request.FullName;
+                    newCard.CardNumber = request.CardNumber;
+                    newCard.ExpirationDate = request.ExpirationDate;
+                    newCard.CVV = request.CVV;
+                    newCard.PIN = request.PIN;
 
-                // Additional business logic related to registration can go here
-                // For example, validating the request data, sending a confirmation email to the user, etc.
+                    await _repository.AddCardAsync(newCard);
 
-                await _repository.AddCardAsync(newCard);
-
-                response.IsSuccessful = true;
-                response.CardId = newCard.Id;
+                    response.IsSuccessful = true;
+                    response.CardId = newCard.Id;
+                }
             }
             catch (Exception ex)
             {
                 response.IsSuccessful = false;
                 response.ErrorMessage = ex.Message;
             }
-
             return response;
         }
-
     }
 }

@@ -8,10 +8,10 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
     public interface IOperatorRepository
     {
         public Task AddOperatorAsync(OperatorEntity entity);
-        public Task<OperatorEntity> GetOperatorByNameAsync(LoginOperatorRequest request);
+        public Task<OperatorEntity> GetOperatorByPersonalNumberAsync(LoginOperatorRequest request);
         public Task<OperatorEntity> GetOperatorByPasswordAsync(LoginOperatorRequest request);
         Task SaveChangesAsync();
-        bool OperatorExists(string personalNumber);
+        Task<bool> OperatorExists(string personalNumber);
     }
     public class RegisterOperatorRepository : IOperatorRepository
     {
@@ -27,12 +27,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
             await _db.SaveChangesAsync();
         }
 
-        public bool OperatorExists(string personalNumber)
-        {
-            return _db.Operators.Any(o => o.PersonalNumber == personalNumber);
-        }
-
-        public async Task<OperatorEntity> GetOperatorByNameAsync(LoginOperatorRequest request)
+        public async Task<OperatorEntity> GetOperatorByPersonalNumberAsync(LoginOperatorRequest request)
         {
             var response = await _db.Operators.Where(o => o.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
             return response;
@@ -46,6 +41,11 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
         public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<bool> OperatorExists(string personalNumber)
+        {
+            return _db.Operators.Any(o => o.PersonalNumber == personalNumber);
         }
     }
 }
