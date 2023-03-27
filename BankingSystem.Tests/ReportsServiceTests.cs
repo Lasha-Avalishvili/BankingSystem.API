@@ -7,20 +7,13 @@ namespace BankSystem.Tests
 {
     public class ReportsServiceTests
     {
-        [SetUp]
-        public void Setup()
-        {
-        }
-
         [Test]
-        public async Task Test1()
+        public async Task AverageTransactionFeeTest()
         {
             List<TransactionEntity> transactionsList = new List<TransactionEntity>()
             {
-                new TransactionEntity() { Id = 1, Amount= 100, ConvertRate = 1, CreatedAt = DateTime.UtcNow, CurrencyFrom = Currency.GEL, CurrencyTo = Currency.GEL, FeeInGEL = 1.5m, TransactionType = TransactionType.Outer, RecipientAccount= "a", SenderAccount = "b" },
+                new TransactionEntity() { Id = 1, RecipientAccountId= null, SenderAccountId=1, Amount= 100, ConvertRate = 1, CreatedAt = DateTime.UtcNow.AddDays(-3), CurrencyFrom = 0, CurrencyTo = 0, FeeInGEL = 2m, TransactionType = TransactionType.ATM, RecipientAccount= "a", SenderAccount = "b" },
             };
-
-
 
             using var db = new AppDbContext(GetDbContextOptions());
             db.Database.EnsureCreated();
@@ -28,8 +21,8 @@ namespace BankSystem.Tests
             await db.SaveChangesAsync();
             var reportsRepository = new ReportsRepository(db);
             var reportsService = new ReportsService(reportsRepository);
-           // var result = await reportsService.CalculateFees(DateTime.Now);
-           // Assert.That(result.avgFeeInGEL, Is.EqualTo(1.5m));
+            var result = await reportsService.CalculateAverageTransactionFee(DateTime.Now.AddDays(-100));
+            Assert.That(result.AverageTransactionFee.GEL, Is.EqualTo(2m));
         }
 
         private DbContextOptions<AppDbContext> GetDbContextOptions()
