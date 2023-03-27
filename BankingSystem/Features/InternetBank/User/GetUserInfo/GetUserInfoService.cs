@@ -9,6 +9,7 @@ using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
@@ -22,51 +23,64 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
         public async Task<List<GetAccountsResponse>> GetAccountsAsync(string authenticatedUserId)
         {
-           var response = new List<GetAccountsResponse>();
+            var response = new List<GetAccountsResponse>();
 
-            // 
             var account = await _repository.GetUserAccountsAsync(authenticatedUserId);
             bool authorized = account.Any(a => a.UserId.ToString() == authenticatedUserId);
-            // if(authorized==true) it mean user owns this account 
             try
             {
-
-                var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
-                response = accounts.Select(a => new GetAccountsResponse
+                if (authorized)
                 {
-                    AccountId = a.Id,
-                    IBAN= a.IBAN,
-                    Balance= a.Balance,
-                    Currency= a.Currency
-                }).ToList();
-
+                    var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
+                    response = accounts.Select(a => new GetAccountsResponse
+                    {
+                        IsSuccessful = true,
+                        Error = null,
+                        AccountId = a.Id,
+                        IBAN = a.IBAN,
+                        Balance = a.Balance,
+                        Currency = a.Currency
+                    }).ToList();
+                }
+                else
+                {
+                    response.Add(new GetAccountsResponse
+                    {
+                        IsSuccessful = false,
+                        Error = "Unauthorized access"
+                    });
+                }
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message); // ??
+                throw new Exception(ex.Message);
             }
             return response;
-            
         }
 
         public async Task<List<GetCardsResponse>> GetCardsAsync(string authenticatedUserId, int accountId)
         {
             var response = new List<GetCardsResponse>();
-
             try
             {
-
-                var cards = await _repository.GetUserCardsAsync(accountId);
-                response = cards.Select(a => new GetCardsResponse
+                var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
+                foreach (var account in accounts)
                 {
-                    FullName = a.FullName,
-                    CardNumber = a.CardNumber,
-                    ExpirationDate= a.ExpirationDate,
-                    CVV = a.CVV,
-                    Pin = a.PIN
-                } 
-                ).ToList();
+                    if (account.UserId == int.Parse(authenticatedUserId))
+                    {
+                        var cards = await _repository.GetUserCardsAsync(authenticatedUserId, accountId);
 
+                        response = cards.Select(a => new GetCardsResponse
+                        {
+                            FullName = a.FullName,
+                            CardNumber = a.CardNumber,
+                            ExpirationDate = a.ExpirationDate,
+                            CVV = a.CVV,
+                            Pin = a.PIN
+                        }
+                        ).ToList();
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -11,6 +11,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
     public class GetAccountsResponse 
     {
+        public bool IsSuccessful { get; set; }
+        public string? Error { get; set; }
         public int AccountId { get; set; }
         public string IBAN { get; set; }
         public decimal Balance { get; set; }

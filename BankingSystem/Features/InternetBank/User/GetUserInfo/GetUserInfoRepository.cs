@@ -7,7 +7,7 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
     public interface IGetUserInfoRepository
     {
         Task<List<AccountEntity>> GetUserAccountsAsync(string userId);
-        Task<List<CardEntity>> GetUserCardsAsync(int accountId);
+        Task<List<CardEntity>> GetUserCardsAsync(string authenticatedUserId, int accountId);
         
         Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban);
 
@@ -28,7 +28,7 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             return accounts;
         }
 
-        public Task<List<CardEntity>> GetUserCardsAsync(int accountId)
+        public Task<List<CardEntity>> GetUserCardsAsync(string authenticatedUserId, int accountId)
         {
             var cards = _db.Cards.Where(c => c.AccountId == accountId).ToListAsync();
             return cards;
