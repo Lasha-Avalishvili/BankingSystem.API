@@ -10,6 +10,7 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
     public class GetCardsResponse
     {
+        public CardStatus CardStatus { get; set; }
         public string FullName { get; set; }
         public string CardNumber { get; set; }
         public DateTime ExpirationDate { get; set; }
@@ -17,4 +18,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
         public string Pin { get; set; }
     }
 
+    public enum CardStatus
+    {
+       Valid, ExpiresSoon, Expired
+    }
 }

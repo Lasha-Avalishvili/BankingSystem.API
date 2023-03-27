@@ -19,6 +19,7 @@
         public Currency CurrencyFrom { get; set; }
         public Currency? CurrencyTo { get; set; }
         public decimal? ConvertRate { get; set; }
+        public decimal AmountInGEL { get; set; }
         public decimal FeeInGEL { get; set; }
         public decimal FeeInUSD { get; set; }
         public decimal FeeInEUR { get; set; } 

@@ -193,6 +193,9 @@ namespace BankingSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("AmountInGEL")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal?>("ConvertRate")
                         .HasColumnType("decimal(18,2)");
 

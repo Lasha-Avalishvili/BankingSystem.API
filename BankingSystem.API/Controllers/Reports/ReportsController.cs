@@ -1,6 +1,7 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.Reports;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -24,31 +25,36 @@ namespace BankingSystem.API.Controllers.Reports
             _reportsRepository = reportsRepository;
             _reportsService = reportsService;
         }
-        
+
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("get-registered-users-count")]
         public async Task<UsersCountResponse> GetUsersRegistered()
         {
             return await _reportsService.GetUsersRegistered(firstDayOfYear, lastYearSameDay, last30Days);
         }
 
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("get-transactions-count")]
         public async Task<TransactionsCountResponse> TransactionsCount()
         {
             return await _reportsService.GetTransactionsCount(last30Days, last6Months, lastYearSameDay);
         }
 
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("calculate-income")]
         public async Task<CalculateIncomeResponse> CalculateIncome()
         {
             return await _reportsService.CalculateIncome(last30Days, last6Months, lastYearSameDay);   
         }
 
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("calculate-average-transaction-fee")]
         public async Task<AverageTransactionFeeResponse> AverageTransactionFee()
         {
             return await _reportsService.CalculateAverageTransactionFee(firstDay);
         }
 
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("transaction-count-by-day-last-month")]
         public async Task<IActionResult> GetTransactionCountByDayLastMonth()
         {
@@ -56,6 +62,7 @@ namespace BankingSystem.API.Controllers.Reports
             return Ok(transactionCounts);
         }
 
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpGet("get-ATM-cashout-count")]
         public async Task<ActionResult<decimal>> ATMCashouts()
         {

@@ -34,8 +34,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                     var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
                     response = accounts.Select(a => new GetAccountsResponse
                     {
-                        IsSuccessful = true,
-                        Error = null,
+                      //  IsSuccessful = true,
+                      //  Error = null,
                         AccountId = a.Id,
                         IBAN = a.IBAN,
                         Balance = a.Balance,
@@ -46,8 +46,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                 {
                     response.Add(new GetAccountsResponse
                     {
-                        IsSuccessful = false,
-                        Error = "Unauthorized access"
+                        //IsSuccessful = false,
+                        // Error = "Unauthorized access"
                     });
                 }
             }
@@ -72,6 +72,7 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
                         response = cards.Select(a => new GetCardsResponse
                         {
+                            CardStatus = GetCardStatus(a.ExpirationDate),
                             FullName = a.FullName,
                             CardNumber = a.CardNumber,
                             ExpirationDate = a.ExpirationDate,
@@ -115,6 +116,22 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             }
             return response;
 
+        }
+        private CardStatus GetCardStatus(DateTime expirationDate)
+        {
+            var daysUntilExpiration = (expirationDate - DateTime.UtcNow).TotalDays;
+            if (daysUntilExpiration <= 0)
+            {
+                return CardStatus.Expired;
+            }
+            else if (daysUntilExpiration <= 90)
+            {
+                return CardStatus.ExpiresSoon;
+            }
+            else
+            {
+                return CardStatus.Valid;
+            }
         }
     }
 }

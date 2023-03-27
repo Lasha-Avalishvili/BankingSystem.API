@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BankingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -131,6 +131,7 @@ namespace BankingSystem.Migrations
                     CurrencyFrom = table.Column<int>(type: "int", nullable: false),
                     CurrencyTo = table.Column<int>(type: "int", nullable: true),
                     ConvertRate = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    AmountInGEL = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FeeInGEL = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FeeInUSD = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     FeeInEUR = table.Column<decimal>(type: "decimal(18,2)", nullable: false),

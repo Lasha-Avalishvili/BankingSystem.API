@@ -14,7 +14,7 @@ namespace BankingSystem.Features.Reports
     {
         public Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date);
         public Task<int> GetUserCountAsync(DateTime date);
-        public Task<decimal> GettotalCashOutInCurrencyAsync(Currency currency);
+        public Task<decimal> GettotalCashOutInGELAsync();
     }
 
     public class ReportsRepository : IReportsRepository
@@ -38,15 +38,17 @@ namespace BankingSystem.Features.Reports
                 .ToListAsync();
         }
 
-        public async Task<decimal> GettotalCashOutInCurrencyAsync(Currency currency)
+        public async Task<decimal> GettotalCashOutInGELAsync()
         {
-            var totalCashOutInCurrency = await _db.Transactions
+            var totalCashOutInGEL = await _db.Transactions
                .Where(t => t.TransactionType == TransactionType.ATM)
-               .Where(t => t.CurrencyFrom == currency)
-               .SumAsync(t => t.Amount);
+               .SumAsync(t => t.AmountInGEL);
 
-            return totalCashOutInCurrency;
+            return totalCashOutInGEL;
         }
+
+
+
 
     }
 }

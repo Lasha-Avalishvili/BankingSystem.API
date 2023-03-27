@@ -52,7 +52,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
                 return ("Invalid name or password");
             }
 
-            return _tokenGenerator.GenerateForUser(user.Id.ToString());
+            return _tokenGenerator.Generate(user.Id.ToString(), "0");
         }
 
         public async Task<bool> UserExists(string personalNumber)

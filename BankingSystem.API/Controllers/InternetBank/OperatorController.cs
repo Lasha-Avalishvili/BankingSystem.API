@@ -57,7 +57,7 @@ namespace BankingSystem.API.Controllers.InternetBank
                 return BadRequest("invalid name or password");
             }
 
-            return Ok(_tokenGenerator.GenerateForAdmin(operatorByPassword.Id.ToString()));
+            return Ok(_tokenGenerator.Generate("0", operatorByPassword.Id.ToString()));
         }
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]

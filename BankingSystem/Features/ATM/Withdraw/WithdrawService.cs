@@ -76,6 +76,7 @@ namespace BankingSystem.Features.ATM.Withdraw
                 transaction.TransactionType = TransactionType.ATM;
                 transaction.SenderAccountId = account.Id; 
                 transaction.ConvertRate = _convertService.GetRate(account.Currency.ToString(), request.Currency.ToString());
+                transaction.AmountInGEL = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
 
                 await _withdrawRepository.SaveChangesAsync(transaction); 
 

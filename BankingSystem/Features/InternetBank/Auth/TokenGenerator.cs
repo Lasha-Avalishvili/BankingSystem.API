@@ -14,34 +14,13 @@ namespace BankingSystem.Features.InternetBank.Auth
         {
             _settings = settings.Value;
         }
-        public string GenerateForUser(string userId) // dd rolee for admin here
+        public string Generate(string userId, string operatorId) 
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId),
                 new Claim(ClaimTypes.Role, "api-user"),
-                new Claim("userId", userId),  
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-            issuer: _settings.Issuer,
-                audience: _settings.Audience,
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(60),
-                signingCredentials: credentials);
-
-            var tokenGenerator = new JwtSecurityTokenHandler();
-            var jwtString = tokenGenerator.WriteToken(token);
-            return jwtString;
-
-        }
-        public string GenerateForAdmin(string operatorId)   
-        {
-            var claims = new List<Claim>
-            {
+                new Claim("userId", userId),
                 new Claim(JwtRegisteredClaimNames.Sub, operatorId),
                 new Claim(ClaimTypes.Role, "api-admin"),
             };
@@ -61,5 +40,6 @@ namespace BankingSystem.Features.InternetBank.Auth
             return jwtString;
 
         }
+      
     }
 }
