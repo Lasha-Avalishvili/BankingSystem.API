@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Tests
 {
-    public class ReportsServiceTests
+    public class ReportsServiceTest
     {
         [Test]
         public async Task AverageTransactionFeeTest()
