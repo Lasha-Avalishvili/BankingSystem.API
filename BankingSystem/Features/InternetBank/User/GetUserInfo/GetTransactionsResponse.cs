@@ -9,6 +9,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
     public class GetTransactionsResponse
     {
+        public bool IsSuccessful { get; set; }
+        public string? ErrorMessage { get; set; }
         public DateTime TransactionDate { get; set; }   
         public decimal Amount { get; set; }
         public TransactionType TransactionType { get; set; }

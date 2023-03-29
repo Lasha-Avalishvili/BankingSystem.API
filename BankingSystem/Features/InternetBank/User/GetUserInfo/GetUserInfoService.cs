@@ -34,8 +34,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                     var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
                     response = accounts.Select(a => new GetAccountsResponse
                     {
-                      //  IsSuccessful = true,
-                      //  Error = null,
+                        //  IsSuccessful = true,
+                        //  Error = null,
                         AccountId = a.Id,
                         IBAN = a.IBAN,
                         Balance = a.Balance,
@@ -63,56 +63,58 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             var response = new List<GetCardsResponse>();
             try
             {
-                var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
-                foreach (var account in accounts)
-                {
-                    if (account.UserId == int.Parse(authenticatedUserId))
-                    {
-                        var cards = await _repository.GetUserCardsAsync(authenticatedUserId, accountId);
+                var cards = await _repository.GetUserCardsAsync(authenticatedUserId, accountId);
 
-                        response = cards.Select(a => new GetCardsResponse
-                        {
-                            CardStatus = GetCardStatus(a.ExpirationDate),
-                            FullName = a.FullName,
-                            CardNumber = a.CardNumber,
-                            ExpirationDate = a.ExpirationDate,
-                            CVV = a.CVV,
-                            Pin = a.PIN
-                        }
-                        ).ToList();
-                    }
+                response = cards.Select(a => new GetCardsResponse
+                {
+                    CardStatus = GetCardStatus(a.ExpirationDate),
+                    FullName = a.FullName,
+                    CardNumber = a.CardNumber,
+                    ExpirationDate = a.ExpirationDate,
+                    CVV = a.CVV,
+                    Pin = a.PIN
                 }
+                ).ToList();
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message); // ??
+                new Exception(ex.Message);
             }
             return response;
 
         }
 
-        public async Task<List<GetTransactionsResponse>> GetTransactionsAsync( string IBAN, string authenticatedUserId)
+        public async Task<List<GetTransactionsResponse>> GetTransactionsAsync(string IBAN, string authenticatedUserId)
         {
             var response = new List<GetTransactionsResponse>();
 
             try
             {
-                // we need validation so user cant check other people's transactions
-                var transactions = await _repository.GetUserAccountTransactionsAsync(IBAN);
+                
+                var transactions = await _repository.GetUserAccountTransactionsAsync(IBAN, authenticatedUserId);
                 response = transactions.Select(a => new GetTransactionsResponse
                 {
-                   TransactionDate = a.CreatedAt,
-                   TransactionType= a.TransactionType,
-                   Amount = a.Amount,
-                   SenderAccount = a.SenderAccount,
-                   RecipientAccount =a.RecipientAccount
+                    TransactionDate = a.CreatedAt,
+                    TransactionType = a.TransactionType,
+                    Amount = a.Amount,
+                    SenderAccount = a.SenderAccount,
+                    RecipientAccount = a.RecipientAccount
                 }
                 ).ToList();
 
+                if (transactions.Count == 0 || transactions == null)
+                {
+                    response = transactions.Select(a => new GetTransactionsResponse
+                    {
+                        IsSuccessful = false,
+                        ErrorMessage = "You haven't transactions or authorisation failed"
+                    }
+                    ).ToList();
+                }
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message); // ??
+                new Exception(ex.Message); 
             }
             return response;
 

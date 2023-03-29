@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BankingSystem.Features.InternetBank.User
+namespace BankingSystem.Features.InternetBank.User.LoginUser
 {
     public class LoginUserRequest
     {

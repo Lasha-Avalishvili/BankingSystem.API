@@ -5,6 +5,7 @@ using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.User;
+using BankingSystem.Features.InternetBank.User.LoginUser;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
@@ -12,13 +13,15 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
     [Route("api/v1/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IRegisterUserRepository _registerUserRepository;
+        private readonly ILoginUserRepository _loginUserRepository;
         private readonly IGetUserInfoRepository _getUserInfoRepository;
         private readonly ITransactionService _transactionService;
         private readonly GetUserInfoService _getUserInfoService;
-        public UserController(IUserRepository userRepository, IGetUserInfoRepository getUserInfoRepository, ITransactionService transactionService, GetUserInfoService getUserInfoService)
+        public UserController(IRegisterUserRepository registerUserRepository, ILoginUserRepository loginUserRepository, IGetUserInfoRepository getUserInfoRepository, ITransactionService transactionService, GetUserInfoService getUserInfoService)
         {
-            _userRepository = userRepository;
+            _loginUserRepository = loginUserRepository;
+            _registerUserRepository = registerUserRepository;
             _getUserInfoRepository = getUserInfoRepository;
             _transactionService = transactionService;
             _getUserInfoService = getUserInfoService;
@@ -27,7 +30,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         [HttpPost("login-user")]
         public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
         {
-           var response = await _userRepository.LoginUserAsync(request);
+           var response = await _loginUserRepository.LoginUserAsync(request);
             return Ok(response);
         }
 

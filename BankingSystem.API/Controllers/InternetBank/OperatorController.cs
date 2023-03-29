@@ -17,17 +17,17 @@ namespace BankingSystem.API.Controllers.InternetBank
     {
         private readonly TokenGenerator _tokenGenerator;
         private readonly IOperatorRepository _operatorRepository;
-        private readonly IUserRepository _userRepository;
+        private readonly IRegisterUserRepository _registerUserRepository;
         private readonly RegisterOperatorService _registerOperatorService;
         private readonly RegisterUserService _registerUserService;
         private readonly AddUserDetailsService _addUserDetailsService;
 
-        public OperatorController(TokenGenerator tokenGenerator, IOperatorRepository operatorRepository, IUserRepository userRepository, RegisterOperatorService registerOperatorService, RegisterUserService registerUserService, AddUserDetailsService addUserDetailsService)
+        public OperatorController(TokenGenerator tokenGenerator, IOperatorRepository operatorRepository, IRegisterUserRepository userRepository, RegisterOperatorService registerOperatorService, RegisterUserService registerUserService, AddUserDetailsService addUserDetailsService)
         {
 
             _operatorRepository = operatorRepository;
             _tokenGenerator = tokenGenerator;
-            _userRepository = userRepository;
+            _registerUserRepository = userRepository;
             _registerOperatorService = registerOperatorService;
             _registerUserService = registerUserService;
             _addUserDetailsService = addUserDetailsService;
@@ -41,23 +41,30 @@ namespace BankingSystem.API.Controllers.InternetBank
         }
 
         [HttpPost("login-operator")]
-        public async Task<IActionResult> Login([FromBody] LoginOperatorRequest request)
+        public async Task<LoginOperatorResponse> Login([FromBody] LoginOperatorRequest request)
         {
             var operatorByPersonalNumber = await _operatorRepository.GetOperatorByPersonalNumberAsync(request);
-
+            var operatorByPassword = await _operatorRepository.GetOperatorByPasswordAsync(request);
+            var response = new LoginOperatorResponse();
             if (operatorByPersonalNumber == null)
             {
-                return NotFound("Operator not found");
+                response.IsSuccessful = false;
+                response.ErrorMessage = "Operator Not Found";
+                response.JWT = null;
             }
-
-            var operatorByPassword = await _operatorRepository.GetOperatorByPasswordAsync(request);
-
-            if (operatorByPassword == null)
+            else if(operatorByPassword == null)
             {
-                return BadRequest("invalid name or password");
+                response.IsSuccessful = false;
+                response.ErrorMessage = "Invalid PersonalNumber or Password";
+                response.JWT = null;
             }
-
-            return Ok(_tokenGenerator.Generate("0", operatorByPassword.Id.ToString()));
+            else
+            {
+                response.IsSuccessful = true;
+                response.ErrorMessage = null;
+                response.JWT = _tokenGenerator.Generate("0", operatorByPassword.Id.ToString());
+            }
+            return response;
         }
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]

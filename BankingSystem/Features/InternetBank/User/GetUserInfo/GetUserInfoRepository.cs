@@ -9,7 +9,7 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
         Task<List<AccountEntity>> GetUserAccountsAsync(string userId);
         Task<List<CardEntity>> GetUserCardsAsync(string authenticatedUserId, int accountId);
         
-        Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban);
+        Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban, string authenticationUseId);
 
         //bool UserExists(string cardNumber);
     }
@@ -28,16 +28,21 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             return accounts;
         }
 
-        public Task<List<CardEntity>> GetUserCardsAsync(string authenticatedUserId, int accountId)
+        public async Task<List<CardEntity>> GetUserCardsAsync(string authenticatedUserId, int accountId)
         {
-            var cards = _db.Cards.Where(c => c.AccountId == accountId).ToListAsync();
+            var cards = await (from c in _db.Cards
+                               join a in _db.Accounts on c.AccountId equals a.Id
+                               join u in _db.Users on a.UserId equals u.Id
+                               where a.Id == accountId && u.Id == int.Parse(authenticatedUserId)
+                               select c).ToListAsync();
+
             return cards;
         }
 
-        public Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban)
+        public async Task<List<TransactionEntity>> GetUserAccountTransactionsAsync(string iban, string authenticationUserId)
         {
-            var transactions = _db.Transactions
-                .Where(t => t.SenderAccount == iban || t.RecipientAccount == iban)
+            var transactions = await _db.Transactions
+                .Where(t => (t.SenderAccount == iban || t.RecipientAccount == iban) && t.SenderAccountId == long.Parse(authenticationUserId))
                 .OrderByDescending(t => t.CreatedAt)
                 .ToListAsync();
 

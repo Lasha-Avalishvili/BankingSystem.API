@@ -9,6 +9,7 @@ using BankingSystem.Features.InternetBank.Operator.Auth;
 using BankingSystem.Features.InternetBank.Operator.AuthOperator;
 using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
+using BankingSystem.Features.InternetBank.User.LoginUser;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.Reports;
 using Microsoft.EntityFrameworkCore;
@@ -32,8 +33,8 @@ namespace BankingSystem
 			AuthConfigurator.Configure(builder);
 
 			builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
-			builder.Services.AddTransient<IUserRepository, RegisterUserRepository>();
-			//builder.Services.AddTransient<IAddUserRepository, AddUserDetailsRepository>();
+			builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
+			builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
 			builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
 			builder.Services.AddTransient<ITransactionService, TransactionService>();
 			builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
@@ -52,8 +53,6 @@ namespace BankingSystem
             builder.Services.AddTransient<AddUserDetailsService>();
 			builder.Services.AddTransient<GetUserInfoService> ();
 			builder.Services.AddTransient<GetUserInfoRepository>();
-			
-
 
             builder.Services.AddSwaggerGen(c =>
 			  {
