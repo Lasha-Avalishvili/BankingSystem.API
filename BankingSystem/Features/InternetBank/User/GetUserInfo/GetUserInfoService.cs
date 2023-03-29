@@ -117,7 +117,6 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                 new Exception(ex.Message); 
             }
             return response;
-
         }
         private CardStatus GetCardStatus(DateTime expirationDate)
         {

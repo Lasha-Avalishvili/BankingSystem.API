@@ -1,5 +1,6 @@
 
 using BankingSystem.DB;
+using BankingSystem.Features.ATM.AccountBlance;
 using BankingSystem.Features.ATM.ChangePin;
 using BankingSystem.Features.ATM.Withdraw;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
@@ -34,7 +35,8 @@ namespace BankingSystem
 
 			builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
 			builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
-			builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
+			builder.Services.AddTransient<IGetAccountBalanceRepository, GetAccountBalanceRepsoitory>();
+            builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
 			builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
 			builder.Services.AddTransient<ITransactionService, TransactionService>();
 			builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
