@@ -10,7 +10,7 @@ using BankingSystem.Features.InternetBank.User.LoginUser;
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IRegisterUserRepository _registerUserRepository;

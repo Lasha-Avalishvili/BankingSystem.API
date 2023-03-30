@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BankingSystem.API.Controllers.Reports
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class ReportsController : ControllerBase
     {
         private readonly IReportsRepository _reportsRepository;

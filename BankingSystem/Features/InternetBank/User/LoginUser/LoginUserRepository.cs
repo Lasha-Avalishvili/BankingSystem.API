@@ -44,7 +44,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
             {
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;
-                response.JWT = _tokenGenerator.Generate(user.Id.ToString(), "0");
+                response.JWT = _tokenGenerator.Generate("api-user", user.Id.ToString());
             }
             return response;
         }

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankingSystem.API.Controllers.InternetBank
 {
-    [Route("/api/v1/[controller]")]
+    [Route("/api/[controller]")]
     [ApiController]
     public class OperatorController : ControllerBase
     {
@@ -62,7 +62,7 @@ namespace BankingSystem.API.Controllers.InternetBank
             {
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;
-                response.JWT = _tokenGenerator.Generate("0", operatorByPassword.Id.ToString());
+                response.JWT = _tokenGenerator.Generate("api-admin", operatorByPassword.Id.ToString());
             }
             return response;
         }

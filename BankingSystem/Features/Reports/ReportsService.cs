@@ -116,9 +116,9 @@ namespace BankingSystem.Features.Reports
 
             var avgFees = new FeeCurrencies
             {
-                GEL = avgFeeInGEL,
-                USD = avgFeeInUSD,
-                EUR = avgFeeInEUR
+                GEL = Math.Round(avgFeeInGEL, 2),
+                USD = Math.Round(avgFeeInUSD, 2),
+                EUR = Math.Round(avgFeeInEUR, 2)
             };
             return new AverageTransactionFeeResponse { AverageTransactionFee = avgFees };
         }

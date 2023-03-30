@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BankingSystem.API.Controllers.ATM
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
     public class WithdrawATMController : ControllerBase
     {
         private readonly IWithdrawRepository _withdrawRepository;
@@ -23,7 +23,7 @@ namespace BankingSystem.API.Controllers.ATM
             _changePinService = changePinService;
             _accountBalanceRepository = accountBalanceRepository;
         }
-        //   [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]  // es rat gvinda??
+
         [HttpPost("withdraw")]
         public async Task<IActionResult> WithdrawATM([FromBody] WithdrawFromAtmRequest request)
         {
@@ -45,11 +45,10 @@ namespace BankingSystem.API.Controllers.ATM
             return BadRequest();
         }
 
-
         [HttpPost("get-balance")]
         public async Task<IActionResult> ChangePIN([FromBody] GetAccountBalanceRequest request)
         {
-            var response = await _accountBalanceRepository.GetbalanceAsync(request);
+            var response = await _accountBalanceRepository.GetBalanceAsync(request);
             return Ok(response);
         }
     }

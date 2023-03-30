@@ -106,8 +106,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                 {
                     response = transactions.Select(a => new GetTransactionsResponse
                     {
-                        IsSuccessful = false,
-                        ErrorMessage = "You haven't transactions or authorisation failed"
+                        // IsSuccessful = false,
+                       // ErrorMessage = "You haven't transactions or authorisation failed"
                     }
                     ).ToList();
                 }

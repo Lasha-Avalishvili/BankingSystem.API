@@ -14,15 +14,13 @@ namespace BankingSystem.Features.InternetBank.Auth
         {
             _settings = settings.Value;
         }
-        public string Generate(string userId, string operatorId) 
+        public string Generate(string role, string Id) 
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userId),
-                new Claim(ClaimTypes.Role, "api-user"),
-                new Claim("userId", userId),
-                new Claim(JwtRegisteredClaimNames.Sub, operatorId),
-                new Claim(ClaimTypes.Role, "api-admin"),
+                new Claim(JwtRegisteredClaimNames.Sub, Id),
+                new Claim(ClaimTypes.Role, role),
+                new Claim("userId", Id)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey));

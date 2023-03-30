@@ -10,7 +10,7 @@ namespace BankingSystem.Features.ATM.AccountBlance
 {
     public interface IGetAccountBalanceRepository
     {
-        Task<GetAccountBalanceResponse> GetbalanceAsync(GetAccountBalanceRequest request);
+        Task<GetAccountBalanceResponse> GetBalanceAsync(GetAccountBalanceRequest request);
     }
     public class GetAccountBalanceRepsoitory : IGetAccountBalanceRepository
     {
@@ -20,7 +20,7 @@ namespace BankingSystem.Features.ATM.AccountBlance
             _db = db;
         }
 
-        public async Task <GetAccountBalanceResponse> GetbalanceAsync(GetAccountBalanceRequest request)
+        public async Task <GetAccountBalanceResponse> GetBalanceAsync(GetAccountBalanceRequest request)
         {
             var card = await _db.Cards
                 .Include(c => c.Account)

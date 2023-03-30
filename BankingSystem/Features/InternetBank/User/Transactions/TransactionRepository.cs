@@ -6,8 +6,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 {
     public interface ITransactionRepository
     {
-        Task<AccountEntity> GetSenderAccountAsync(TransactionRequest transactionRequest);
-        Task<AccountEntity> GetRecipientAccountAsync(TransactionRequest transactionRequest);
+        Task<AccountEntity> GetAccountAsync(string Iban);
         Task SaveChangesAsync(TransactionEntity transaction);
     }
     public class TransactionRepository : ITransactionRepository
@@ -20,27 +19,15 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             _db = db;
         }
 
-        public async Task<AccountEntity> GetSenderAccountAsync(TransactionRequest transactionRequest)
+        public async Task<AccountEntity> GetAccountAsync(string Iban)
         {
-            var senderAccount = await _db.Accounts.Where(sa => sa.IBAN == transactionRequest.SenderAccountIBAN).FirstOrDefaultAsync();
-
-            if (senderAccount == null)
+            var account = await _db.Accounts.Where(sr => sr.IBAN == Iban).FirstOrDefaultAsync();
+            if (account == null)
             {
                 return null;
             }
 
-            return senderAccount;
-        }
-
-        public async Task<AccountEntity> GetRecipientAccountAsync(TransactionRequest transactionRequest)
-        {
-            var recipientAccount = await _db.Accounts.Where(sr => sr.IBAN == transactionRequest.RecipientAccountIBAN).FirstOrDefaultAsync();
-            if (recipientAccount == null)
-            {
-                return null;
-            }
-
-            return recipientAccount;
+            return account;
         }
 
         public async Task SaveChangesAsync(TransactionEntity transaction)
