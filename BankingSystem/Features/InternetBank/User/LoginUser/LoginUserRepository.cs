@@ -24,7 +24,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
         public async Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request)
         {
             var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
-            var userpass = await _db.Users.Where(u => u.Password == request.Password).FirstOrDefaultAsync();
+        //    var userpass = await _db.Users.Where(u => u.Password == request.Password).FirstOrDefaultAsync();
 
             var response = new LoginUserResponse(); 
             
@@ -34,12 +34,12 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
                 response.ErrorMessage = "User Not Found";
                 response.JWT = null;
             }
-            else if(userpass == null)
-            {
-                response.IsSuccessful = false;
-                response.ErrorMessage = "Invalid ID or password";
-                response.JWT = null;
-            }
+            //else if(userpass == null)
+            //{
+            //   response.IsSuccessful = false;
+            //   response.ErrorMessage = "Invalid ID or password";
+            //   response.JWT = null;
+            //}
             else
             {
                 response.IsSuccessful = true;

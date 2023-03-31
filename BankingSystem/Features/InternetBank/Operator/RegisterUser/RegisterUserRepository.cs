@@ -3,6 +3,7 @@ using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
 using BankingSystem.Features.InternetBank.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,23 +11,30 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
     public interface IRegisterUserRepository
     {
-        public Task AddUserAsync(UserEntity entity);
+        public Task<IdentityResult> AddUserAsync(UserEntity entity, string password);
         public Task SaveChangesAsync();
         public Task<bool> UserExists(string personalNumber);
+        
     }
 
     public class RegisterUserRepository : IRegisterUserRepository
     {
         private readonly AppDbContext _db;
-        public RegisterUserRepository(AppDbContext db)
+        private readonly UserManager<UserEntity> _userManager;
+        public RegisterUserRepository(AppDbContext db, UserManager<UserEntity> userManager)
         {
             _db = db;
+            _userManager = userManager;
         }
 
-        public async Task AddUserAsync(UserEntity entity)
+        public async Task CreateUserAsync(UserEntity entity)
         {
-            await _db.Users.AddAsync(entity);
-            await _db.SaveChangesAsync();
+            await _userManager.CreateAsync(entity);
+        }
+
+        public async Task<IdentityResult> AddUserAsync(UserEntity entity, string password)
+        {
+            return await _userManager.CreateAsync(entity, password);
         }
         public async Task SaveChangesAsync()
         {

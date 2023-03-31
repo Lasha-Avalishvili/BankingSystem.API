@@ -8,13 +8,7 @@ namespace BankingSystem.WorkerService
     {
         public static void Main(string[] args)
         {
-            IHost host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddHostedService<Worker>();
-                })
-                .Build();
-
+            IHost host = CreateHostBuilder(args).Build();
             host.Run();
         }
 
@@ -22,6 +16,7 @@ namespace BankingSystem.WorkerService
         Host.CreateDefaultBuilder(args)
            .ConfigureServices((hostContext, services) =>
            {
+               services.AddDbContextPool<AppDbContext>(o => o.UseSqlServer(hostContext.Configuration.GetConnectionString("AppToDB")));
                services.AddHostedService<Worker>();
                services.AddTransient<IExchangeRatesFetcher, ExchangeRatesFetcher>();
            });

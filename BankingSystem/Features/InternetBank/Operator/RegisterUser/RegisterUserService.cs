@@ -35,15 +35,17 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
                     var newUser = new UserEntity();
                     newUser.FirstName = request.FirstName;
                     newUser.LastName = request.LastName;
-                    newUser.Password = request.Password;
+                 //   newUser.Password = request.Password;
                     newUser.PersonalNumber = request.PersonalNumber;
+                    newUser.UserName = request.Email;
                     newUser.Email = request.Email;
                     newUser.DateOfBirth = request.DateOfBirth;
                     newUser.RegisteredAt = DateTime.UtcNow;
 
-                    await _repository.AddUserAsync(newUser);
+                    var result = await _repository.AddUserAsync(newUser, request.Password);
 
-                    response.IsSuccessful = true;
+                    response.IsSuccessful = result.Succeeded;
+                    response.ErrorMessage = result.Errors?.FirstOrDefault()?.Description ?? "";
                     response.FirstName = request.FirstName;
                     response.LastName = request.LastName;
                     response.UserId = newUser.Id;

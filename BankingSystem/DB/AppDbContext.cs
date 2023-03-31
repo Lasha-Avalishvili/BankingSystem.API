@@ -11,7 +11,6 @@ namespace BankingSystem.DB
 
         public DbSet<AccountEntity> Accounts { get; set; }
         public DbSet<CardEntity> Cards { get; set; }
-        public DbSet<UserEntity> Users { get; set; }
         public DbSet<OperatorEntity> Operators { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
