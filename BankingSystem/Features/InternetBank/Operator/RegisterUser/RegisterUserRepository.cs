@@ -27,11 +27,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             _userManager = userManager;
         }
 
-        public async Task CreateUserAsync(UserEntity entity)
-        {
-            await _userManager.CreateAsync(entity);
-        }
-
         public async Task<IdentityResult> AddUserAsync(UserEntity entity, string password)
         {
             return await _userManager.CreateAsync(entity, password);

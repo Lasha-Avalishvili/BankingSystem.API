@@ -35,7 +35,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
                     var newUser = new UserEntity();
                     newUser.FirstName = request.FirstName;
                     newUser.LastName = request.LastName;
-                 //   newUser.Password = request.Password;
                     newUser.PersonalNumber = request.PersonalNumber;
                     newUser.UserName = request.Email;
                     newUser.Email = request.Email;

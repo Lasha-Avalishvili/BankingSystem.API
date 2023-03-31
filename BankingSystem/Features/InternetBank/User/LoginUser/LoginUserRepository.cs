@@ -1,6 +1,8 @@
 ﻿using Azure;
 using BankingSystem.DB;
+using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Auth;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -15,17 +17,18 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
     {
         private readonly AppDbContext _db;
         private readonly TokenGenerator _tokenGenerator;
-        public LoginUserRepository(AppDbContext db, TokenGenerator tokenGenerator)
+        private readonly UserManager<UserEntity> _userManager;
+        public LoginUserRepository(AppDbContext db, TokenGenerator tokenGenerator, UserManager<UserEntity> userManager)
         {
             _db = db;
             _tokenGenerator = tokenGenerator;
+            _userManager = userManager;
         }
 
         public async Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request)
         {
             var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
-        //    var userpass = await _db.Users.Where(u => u.Password == request.Password).FirstOrDefaultAsync();
-
+            var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
             var response = new LoginUserResponse(); 
             
             if (user == null)
@@ -34,12 +37,12 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
                 response.ErrorMessage = "User Not Found";
                 response.JWT = null;
             }
-            //else if(userpass == null)
-            //{
-            //   response.IsSuccessful = false;
-            //   response.ErrorMessage = "Invalid ID or password";
-            //   response.JWT = null;
-            //}
+            else if (userpass == false)
+            {
+                response.IsSuccessful = false;
+                response.ErrorMessage = "Invalid ID or password";
+                response.JWT = null;
+            }
             else
             {
                 response.IsSuccessful = true;
