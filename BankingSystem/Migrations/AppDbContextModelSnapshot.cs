@@ -89,6 +89,26 @@ namespace BankingSystem.Migrations
                     b.ToTable("Cards");
                 });
 
+            modelBuilder.Entity("BankingSystem.DB.Entities.ExchangeRateEntity", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("QuoteCurrency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Rate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("ExchangeRates", (string)null);
+                });
+
             modelBuilder.Entity("BankingSystem.DB.Entities.OperatorEntity", b =>
                 {
                     b.Property<int>("Id")

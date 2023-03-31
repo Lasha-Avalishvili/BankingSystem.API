@@ -25,7 +25,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             var response = new TransactionResponse();
             try
             {
-                await _convertService.UpdateRates();    //  atm-shi ar unda igive?
+               // await _convertService.UpdateRates();    //  atm-shi ar unda igive?
                 var senderAccount = await _transactionRepository.GetAccountAsync(transactionRequest.SenderAccountIBAN); 
                 var recipientAccount = await _transactionRepository.GetAccountAsync(transactionRequest.RecipientAccountIBAN); 
 

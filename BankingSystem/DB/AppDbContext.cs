@@ -7,13 +7,14 @@ namespace BankingSystem.DB
 {
     public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, int>
     {
-        public readonly object CurrencyRates;
+        
 
         public DbSet<AccountEntity> Accounts { get; set; }
         public DbSet<CardEntity> Cards { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<OperatorEntity> Operators { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
+        public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         {
@@ -30,7 +31,7 @@ namespace BankingSystem.DB
             modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("OperatorClaims");
             modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("OperatorLogins").HasKey(p => p.UserId);
             modelBuilder.Entity<IdentityUserToken<int>>().ToTable("OperatorTokens").HasKey(p => p.UserId);
-           // modelBuilder.Entity<CurrencyRateEntity>().ToTable("CurrencyRates");
+            modelBuilder.Entity<ExchangeRateEntity>().ToTable("ExchangeRates");
             modelBuilder.Entity<AccountEntity>()
             .HasOne(a => a.User)
             .WithMany(u => u.Accounts)

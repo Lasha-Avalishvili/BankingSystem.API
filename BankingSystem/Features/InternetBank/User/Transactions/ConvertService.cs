@@ -7,7 +7,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
     {
         Task<decimal> ConvertCurrency(decimal amount, string SenderAccountCurrency, string recipientAccountCurrency);
         decimal GetRate(string SenderAccountCurrency, string recipientAccountCurrency);
-        Task UpdateRates();
+   
         decimal GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency);
     }
     public class ConvertService : IConvertService
@@ -20,32 +20,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             { "EUR", 2.73m }
         };
 
-        /// <fetcher>
-        public async Task UpdateRates ()
-        {
-            var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://nbg.gov.ge/gw/api/ct/monetarypolicy/currencies/ka/json");
-            var json = await response.Content.ReadAsStringAsync();
-
-            var currencyRates = JsonConvert.DeserializeObject<dynamic>(json);
-            var currencies = currencyRates[0].currencies;
-            foreach (var currency in currencies)
-            {
-                if(currency.code == "GEL")
-                {
-                    _exchangeRates["GEL"] = currency.rateFormated;
-                }
-                else if (currency.code == "USD")
-                {
-                    _exchangeRates["USD"] = currency.rateFormated;
-                }
-                else if(currency.code == "EUR")
-                {
-                    _exchangeRates["EUR"] = currency.rateFormated;
-                }
-            }
-        }
-        /// <fetcher>
+       
 
         public Task<decimal> ConvertCurrency(decimal amount, string senderAccountCurrency, string recipientAccountCurrency)
         {
@@ -75,6 +50,5 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 
             return convertedLimit;
         }
- 
     }
 }
