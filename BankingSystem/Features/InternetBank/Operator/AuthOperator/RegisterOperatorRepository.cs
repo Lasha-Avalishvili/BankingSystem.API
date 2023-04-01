@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using BankingSystem.DB;
 using BankingSystem.DB.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
@@ -16,6 +17,8 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
     public class RegisterOperatorRepository : IOperatorRepository
     {
         private readonly AppDbContext _db;
+       // private readonly UserManager<OperatorEntity> _userManager;
+
         public RegisterOperatorRepository(AppDbContext db)
         {
             _db = db;

@@ -67,7 +67,7 @@ namespace BankingSystem.API.Controllers.InternetBank
             return response;
         }
 
-        //[Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
+        [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("register-user")]
         public async Task<ActionResult<UserEntity>> RegisterUser(RegisterUserRequest request)
         {

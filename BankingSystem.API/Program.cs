@@ -1,5 +1,6 @@
 
 using BankingSystem.DB;
+using BankingSystem.DB.Entities;
 using BankingSystem.Features.ATM.AccountBlance;
 using BankingSystem.Features.ATM.ChangePin;
 using BankingSystem.Features.ATM.Withdraw;
@@ -13,6 +14,7 @@ using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.LoginUser;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.Reports;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -32,6 +34,11 @@ namespace BankingSystem
             builder.Services.AddSwaggerGen();
 
             AuthConfigurator.Configure(builder);
+
+            
+
+         //   builder.Services.AddIdentity<OperatorEntity, IdentityRole>()
+        // .AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
