@@ -6,8 +6,9 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 {
     public interface ITransactionRepository
     {
-        Task<AccountEntity> GetAccountAsync(string Iban);
-        Task SaveChangesAsync(TransactionEntity transaction);
+        public Task<AccountEntity> GetAccountAsync(string Iban);
+        public Task<List<ExchangeRateEntity>> GetCurrenciesAsync();
+        public Task SaveChangesAsync(TransactionEntity transaction);
     }
     public class TransactionRepository : ITransactionRepository
     {
@@ -28,6 +29,12 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             }
 
             return account;
+        }
+
+        public async Task<List<ExchangeRateEntity>> GetCurrenciesAsync()
+        {
+            var currencyRates = await _db.ExchangeRates.ToListAsync();
+            return currencyRates;
         }
 
         public async Task SaveChangesAsync(TransactionEntity transaction)

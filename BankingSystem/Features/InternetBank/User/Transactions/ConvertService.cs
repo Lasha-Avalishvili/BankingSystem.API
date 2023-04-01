@@ -5,10 +5,9 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 {
     public interface IConvertService
     {
-        Task<decimal> ConvertCurrency(decimal amount, string SenderAccountCurrency, string recipientAccountCurrency);
-        decimal GetRate(string SenderAccountCurrency, string recipientAccountCurrency);
-   
-        decimal GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency);
+        public Task<decimal> ConvertCurrency(decimal amount, string SenderAccountCurrency, string recipientAccountCurrency);
+        public Task<decimal> GetRate(string senderAccountCurrency, string recipientAccountCurrency);
+        public Task<decimal> GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency);
     }
     public class ConvertService : IConvertService
     {
@@ -20,31 +19,42 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             { "EUR", 2.73m }
         };
 
+        private readonly ITransactionRepository _transactionRepository;
+
+        public ConvertService(ITransactionRepository transactionRepository)
+        {
+            _transactionRepository  = transactionRepository;
+        }
        
 
-        public Task<decimal> ConvertCurrency(decimal amount, string senderAccountCurrency, string recipientAccountCurrency)
+        public async Task<decimal> ConvertCurrency(decimal amount, string senderAccountCurrency, string recipientAccountCurrency)
         {
-            var sourceRate = _exchangeRates[recipientAccountCurrency];
-            var targetRate = _exchangeRates[senderAccountCurrency];
+            var currencyRates = await _transactionRepository.GetCurrenciesAsync();
+
+            var sourceRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == recipientAccountCurrency)?.Rate ?? 1;
+            var targetRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == senderAccountCurrency)?.Rate ?? 1 ;
 
             var convertedAmount = amount * (targetRate / sourceRate);
 
-            return Task.FromResult(convertedAmount);
+            return convertedAmount;
         }
 
-        public decimal GetRate(string SenderAccountCurrency, string recipientAccountCurrency)
+        public async Task<decimal> GetRate(string senderAccountCurrency, string recipientAccountCurrency)
         {
-            var sourceRate = _exchangeRates[recipientAccountCurrency];
-            var targetRate = _exchangeRates[SenderAccountCurrency];
+            var currencyRates = await _transactionRepository.GetCurrenciesAsync();
+
+            var sourceRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == recipientAccountCurrency)?.Rate ?? 1;
+            var targetRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == senderAccountCurrency)?.Rate ?? 1;
 
             var rate = targetRate / sourceRate;
             return rate;
         }
 
-        public decimal GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency)
+        public async Task<decimal> GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency)
         {
-            var sourceRate = _exchangeRates[limitCurrency];
-            var targetRate = _exchangeRates[senderAccountCurrency];
+            var currencyRates = await _transactionRepository.GetCurrenciesAsync();
+            var sourceRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == limitCurrency)?.Rate ?? 1;
+            var targetRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == senderAccountCurrency)?.Rate ?? 1;
 
             var convertedLimit = amountOfLimit * (targetRate / sourceRate);
 

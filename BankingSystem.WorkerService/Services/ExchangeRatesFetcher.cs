@@ -1,4 +1,5 @@
-﻿using BankingSystem.DB;
+﻿
+using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -28,14 +29,29 @@ namespace BankingSystem.WorkerService.Services
             var currencyRates = JsonConvert.DeserializeObject<dynamic>(json);
             var currencies = currencyRates[0].currencies;
 
+            var existingRates = _db.ExchangeRates.ToDictionary(r => r.QuoteCurrency);
+
             foreach (var currency in currencies)
             {
-                var newCurrency = new ExchangeRateEntity
+                var quoteCurrency = (string)currency.code;
+                var rate = currency.rateFormated;
+                if (existingRates.ContainsKey(quoteCurrency))
                 {
-                    QuoteCurrency = currency.code,
-                    Rate = currency.rateFormated
-                };
-                _db.ExchangeRates.Add(newCurrency);
+                    // If the rate already exists, update it
+                    var existingRate = existingRates[quoteCurrency];
+                    existingRate.Rate = rate;
+                    _db.ExchangeRates.Update(existingRate);
+                }
+                else
+                {
+                    // If the rate does not exist, add it
+                    var newCurrency = new ExchangeRateEntity
+                    {
+                        QuoteCurrency = quoteCurrency,
+                        Rate = rate
+                    };
+                    _db.ExchangeRates.Add(newCurrency);
+                }
             }
             await _db.SaveChangesAsync();
         }

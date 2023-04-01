@@ -33,7 +33,10 @@ namespace BankingSystem.Features.ATM.Withdraw
                 var card = await _withdrawRepository.AuthorizeCardAsync(request.CardNumber, request.PIN);
                 if (card == null)
                 {
-                    throw new Exception("Incorrect Card Credentials");
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Incorrect Card Credentials";
+
+                    return response;
                 }
                 var account = await _withdrawRepository.FindAccountAsync(card.AccountId);
                 var accountBalance = account.Balance;
@@ -45,9 +48,11 @@ namespace BankingSystem.Features.ATM.Withdraw
 
                 if (requestedAmountAndFee > accountBalance)
                 {
-                    throw new Exception("Not enought money");
-                }
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "Not enought money";
 
+                    return response;
+                }
                 var requestedAmountInGel = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
                 var AtmTransactionsAmountInGel = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.GEL);
                 var AtmTransactionsAmountInUSD = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.USD);
@@ -59,7 +64,9 @@ namespace BankingSystem.Features.ATM.Withdraw
                 var dailyLimitInGel = 10000;
                 if(dailyLimitInGel< allAtmTransactionsInGel + requestedAmountInGel)
                 {
-                    throw new Exception("You are above your daily limit");
+                    response.IsSuccessful = false;
+                    response.ErrorMessage = "daily withdrawal limit is not enough";
+                    return response;
                 }
 
                 account.Balance -= requestedAmountAndFee;
@@ -75,7 +82,7 @@ namespace BankingSystem.Features.ATM.Withdraw
                 transaction.FeeInEUR = await _convertService.ConvertCurrency(transactionFee, account.Currency.ToString(), "EUR");
                 transaction.TransactionType = TransactionType.ATM;
                 transaction.SenderAccountId = account.Id; 
-                transaction.ConvertRate = _convertService.GetRate(account.Currency.ToString(), request.Currency.ToString());
+                transaction.ConvertRate = await _convertService.GetRate(account.Currency.ToString(), request.Currency.ToString());
                 transaction.AmountInGEL = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
 
                 await _withdrawRepository.SaveChangesAsync(transaction); 

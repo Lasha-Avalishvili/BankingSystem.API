@@ -38,7 +38,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
                 transaction.RecipientAccount = transactionRequest.RecipientAccountIBAN;
                 transaction.CurrencyFrom = senderAccount.Currency;
                 transaction.CurrencyTo = recipientAccount.Currency;
-                transaction.ConvertRate = _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
+                transaction.ConvertRate = await _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
                 
                 decimal transactionFee = 0;
                 if (senderAccount.UserId != recipientAccount.UserId)
