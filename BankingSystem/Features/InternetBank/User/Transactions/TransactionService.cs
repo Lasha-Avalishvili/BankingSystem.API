@@ -83,7 +83,8 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
                     transaction.TransactionType = TransactionType.Outer;
                 }
 
-                await _transactionRepository.SaveChangesAsync(transaction);
+                await _transactionRepository.AddChangesAsync(transaction);
+                await _transactionRepository.SaveChangesAsync();
 
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;

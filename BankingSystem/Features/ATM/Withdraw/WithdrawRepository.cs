@@ -10,7 +10,8 @@ namespace BankingSystem.Features.ATM.Withdraw
         public Task<CardEntity> AuthorizeCardAsync(string cardNumber, string PIN);
         public Task<AccountEntity> FindAccountAsync(int accountId);
         public Task<decimal> GetUserAtmTransactions(int userId, Currency currency);
-        public Task SaveChangesAsync(TransactionEntity transaction);
+        public Task AddChangesAsync(TransactionEntity transaction);
+        public Task SaveChangesAsync();
     }
 
     public class WithdrawRepository : IWithdrawRepository
@@ -51,10 +52,15 @@ namespace BankingSystem.Features.ATM.Withdraw
             
         }
 
-        public async Task SaveChangesAsync(TransactionEntity transaction)
-        {
-            await _db.Transactions.AddAsync(transaction);
+        public async Task SaveChangesAsync()
+        {  
             await _db.SaveChangesAsync();
         }
+
+        public async Task AddChangesAsync(TransactionEntity transaction)
+        {
+            await _db.Transactions.AddAsync(transaction);
+        }
+
     }
 }

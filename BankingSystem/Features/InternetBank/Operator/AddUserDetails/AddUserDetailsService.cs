@@ -36,6 +36,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                     newAccount.Currency = request.Currency;
                     newAccount.Balance = request.Amount;
                     await _repository.AddAccountAsync(newAccount);
+                    await _repository.SaveChangesAsync();
                     response.IsSuccessful = true;
                     response.AccountId = newAccount.Id;
                 } else
@@ -75,6 +76,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails
                     newCard.PIN = request.PIN;
 
                     await _repository.AddCardAsync(newCard);
+                    await _repository.SaveChangesAsync();
 
                     response.IsSuccessful = true;
                     response.CardId = newCard.Id;

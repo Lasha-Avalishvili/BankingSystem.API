@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Features.ATM.AccountBlance
 {
-    public class GetAccountBalanceRequest
+    public class GetBalanceRequest
     {
         [RegularExpression(@"^\d{16}$", ErrorMessage = "Card number must be 16 digits")]
         public string CardNumber { get; set; }

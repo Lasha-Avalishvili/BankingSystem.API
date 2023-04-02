@@ -25,28 +25,22 @@ namespace BankingSystem.API.Controllers.ATM
         }
 
         [HttpPost("withdraw")]
-        public async Task<IActionResult> WithdrawATM([FromBody] WithdrawFromAtmRequest request)
+        public async Task<IActionResult> WithdrawATM([FromBody] WithdrawRequest request)
         {
             var result = await _withdrawService.WithdawFromAtm(request);
 
             return Ok(result);
         }
 
-        [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
         [HttpPost("change-pin")]
         public async Task<IActionResult> ChangePIN([FromBody] ChangeCardPinRequest changeCardPINRequest)
         {
-            var authenticatedUserId = User.FindFirstValue("userId");
-            if (authenticatedUserId != null)
-            {
-                var response = await _changePinService.ChangePin(changeCardPINRequest, authenticatedUserId);
+                var response = await _changePinService.ChangePin(changeCardPINRequest);
                 return Ok(response);
-            }
-            return BadRequest();
         }
 
         [HttpPost("get-balance")]
-        public async Task<IActionResult> ChangePIN([FromBody] GetAccountBalanceRequest request)
+        public async Task<IActionResult> ChangePIN([FromBody] GetBalanceRequest request)
         {
             var response = await _accountBalanceRepository.GetBalanceAsync(request);
             return Ok(response);

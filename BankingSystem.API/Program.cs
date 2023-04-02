@@ -42,7 +42,7 @@ namespace BankingSystem
 
             builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
-            builder.Services.AddTransient<IGetAccountBalanceRepository, GetAccountBalanceRepsoitory>();
+            builder.Services.AddTransient<IGetAccountBalanceRepository, GetBalanceRepsoitory>();
             builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
             builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
             builder.Services.AddTransient<ITransactionService, TransactionService>();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Features.ATM.AccountBlance
 {
-    public class GetAccountBalanceResponse
+    public class GetBalanceResponse
     {
         public bool IsSuccessful { get; set; }
         public string ErrorMessage { get; set; }

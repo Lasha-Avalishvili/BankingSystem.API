@@ -1,4 +1,5 @@
 ﻿using Azure;
+using BankingSystem.DB.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace BankingSystem.Features.ATM.ChangePin
 {
     public interface IChangePinService
     {
-        public Task<ChangePinResponse> ChangePin(ChangeCardPinRequest changeCardPINRequest, string authenticatedUserId);
+        public Task<ChangePinResponse> ChangePin(ChangeCardPinRequest changeCardPINRequest);
     }
     public class ChangePinService : IChangePinService
     {
@@ -18,20 +19,24 @@ namespace BankingSystem.Features.ATM.ChangePin
         {
             _changePinRepository = changePinRepository;
         }
-        public async Task<ChangePinResponse> ChangePin(ChangeCardPinRequest changeCardPinRequest, string authenticatedUserId)
+        public async Task<ChangePinResponse> ChangePin(ChangeCardPinRequest request)
         {
             var response = new ChangePinResponse();
             try
             {
-                var card = await _changePinRepository.ChangePinAsync(changeCardPinRequest, authenticatedUserId);
-                if (card != null && card.Account.UserId.ToString() == authenticatedUserId && changeCardPinRequest.NewPIN != card.PIN && changeCardPinRequest.NewPIN != null)
+                var card = await _changePinRepository.AuthorizeCardAsync(request.CardNumber, request.PIN);
+                if (card != null && request.NewPIN != card.PIN && request.NewPIN != null)
                 {
-                    card.PIN = changeCardPinRequest.NewPIN;
-
+                    CheckCardExpiration(card);
+                    card.PIN = request.NewPIN;
+                    await _changePinRepository.SaveChangesAsync();
 
                     response.IsSuccessful = true;
                     response.Error = null;
-                    await _changePinRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("Incorrect credentials");
                 }
             }catch(Exception ex)
             {
@@ -40,6 +45,14 @@ namespace BankingSystem.Features.ATM.ChangePin
             }
             return response;
          
+        }
+        public void CheckCardExpiration(CardEntity card)
+        {
+            var isExpired = card.ExpirationDate < DateTime.UtcNow;
+            if (isExpired)
+            {
+                throw new InvalidOperationException("Your card is Expired");
+            }
         }
     }
 }

@@ -30,6 +30,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
                     newOperator.PersonalNumber = request.PersonalNumber;
 
                     await _repository.AddOperatorAsync(newOperator);
+                    await _repository.SaveChangesAsync();
 
                     response.IsSuccessful = true;
                     response.FirstName = request.FirstName;

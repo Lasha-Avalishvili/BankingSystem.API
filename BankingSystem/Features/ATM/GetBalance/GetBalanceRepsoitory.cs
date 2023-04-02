@@ -10,17 +10,17 @@ namespace BankingSystem.Features.ATM.AccountBlance
 {
     public interface IGetAccountBalanceRepository
     {
-        Task<GetAccountBalanceResponse> GetBalanceAsync(GetAccountBalanceRequest request);
+        Task<GetBalanceResponse> GetBalanceAsync(GetBalanceRequest request);
     }
-    public class GetAccountBalanceRepsoitory : IGetAccountBalanceRepository
+    public class GetBalanceRepsoitory : IGetAccountBalanceRepository
     {
         private readonly AppDbContext _db;
-        public GetAccountBalanceRepsoitory(AppDbContext db)
+        public GetBalanceRepsoitory(AppDbContext db)
         {
             _db = db;
         }
 
-        public async Task <GetAccountBalanceResponse> GetBalanceAsync(GetAccountBalanceRequest request)
+        public async Task <GetBalanceResponse> GetBalanceAsync(GetBalanceRequest request)
         {
             var card = await _db.Cards
                 .Include(c => c.Account)
@@ -29,7 +29,7 @@ namespace BankingSystem.Features.ATM.AccountBlance
 
             if (card == null)
             {
-                return new GetAccountBalanceResponse
+                return new GetBalanceResponse
                 {
                     IsSuccessful = false,
                     ErrorMessage = "Invalid card number or PIN"
@@ -38,7 +38,7 @@ namespace BankingSystem.Features.ATM.AccountBlance
 
             var account = card.Account;
 
-            return new GetAccountBalanceResponse
+            return new GetBalanceResponse
             {
                 IsSuccessful = true,
                 ErrorMessage = null,

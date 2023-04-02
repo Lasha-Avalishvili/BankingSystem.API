@@ -12,7 +12,7 @@ namespace BankingSystem.Features.ATM.Withdraw
 {
     public interface IWithdrawService
     {
-        public Task<WithdrawResponse> WithdawFromAtm(WithdrawFromAtmRequest request);
+        public Task<WithdrawResponse> WithdawFromAtm(WithdrawRequest request);
     }
 
     public class WithdrawService : IWithdrawService
@@ -25,7 +25,8 @@ namespace BankingSystem.Features.ATM.Withdraw
             _withdrawRepository = withdrawRepository;
         }
 
-        public async Task<WithdrawResponse> WithdawFromAtm(WithdrawFromAtmRequest request)
+
+        public async Task<WithdrawResponse> WithdawFromAtm(WithdrawRequest request)
         {
             var response = new WithdrawResponse();
             try
@@ -38,6 +39,8 @@ namespace BankingSystem.Features.ATM.Withdraw
 
                     return response;
                 }
+                CheckCardExpiration(card);
+
                 var account = await _withdrawRepository.FindAccountAsync(card.AccountId);
                 var accountBalance = account.Balance;
 
@@ -58,7 +61,7 @@ namespace BankingSystem.Features.ATM.Withdraw
                 var AtmTransactionsAmountInUSD = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.USD);
                 var AtmTrasactionInUSDConverted = await _convertService.ConvertCurrency(AtmTransactionsAmountInUSD, "USD", "GEL");
                 var AtmTransactionsAmountInEUR = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.EUR);
-                var AtmTransactionInEURConverted = await _convertService.ConvertCurrency(AtmTransactionsAmountInUSD, "EUR", "GEL");
+                var AtmTransactionInEURConverted = await _convertService.ConvertCurrency(AtmTransactionsAmountInEUR, "EUR", "GEL");
 
                 var allAtmTransactionsInGel = AtmTransactionsAmountInGel + AtmTrasactionInUSDConverted + AtmTransactionInEURConverted;
                 var dailyLimitInGel = 10000;
@@ -85,7 +88,8 @@ namespace BankingSystem.Features.ATM.Withdraw
                 transaction.ConvertRate = await _convertService.GetRate(account.Currency.ToString(), request.Currency.ToString());
                 transaction.AmountInGEL = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
 
-                await _withdrawRepository.SaveChangesAsync(transaction); 
+                await _withdrawRepository.AddChangesAsync(transaction); 
+                await _withdrawRepository.SaveChangesAsync();
 
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;
@@ -98,6 +102,15 @@ namespace BankingSystem.Features.ATM.Withdraw
                 response.ErrorMessage = ex.Message;
             }
             return response;
+        }
+
+        public void CheckCardExpiration(CardEntity card)
+        {
+           var isExpired = card.ExpirationDate < DateTime.UtcNow;
+            if (isExpired)
+            {
+                throw new InvalidOperationException("Your card is Expired");
+            }
         }
     }
 }

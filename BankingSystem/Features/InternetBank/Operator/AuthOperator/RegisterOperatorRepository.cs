@@ -11,8 +11,8 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
         public Task AddOperatorAsync(OperatorEntity entity);
         public Task<OperatorEntity> GetOperatorByPersonalNumberAsync(LoginOperatorRequest request);
         public Task<OperatorEntity> GetOperatorByPasswordAsync(LoginOperatorRequest request);
-        Task SaveChangesAsync();
-        Task<bool> OperatorExists(string personalNumber);
+        public Task SaveChangesAsync();
+        public Task<bool> OperatorExists(string personalNumber);
     }
     public class RegisterOperatorRepository : IOperatorRepository
     {
@@ -27,7 +27,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthOperator
         public async Task AddOperatorAsync(OperatorEntity entity)
         {
             await _db.Operators.AddAsync(entity);
-            await _db.SaveChangesAsync();
         }
 
         public async Task<OperatorEntity> GetOperatorByPersonalNumberAsync(LoginOperatorRequest request)

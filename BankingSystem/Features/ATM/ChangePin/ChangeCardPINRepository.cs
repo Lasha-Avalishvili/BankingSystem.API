@@ -14,8 +14,8 @@ namespace BankingSystem.Features.ATM.ChangePin
 {
     public interface IChangeCardPinRepository
     {
-        Task<CardEntity> ChangePinAsync(ChangeCardPinRequest ChangePinRequest, string userId);
-        Task SaveChangesAsync();
+        public Task SaveChangesAsync();
+        public Task<CardEntity> AuthorizeCardAsync(string cardNumber, string pin);
     }
     public class ChangeCardPinRepository : IChangeCardPinRepository
     {
@@ -26,14 +26,9 @@ namespace BankingSystem.Features.ATM.ChangePin
             _db = db;
         }
 
-        public async Task<CardEntity> ChangePinAsync(ChangeCardPinRequest changePinRequest, string userId)
+        public async Task<CardEntity> AuthorizeCardAsync(string cardNumber, string PIN)
         {
-            var card = await _db.Cards
-                .Include(c => c.Account)
-                .ThenInclude(a => a.User)
-                .FirstOrDefaultAsync(c => c.CardNumber == changePinRequest.CardNumber);
-
-            
+            var card = await _db.Cards.FirstOrDefaultAsync(c => c.CardNumber == cardNumber && c.PIN == PIN);
             return card;
         }
 
