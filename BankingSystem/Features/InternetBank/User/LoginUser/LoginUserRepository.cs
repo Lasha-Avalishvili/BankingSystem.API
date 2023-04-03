@@ -28,7 +28,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
         public async Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request)
         {
             var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
-            var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
+            var userpass = await _userManager.CheckPasswordAsync(user, request.Password); //GetRolesAsync(user);  
             var response = new LoginUserResponse(); 
             
             if (user == null)
