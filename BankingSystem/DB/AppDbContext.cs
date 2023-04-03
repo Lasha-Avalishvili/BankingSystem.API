@@ -36,7 +36,7 @@ namespace BankingSystem.DB
             .WithMany(u => u.Accounts)
             .HasForeignKey(a => a.UserId);
 
-            modelBuilder.Entity<RoleEntity>().HasData(new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
+          //  modelBuilder.Entity<RoleEntity>().HasData(new IdentityRole { Id = "2c5e174e-3b0e-446f-86af-483d56fd7210", Name = "Administrator", NormalizedName = "ADMINISTRATOR".ToUpper() });
 
             modelBuilder.Entity<AccountEntity>()
             .HasMany(a => a.Cards)
