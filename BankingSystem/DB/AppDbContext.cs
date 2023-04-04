@@ -11,7 +11,6 @@ namespace BankingSystem.DB
 
         public DbSet<AccountEntity> Accounts { get; set; }
         public DbSet<CardEntity> Cards { get; set; }
-        public DbSet<OperatorEntity> Operators { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
 
@@ -22,7 +21,6 @@ namespace BankingSystem.DB
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<OperatorEntity>().ToTable("Operators");
             modelBuilder.Entity<UserEntity>().ToTable("Users");
             modelBuilder.Entity<RoleEntity>().ToTable("Roles");
             modelBuilder.Entity<IdentityUserRole<int>>().ToTable("UserRoles").HasKey(p => p.UserId);

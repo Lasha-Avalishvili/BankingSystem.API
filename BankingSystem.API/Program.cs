@@ -39,7 +39,7 @@ namespace BankingSystem
          //   builder.Services.AddIdentity<OperatorEntity, IdentityRole>()
         // .AddEntityFrameworkStores<AppDbContext>();
 
-            builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
+            //builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
             builder.Services.AddTransient<IGetBalanceRepository, GetBalanceRepsoitory>();
             builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
@@ -54,8 +54,8 @@ namespace BankingSystem
             builder.Services.AddTransient<IChangeCardPinRepository, ChangeCardPinRepository>();
             builder.Services.AddTransient<IReportsRepository, ReportsRepository>();
             builder.Services.AddTransient<IReportsService, ReportsService>();
-            builder.Services.AddTransient<RegisterOperatorService>();
-            builder.Services.AddScoped<RegisterOperatorRepository>();
+            //builder.Services.AddTransient<RegisterOperatorService>();
+           // builder.Services.AddScoped<RegisterOperatorRepository>();
             builder.Services.AddTransient<RegisterUserService>();
             builder.Services.AddTransient<RegisterUserRepository>();
             builder.Services.AddTransient<IAddUserDetailsRepository, AddUserDetailsRepository>();

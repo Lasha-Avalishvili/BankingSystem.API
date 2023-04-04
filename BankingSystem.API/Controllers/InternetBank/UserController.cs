@@ -30,7 +30,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         [HttpPost("login-user")]
         public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
         {
-           var response = await _loginUserRepository.LoginUserAsync(request);
+            var response = await _loginUserRepository.LoginUserAsync(request);
             return Ok(response);
         }
 

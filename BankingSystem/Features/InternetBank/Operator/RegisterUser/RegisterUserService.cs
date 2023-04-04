@@ -42,6 +42,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
                     newUser.RegisteredAt = DateTime.UtcNow;
 
                     var result = await _repository.AddUserAsync(newUser, request.Password);
+                    var addToRoleResult = await _repository.AddToRoleAsync(newUser, "api-user");
 
                     response.IsSuccessful = result.Succeeded;
                     response.ErrorMessage = result.Errors?.FirstOrDefault()?.Description ?? "";

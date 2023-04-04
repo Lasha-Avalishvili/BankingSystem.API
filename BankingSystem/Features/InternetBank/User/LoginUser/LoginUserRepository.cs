@@ -27,17 +27,21 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
 
         public async Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request)
         {
-            var user = await _db.Users.Where(u => u.PersonalNumber == request.PersonalNumber).FirstOrDefaultAsync();
-            var userpass = await _userManager.CheckPasswordAsync(user, request.Password); //GetRolesAsync(user);  
-            var response = new LoginUserResponse(); 
-            
+            var response = new LoginUserResponse();
+
+            var user = await _userManager.FindByEmailAsync(request.PersonalNumber);
             if (user == null)
             {
                 response.IsSuccessful = false;
                 response.ErrorMessage = "User Not Found";
                 response.JWT = null;
+                return response;
             }
-            else if (userpass == false)
+
+            var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (userpass == false)
             {
                 response.IsSuccessful = false;
                 response.ErrorMessage = "Invalid ID or password";
@@ -47,7 +51,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
             {
                 response.IsSuccessful = true;
                 response.ErrorMessage = null;
-                response.JWT = _tokenGenerator.Generate("api-user", user.Id.ToString());
+                response.JWT = _tokenGenerator.Generate(roles, user.Id.ToString());
             }
             return response;
         }

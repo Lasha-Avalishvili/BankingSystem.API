@@ -14,7 +14,9 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public Task<IdentityResult> AddUserAsync(UserEntity entity, string password);
         public Task SaveChangesAsync();
         public Task<bool> UserExists(string personalNumber);
-        
+        Task<IdentityResult> AddToRoleAsync(UserEntity user, string role);
+
+
     }
 
     public class RegisterUserRepository : IRegisterUserRepository
@@ -31,6 +33,12 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         {
             return await _userManager.CreateAsync(entity, password);
         }
+
+        public async Task<IdentityResult> AddToRoleAsync(UserEntity user, string role)
+        {
+            return await _userManager.AddToRoleAsync(user, role);
+        }
+
         public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();

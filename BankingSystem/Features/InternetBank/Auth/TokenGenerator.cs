@@ -14,14 +14,22 @@ namespace BankingSystem.Features.InternetBank.Auth
         {
             _settings = settings.Value;
         }
-        public string Generate(string role, string Id) 
+
+        public string Generate(IList<string>? roles, string Id) 
         {
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, Id),
-                new Claim(ClaimTypes.Role, role),
                 new Claim("userId", Id)
             };
+
+            if(roles != null)
+            {
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.SecretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

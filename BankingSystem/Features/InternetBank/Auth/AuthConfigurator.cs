@@ -53,7 +53,7 @@ namespace BankingSystem.Features.InternetBank.Operator.Auth
             {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim(ClaimTypes.Role, "api-user"));
 
-                options.AddPolicy("ApiAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "api-admin"));
+                options.AddPolicy("ApiOperator", policy => policy.RequireClaim(ClaimTypes.Role, "api-operator"));
             });
 
             builder.Services
