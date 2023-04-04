@@ -15,8 +15,10 @@ using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.LoginUser;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.Reports;
+//using BankingSystem.Seeding;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace BankingSystem
@@ -27,6 +29,8 @@ namespace BankingSystem
         {
             var builder = WebApplication.CreateBuilder(args);
 
+             
+
             // Add services to the container.
 
             builder.Services.AddControllers();
@@ -36,8 +40,7 @@ namespace BankingSystem
 
             AuthConfigurator.Configure(builder);
 
-         //   builder.Services.AddIdentity<OperatorEntity, IdentityRole>()
-        // .AddEntityFrameworkStores<AppDbContext>();
+        
 
             //builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
@@ -62,6 +65,8 @@ namespace BankingSystem
             builder.Services.AddTransient<AddUserDetailsService>();
             builder.Services.AddTransient<GetUserInfoService>();
             builder.Services.AddTransient<GetUserInfoRepository>();
+           
+
 
             builder.Services.AddSwaggerGen(c =>
               {
@@ -96,6 +101,9 @@ namespace BankingSystem
                 });
               });
 
+        //    builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        //.AddEntityFrameworkStores<AppDbContext>()
+        //.AddDefaultTokenProviders();
 
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppToDb")));
             var app = builder.Build();
@@ -104,6 +112,7 @@ namespace BankingSystem
             {
                 using var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
                 dbContext.Database.Migrate();
+                
             }
 
             // Configure the HTTP request pipeline.
@@ -116,6 +125,8 @@ namespace BankingSystem
             app.UseAuthorization();
 
             app.MapControllers();
+
+          //  await OperatorSeed.AddUserAndRoles(app);
 
             app.Run();
         }

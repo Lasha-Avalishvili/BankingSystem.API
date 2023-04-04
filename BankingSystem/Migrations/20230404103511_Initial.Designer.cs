@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230401155222_Initial")]
+    [Migration("20230404103511_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -112,77 +112,6 @@ namespace BankingSystem.Migrations
                     b.ToTable("ExchangeRates", (string)null);
                 });
 
-            modelBuilder.Entity("BankingSystem.DB.Entities.OperatorEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PersonalNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Operators", (string)null);
-                });
-
             modelBuilder.Entity("BankingSystem.DB.Entities.RoleEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -203,6 +132,20 @@ namespace BankingSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "api-operator",
+                            NormalizedName = "API-OPERATOR"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "api-user",
+                            NormalizedName = "API-USER"
+                        });
                 });
 
             modelBuilder.Entity("BankingSystem.DB.Entities.TransactionEntity", b =>
@@ -333,6 +276,25 @@ namespace BankingSystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d3972a47-2471-4d11-b483-9fba828e2560",
+                            DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "lasha@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Lasha",
+                            LastName = "Avalishvili",
+                            LockoutEnabled = false,
+                            PersonalNumber = "19001108016",
+                            PhoneNumberConfirmed = true,
+                            RegisteredAt = new DateTime(2023, 4, 4, 14, 35, 10, 717, DateTimeKind.Local).AddTicks(2669),
+                            TwoFactorEnabled = false,
+                            UserName = "Operator"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -417,6 +379,13 @@ namespace BankingSystem.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("UserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
