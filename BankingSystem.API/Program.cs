@@ -3,6 +3,7 @@ using BankingSystem.DB;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.ATM.AccountBlance;
 using BankingSystem.Features.ATM.ChangePin;
+using BankingSystem.Features.ATM.GetBalance;
 using BankingSystem.Features.ATM.Withdraw;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
@@ -35,17 +36,16 @@ namespace BankingSystem
 
             AuthConfigurator.Configure(builder);
 
-            
-
          //   builder.Services.AddIdentity<OperatorEntity, IdentityRole>()
         // .AddEntityFrameworkStores<AppDbContext>();
 
             builder.Services.AddTransient<IOperatorRepository, RegisterOperatorRepository>();
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
-            builder.Services.AddTransient<IGetAccountBalanceRepository, GetBalanceRepsoitory>();
+            builder.Services.AddTransient<IGetBalanceRepository, GetBalanceRepsoitory>();
             builder.Services.AddTransient<ILoginUserRepository, LoginUserRepository>();
             builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
             builder.Services.AddTransient<ITransactionService, TransactionService>();
+            builder.Services.AddTransient<IGetBalanceService, GetBalanceService>();
             builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();
             builder.Services.AddTransient<IConvertService, ConvertService>();
             builder.Services.AddTransient<IWithdrawRepository, WithdrawRepository>();
@@ -114,7 +114,6 @@ namespace BankingSystem
             }
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

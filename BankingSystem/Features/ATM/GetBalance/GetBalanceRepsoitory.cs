@@ -1,4 +1,5 @@
 ﻿using BankingSystem.DB;
+using BankingSystem.DB.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BankingSystem.Features.ATM.AccountBlance
 {
-    public interface IGetAccountBalanceRepository
+    public interface IGetBalanceRepository
     {
-        Task<GetBalanceResponse> GetBalanceAsync(GetBalanceRequest request);
+        public Task<CardEntity> GetBalanceAsync(GetBalanceRequest request);
     }
-    public class GetBalanceRepsoitory : IGetAccountBalanceRepository
+    public class GetBalanceRepsoitory : IGetBalanceRepository
     {
         private readonly AppDbContext _db;
         public GetBalanceRepsoitory(AppDbContext db)
@@ -20,31 +21,14 @@ namespace BankingSystem.Features.ATM.AccountBlance
             _db = db;
         }
 
-        public async Task <GetBalanceResponse> GetBalanceAsync(GetBalanceRequest request)
+        public async Task <CardEntity> GetBalanceAsync(GetBalanceRequest request)
         {
             var card = await _db.Cards
                 .Include(c => c.Account)
                 .ThenInclude(a => a.User)
                 .FirstOrDefaultAsync(c => c.CardNumber == request.CardNumber && c.PIN == request.PIN);
 
-            if (card == null)
-            {
-                return new GetBalanceResponse
-                {
-                    IsSuccessful = false,
-                    ErrorMessage = "Invalid card number or PIN"
-                };
-            }
-
-            var account = card.Account;
-
-            return new GetBalanceResponse
-            {
-                IsSuccessful = true,
-                ErrorMessage = null,
-                Balance = account.Balance,
-                Currency = account.Currency
-            };
+            return card;
         }
     }
 }
