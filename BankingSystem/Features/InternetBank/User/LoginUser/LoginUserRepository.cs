@@ -29,7 +29,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
         {
             var response = new LoginUserResponse();
 
-            var user = await _userManager.FindByEmailAsync(request.PersonalNumber);
+            var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
                 response.IsSuccessful = false;
@@ -39,7 +39,9 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
             }
 
             var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
-            var roles = await _userManager.GetRolesAsync(user);
+            //string a = "api-admin";
+            //List<string> roleslist= new List<string>() { a };
+            var roles = await _userManager.GetRolesAsync(user); // roli ar moaq
 
             if (userpass == false)
             {

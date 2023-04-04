@@ -41,7 +41,7 @@ namespace BankingSystem.DB
             .HasForeignKey(c => c.AccountId);
 
             modelBuilder.Entity<RoleEntity>().HasData(
-               new RoleEntity { Id = 1, Name = "api-operator", NormalizedName = "API-OPERATOR" },
+               new RoleEntity { Id = 1, Name = "api-admin", NormalizedName = "API-ADMIN" },
                new RoleEntity { Id = 2, Name = "api-user", NormalizedName = "API-USER" }
                );
 
@@ -54,11 +54,12 @@ namespace BankingSystem.DB
                 Id = 1,
                 FirstName = "Lasha",
                 LastName = "Avalishvili",
-                UserName = "O",
+                UserName = "Lasha123",
                 Email = "lasha@gmail.com",
                 PersonalNumber = "19001108016",
                 DateOfBirth = DateTime.Parse("1999/04/04"),
                 RegisteredAt = DateTime.Now,
+                NormalizedEmail= "LASHA@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                PasswordHash = hasher.HashPassword(new UserEntity(), "password")

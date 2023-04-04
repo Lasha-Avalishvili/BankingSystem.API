@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BankingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -149,12 +149,12 @@ namespace BankingSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RegisteredAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PersonalNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -224,7 +224,7 @@ namespace BankingSystem.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, null, "api-operator", "API-OPERATOR" },
+                    { 1, null, "api-admin", "API-ADMIN" },
                     { 2, null, "api-user", "API-USER" }
                 });
 
@@ -236,7 +236,7 @@ namespace BankingSystem.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PersonalNumber", "PhoneNumber", "PhoneNumberConfirmed", "RegisteredAt", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "cea696fb-8d41-4e64-aa7d-ea00eac46721", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, null, null, "AQAAAAIAAYagAAAAEALUYUnJgv03SfzWnGqEagf7w2bzbXELmFbqHEtdC5st8v7gHiPEu5j966sLC2MQDQ==", "19001108016", null, true, new DateTime(2023, 4, 4, 20, 54, 15, 62, DateTimeKind.Local).AddTicks(9360), null, false, "O" });
+                values: new object[] { 1, 0, "93084730-4d04-48c8-b554-3be8f15d35db", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, "LASHA@GMAIL.COM", null, "AQAAAAIAAYagAAAAEPofWAQSAEywtnJwNFUIWhMHPW5YUF/EkqwmR+Q2LM4vEg/e2ynGKxljfnDam57yOQ==", "19001108016", null, true, new DateTime(2023, 4, 4, 22, 45, 34, 296, DateTimeKind.Local).AddTicks(636), null, false, "Lasha123" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",

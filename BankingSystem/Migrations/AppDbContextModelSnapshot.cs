@@ -134,8 +134,8 @@ namespace BankingSystem.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "api-operator",
-                            NormalizedName = "API-OPERATOR"
+                            Name = "api-admin",
+                            NormalizedName = "API-ADMIN"
                         },
                         new
                         {
@@ -219,7 +219,6 @@ namespace BankingSystem.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("EmailConfirmed")
@@ -279,19 +278,20 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cea696fb-8d41-4e64-aa7d-ea00eac46721",
+                            ConcurrencyStamp = "93084730-4d04-48c8-b554-3be8f15d35db",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lasha@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Lasha",
                             LastName = "Avalishvili",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEALUYUnJgv03SfzWnGqEagf7w2bzbXELmFbqHEtdC5st8v7gHiPEu5j966sLC2MQDQ==",
+                            NormalizedEmail = "LASHA@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPofWAQSAEywtnJwNFUIWhMHPW5YUF/EkqwmR+Q2LM4vEg/e2ynGKxljfnDam57yOQ==",
                             PersonalNumber = "19001108016",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 4, 20, 54, 15, 62, DateTimeKind.Local).AddTicks(9360),
+                            RegisteredAt = new DateTime(2023, 4, 4, 22, 45, 34, 296, DateTimeKind.Local).AddTicks(636),
                             TwoFactorEnabled = false,
-                            UserName = "O"
+                            UserName = "Lasha123"
                         });
                 });
 

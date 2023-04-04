@@ -101,7 +101,7 @@ namespace BankingSystem
                 });
               });
 
- 
+           
 
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppToDb")));
             var app = builder.Build();
