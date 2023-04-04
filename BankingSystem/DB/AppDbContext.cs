@@ -14,10 +14,10 @@ namespace BankingSystem.DB
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
 
-        public UserManager<UserEntity> _userManager;
-        public AppDbContext(DbContextOptions options, UserManager<UserEntity> userManager) : base(options)
+ 
+        public AppDbContext(DbContextOptions options) : base(options)
         {
-            _userManager = userManager;
+          
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,19 +35,21 @@ namespace BankingSystem.DB
             .WithMany(u => u.Accounts)
             .HasForeignKey(a => a.UserId);
 
-
-            modelBuilder.Entity<RoleEntity>().HasData(
-                new RoleEntity { Id = 1, Name = "api-operator", NormalizedName = "API-OPERATOR" },
-                new RoleEntity { Id = 2, Name = "api-user", NormalizedName = "API-USER" }
-                );
-
-
             modelBuilder.Entity<AccountEntity>()
             .HasMany(a => a.Cards)
             .WithOne(c => c.Account)
             .HasForeignKey(c => c.AccountId);
 
+            modelBuilder.Entity<RoleEntity>().HasData(
+               new RoleEntity { Id = 1, Name = "api-operator", NormalizedName = "API-OPERATOR" },
+               new RoleEntity { Id = 2, Name = "api-user", NormalizedName = "API-USER" }
+               );
+
+            var hasher = new PasswordHasher<UserEntity>();
+
+           
             var newOperator = new UserEntity()
+
             {
                 Id = 1,
                 FirstName = "Lasha",
@@ -59,19 +61,13 @@ namespace BankingSystem.DB
                 RegisteredAt = DateTime.Now,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-               // PasswordHash = 
+               PasswordHash = hasher.HashPassword(new UserEntity(), "password")
 
             };
-            //var hash = new PasswordHasher<UserEntity>();
-            //modelBuilder.Entity<UserEntity>().HasData(newOperator);
-          
-            
-
-
+            modelBuilder.Entity<UserEntity>().HasData(newOperator);
 
             modelBuilder.Entity<IdentityUserRole<int>>()
                 .HasData(new IdentityUserRole<int> { UserId = 1, RoleId = 1 });
-
 
         }
     }

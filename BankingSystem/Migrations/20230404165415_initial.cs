@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BankingSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -236,7 +236,7 @@ namespace BankingSystem.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PersonalNumber", "PhoneNumber", "PhoneNumberConfirmed", "RegisteredAt", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "d3972a47-2471-4d11-b483-9fba828e2560", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, null, null, null, "19001108016", null, true, new DateTime(2023, 4, 4, 14, 35, 10, 717, DateTimeKind.Local).AddTicks(2669), null, false, "Operator" });
+                values: new object[] { 1, 0, "cea696fb-8d41-4e64-aa7d-ea00eac46721", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, null, null, "AQAAAAIAAYagAAAAEALUYUnJgv03SfzWnGqEagf7w2bzbXELmFbqHEtdC5st8v7gHiPEu5j966sLC2MQDQ==", "19001108016", null, true, new DateTime(2023, 4, 4, 20, 54, 15, 62, DateTimeKind.Local).AddTicks(9360), null, false, "O" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",

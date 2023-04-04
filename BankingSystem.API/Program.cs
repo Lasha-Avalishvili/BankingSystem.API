@@ -101,9 +101,7 @@ namespace BankingSystem
                 });
               });
 
-        //    builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-        //.AddEntityFrameworkStores<AppDbContext>()
-        //.AddDefaultTokenProviders();
+ 
 
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("AppToDb")));
             var app = builder.Build();

@@ -279,18 +279,19 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d3972a47-2471-4d11-b483-9fba828e2560",
+                            ConcurrencyStamp = "cea696fb-8d41-4e64-aa7d-ea00eac46721",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lasha@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Lasha",
                             LastName = "Avalishvili",
                             LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEALUYUnJgv03SfzWnGqEagf7w2bzbXELmFbqHEtdC5st8v7gHiPEu5j966sLC2MQDQ==",
                             PersonalNumber = "19001108016",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 4, 14, 35, 10, 717, DateTimeKind.Local).AddTicks(2669),
+                            RegisteredAt = new DateTime(2023, 4, 4, 20, 54, 15, 62, DateTimeKind.Local).AddTicks(9360),
                             TwoFactorEnabled = false,
-                            UserName = "Operator"
+                            UserName = "O"
                         });
                 });
 
