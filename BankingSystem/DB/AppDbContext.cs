@@ -59,20 +59,13 @@ namespace BankingSystem.DB
                 RegisteredAt = DateTime.Now,
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
+               // PasswordHash = 
 
             };
             //var hash = new PasswordHasher<UserEntity>();
             //modelBuilder.Entity<UserEntity>().HasData(newOperator);
           
-            if (_userManager.Users.All(u => u.Id != newOperator.Id))
-            {
-                var user =  _userManager.FindByEmailAsync(newOperator.Email);
-                if (user == null)
-                {
-                     _userManager.CreateAsync(newOperator, "12345678");
-                     _userManager.AddToRoleAsync(newOperator, "api-operator");
-                }
-            }
+            
 
 
 
