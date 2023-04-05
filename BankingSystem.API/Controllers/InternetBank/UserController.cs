@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
-using BankingSystem.Features.InternetBank.User;
-using BankingSystem.Features.InternetBank.User.LoginUser;
+using BankingSystem.Features.InternetBank.Auth;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
@@ -13,24 +11,20 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IRegisterUserRepository _registerUserRepository;
-        private readonly ILoginUserRepository _loginUserRepository;
-        private readonly IGetUserInfoRepository _getUserInfoRepository;
         private readonly ITransactionService _transactionService;
         private readonly GetUserInfoService _getUserInfoService;
-        public UserController(IRegisterUserRepository registerUserRepository, ILoginUserRepository loginUserRepository, IGetUserInfoRepository getUserInfoRepository, ITransactionService transactionService, GetUserInfoService getUserInfoService)
+        private readonly AuthService _authService;  
+        public UserController(ITransactionService transactionService, GetUserInfoService getUserInfoService, AuthService authService)
         {
-            _loginUserRepository = loginUserRepository;
-            _registerUserRepository = registerUserRepository;
-            _getUserInfoRepository = getUserInfoRepository;
             _transactionService = transactionService;
             _getUserInfoService = getUserInfoService;
+            _authService = authService;
         }
 
-        [HttpPost("login-user")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginUserRequest request)
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginRequest request)
         {
-            var response = await _loginUserRepository.LoginUserAsync(request);
+            var response = await _authService.LoginAsync(request);
             return Ok(response);
         }
 
@@ -67,7 +61,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         {
             var authenticatedUserId = User.FindFirstValue("userId");
             var transaction = await _transactionService.TransferFunds(transactionRequest, authenticatedUserId);
-
             return Ok(transaction);
         }
     }

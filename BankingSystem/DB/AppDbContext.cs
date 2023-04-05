@@ -40,6 +40,12 @@ namespace BankingSystem.DB
             .WithOne(c => c.Account)
             .HasForeignKey(c => c.AccountId);
 
+            modelBuilder.Entity<IdentityUserRole<int>>(b =>
+            {
+                b.HasKey(i => new { i.UserId, i.RoleId });
+            });
+
+
             modelBuilder.Entity<RoleEntity>().HasData(
                new RoleEntity { Id = 1, Name = "api-admin", NormalizedName = "API-ADMIN" },
                new RoleEntity { Id = 2, Name = "api-user", NormalizedName = "API-USER" }

@@ -1,33 +1,26 @@
-﻿using Azure;
-using BankingSystem.DB;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Auth;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
-
-namespace BankingSystem.Features.InternetBank.User.LoginUser
+namespace BankingSystem.Features.InternetBank.Auth
 {
-    public interface ILoginUserRepository
+    public class AuthService
     {
-        Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request);
-    }
-
-    public class LoginUserRepository : ILoginUserRepository
-    {
-        private readonly AppDbContext _db;
         private readonly TokenGenerator _tokenGenerator;
         private readonly UserManager<UserEntity> _userManager;
-        public LoginUserRepository(AppDbContext db, TokenGenerator tokenGenerator, UserManager<UserEntity> userManager)
+        public AuthService(TokenGenerator tokenGenerator, UserManager<UserEntity> userManager)
         {
-            _db = db;
             _tokenGenerator = tokenGenerator;
             _userManager = userManager;
         }
 
-        public async Task<LoginUserResponse> LoginUserAsync(LoginUserRequest request)
+        public async Task<LoginResponse> LoginAsync(LoginRequest request)
         {
-            var response = new LoginUserResponse();
+            var response = new LoginResponse();
 
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
@@ -39,7 +32,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
             }
 
             var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
-            var roles = await _userManager.GetRolesAsync(user); 
+            var roles = await _userManager.GetRolesAsync(user);
 
             if (userpass == false)
             {

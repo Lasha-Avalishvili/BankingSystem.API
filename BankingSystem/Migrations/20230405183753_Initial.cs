@@ -132,13 +132,12 @@ namespace BankingSystem.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => x.UserId);
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                 });
 
             migrationBuilder.CreateTable(
@@ -230,13 +229,13 @@ namespace BankingSystem.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
-                columns: new[] { "UserId", "RoleId" },
+                columns: new[] { "RoleId", "UserId" },
                 values: new object[] { 1, 1 });
 
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PersonalNumber", "PhoneNumber", "PhoneNumberConfirmed", "RegisteredAt", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "8cac72d9-0e95-4934-a62e-a55886753da0", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, "LASHA@GMAIL.COM", null, "AQAAAAIAAYagAAAAEOmWiZAJ9MzpCDDWE+jSE3vAYdk3G6heOa7Xrvbfpei7xIaPg9lXVkAXuhwi034eeg==", "19001108016", null, true, new DateTime(2023, 4, 5, 13, 26, 18, 571, DateTimeKind.Local).AddTicks(3002), null, false, "Lasha123" });
+                values: new object[] { 1, 0, "5a424a2a-2e57-42e7-a645-f4420ca09f3c", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "lasha@gmail.com", true, "Lasha", "Avalishvili", false, null, "LASHA@GMAIL.COM", null, "AQAAAAIAAYagAAAAEMombp4wd826H+uXCLg+miYXoyU3bAVpEgG4K3DZKiu/rgg7XTfatV4n36vDw+x5ew==", "19001108016", null, true, new DateTime(2023, 4, 5, 22, 37, 50, 576, DateTimeKind.Local).AddTicks(2345), null, false, "Lasha123" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230405092619_Initial")]
+    [Migration("20230405183753_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace BankingSystem.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -281,7 +281,7 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8cac72d9-0e95-4934-a62e-a55886753da0",
+                            ConcurrencyStamp = "5a424a2a-2e57-42e7-a645-f4420ca09f3c",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lasha@gmail.com",
                             EmailConfirmed = true,
@@ -289,10 +289,10 @@ namespace BankingSystem.Migrations
                             LastName = "Avalishvili",
                             LockoutEnabled = false,
                             NormalizedEmail = "LASHA@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOmWiZAJ9MzpCDDWE+jSE3vAYdk3G6heOa7Xrvbfpei7xIaPg9lXVkAXuhwi034eeg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMombp4wd826H+uXCLg+miYXoyU3bAVpEgG4K3DZKiu/rgg7XTfatV4n36vDw+x5ew==",
                             PersonalNumber = "19001108016",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 5, 13, 26, 18, 571, DateTimeKind.Local).AddTicks(3002),
+                            RegisteredAt = new DateTime(2023, 4, 5, 22, 37, 50, 576, DateTimeKind.Local).AddTicks(2345),
                             TwoFactorEnabled = false,
                             UserName = "Lasha123"
                         });
@@ -369,15 +369,12 @@ namespace BankingSystem.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.HasKey("UserId");
+                    b.HasKey("UserId", "RoleId");
 
                     b.ToTable("UserRoles", (string)null);
 

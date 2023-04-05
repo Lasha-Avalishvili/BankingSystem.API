@@ -14,7 +14,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public Task<IdentityResult> AddUserAsync(UserEntity entity, string password);
         public Task SaveChangesAsync();
         public Task<bool> UserExists(string personalNumber);
-        Task<IdentityResult> AddToRoleAsync(UserEntity user, string role);
+        public Task<IdentityResult> AddToRoleAsync(UserEntity user, string role);
 
 
     }

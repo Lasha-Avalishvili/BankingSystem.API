@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
-using BankingSystem.Features.InternetBank.Operator.AuthOperator;
 using IbanNet;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUserDetails

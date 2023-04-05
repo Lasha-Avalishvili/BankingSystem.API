@@ -95,6 +95,7 @@ namespace BankingSystem.Features.ATM.Withdraw
                 response.ErrorMessage = null;
                 response.Amount = transaction.Amount;
                 response.AccountIBAN = transaction.SenderAccount;
+                response.CurrencyTo = transaction.CurrencyTo;
             }
             catch (Exception ex)
             {
