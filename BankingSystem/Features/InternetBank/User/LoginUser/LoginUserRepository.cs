@@ -39,9 +39,7 @@ namespace BankingSystem.Features.InternetBank.User.LoginUser
             }
 
             var userpass = await _userManager.CheckPasswordAsync(user, request.Password);
-            //string a = "api-admin";
-            //List<string> roleslist= new List<string>() { a };
-            var roles = await _userManager.GetRolesAsync(user); // roli ar moaq
+            var roles = await _userManager.GetRolesAsync(user); 
 
             if (userpass == false)
             {

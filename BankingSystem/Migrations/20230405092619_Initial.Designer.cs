@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230404184534_Initial")]
+    [Migration("20230405092619_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -281,7 +281,7 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "93084730-4d04-48c8-b554-3be8f15d35db",
+                            ConcurrencyStamp = "8cac72d9-0e95-4934-a62e-a55886753da0",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "lasha@gmail.com",
                             EmailConfirmed = true,
@@ -289,10 +289,10 @@ namespace BankingSystem.Migrations
                             LastName = "Avalishvili",
                             LockoutEnabled = false,
                             NormalizedEmail = "LASHA@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPofWAQSAEywtnJwNFUIWhMHPW5YUF/EkqwmR+Q2LM4vEg/e2ynGKxljfnDam57yOQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOmWiZAJ9MzpCDDWE+jSE3vAYdk3G6heOa7Xrvbfpei7xIaPg9lXVkAXuhwi034eeg==",
                             PersonalNumber = "19001108016",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 4, 22, 45, 34, 296, DateTimeKind.Local).AddTicks(636),
+                            RegisteredAt = new DateTime(2023, 4, 5, 13, 26, 18, 571, DateTimeKind.Local).AddTicks(3002),
                             TwoFactorEnabled = false,
                             UserName = "Lasha123"
                         });
