@@ -46,6 +46,5 @@ namespace BankingSystem.Features.InternetBank.Auth
             return jwtString;
 
         }
-      
     }
 }

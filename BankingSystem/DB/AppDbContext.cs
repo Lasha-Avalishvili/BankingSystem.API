@@ -58,14 +58,14 @@ namespace BankingSystem.DB
 
             {
                 Id = 1,
-                FirstName = "Lasha",
-                LastName = "Avalishvili",
-                UserName = "Lasha123",
-                Email = "lasha@gmail.com",
-                PersonalNumber = "19001108016",
+                FirstName = "Ilia",
+                LastName = "Chavchavadze",
+                UserName = "Ilo112",
+                Email = "ilia@gmail.com",
+                PersonalNumber = "11111111111",
                 DateOfBirth = DateTime.Parse("1999/04/04"),
                 RegisteredAt = DateTime.Now,
-                NormalizedEmail= "LASHA@GMAIL.COM",
+                NormalizedEmail= "ILIA@GMAIL.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                PasswordHash = hasher.HashPassword(new UserEntity(), "password")
