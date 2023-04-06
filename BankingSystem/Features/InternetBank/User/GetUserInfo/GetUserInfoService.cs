@@ -7,6 +7,7 @@ using Azure.Core;
 using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Operator.AuthUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
+using BankingSystem.Features.InternetBank.User.Transactions;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -58,12 +59,12 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             return response;
         }
 
-        public async Task<List<GetCardsResponse>> GetCardsAsync(string authenticatedUserId, int accountId)
+        public async Task<List<GetCardsResponse>> GetCardsAsync(string authenticatedUserId, string Iban)
         {
             var response = new List<GetCardsResponse>();
             try
             {
-                var cards = await _repository.GetUserCardsAsync(authenticatedUserId, accountId);
+                var cards = await _repository.GetUserCardsAsync(authenticatedUserId, Iban);
 
                 response = cards.Select(a => new GetCardsResponse
                 {
@@ -84,15 +85,31 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
         }
 
-        public async Task<List<GetTransactionsResponse>> GetTransactionsAsync(string IBAN, string authenticatedUserId)
+        public async Task<GetTransactionsResponse> GetTransactionsAsync(string IBAN, string authenticatedUserId)
         {
-            var response = new List<GetTransactionsResponse>();
+            var response = new GetTransactionsResponse();
 
             try
             {
-                
-                var transactions = await _repository.GetUserAccountTransactionsAsync(IBAN, authenticatedUserId);
-                response = transactions.Select(a => new GetTransactionsResponse
+                var account =await _repository.GetAccountWithIban(IBAN);
+                if(account== null)
+                {
+                    throw new Exception("Incorrect IBAN");
+                }
+
+                if (authenticatedUserId != account.UserId.ToString())
+                {
+                    throw new Exception("No access to this IBAN");
+                }
+
+                var transactions = await _repository.GetTransactionsWithIban(IBAN);
+
+                if(transactions== null)
+                {
+                    throw new Exception("No Transactions with this IBAN");
+                }
+               
+                response.TransactionReponse = transactions.Select(a => new TransactionObject
                 {
                     TransactionDate = a.CreatedAt,
                     TransactionType = a.TransactionType,
@@ -102,19 +119,13 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                 }
                 ).ToList();
 
-                if (transactions.Count == 0 || transactions == null)
-                {
-                    response = transactions.Select(a => new GetTransactionsResponse
-                    {
-                        // IsSuccessful = false,
-                       // ErrorMessage = "You haven't transactions or authorisation failed"
-                    }
-                    ).ToList();
-                }
+                response.IsSuccessful= true;    
+               
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message); 
+                response.IsSuccessful= false;
+                response.ErrorMessage = ex.Message;
             }
             return response;
         }

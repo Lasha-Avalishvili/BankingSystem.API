@@ -10,8 +10,8 @@
     public class TransactionEntity
     {
         public long Id { get; set; }
-        public long SenderAccountId { get; set; }
-        public long? RecipientAccountId { get; set; }
+        public long SenderAccountId { get; set; }   // change to int
+        public long? RecipientAccountId { get; set; }  // change to int 
         public DateTime CreatedAt { get; set; }
         public decimal Amount { get; set; }
         public string SenderAccount { get; set; }

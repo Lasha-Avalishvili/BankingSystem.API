@@ -39,10 +39,10 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
 
         [Authorize("ApiUser", AuthenticationSchemes = "Bearer")]
         [HttpGet("get-cards")]
-        public async Task<IActionResult> GetUserCards(int accountId)
+        public async Task<IActionResult> GetUserCards(string Iban)
         {
             var authenticatedUserId = User.FindFirstValue("userId");
-            var cards = await _getUserInfoService.GetCardsAsync(authenticatedUserId, accountId);
+            var cards = await _getUserInfoService.GetCardsAsync(authenticatedUserId, Iban);
             return Ok(cards);
         }
 
@@ -50,7 +50,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         [HttpGet("get-account-transactions")]
         public async Task<IActionResult> GetUserAccountTransactions(string iban)
         {
-            var authenticatedUserId = User.FindFirstValue("userId");           
+            var authenticatedUserId = User.FindFirstValue("userId");
             var transactions = await _getUserInfoService.GetTransactionsAsync(iban, authenticatedUserId);
             return Ok(transactions);
         }

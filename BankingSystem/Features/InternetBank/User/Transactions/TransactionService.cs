@@ -25,20 +25,11 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             var response = new TransactionResponse();
             try
             {
-               // await _convertService.UpdateRates();    //  atm-shi ar unda igive?
                 var senderAccount = await _transactionRepository.GetAccountAsync(transactionRequest.SenderAccountIBAN); 
-                var recipientAccount = await _transactionRepository.GetAccountAsync(transactionRequest.RecipientAccountIBAN); 
+                var recipientAccount = await _transactionRepository.GetAccountAsync(transactionRequest.RecipientAccountIBAN);
 
-                var transaction = new TransactionEntity();  // jer ar momxdara transactioni
-                transaction.CreatedAt = DateTime.UtcNow;
-                transaction.SenderAccountId = senderAccount.Id;
-                transaction.RecipientAccountId = recipientAccount.Id;
-                transaction.Amount = transactionRequest.Amount;
-                transaction.SenderAccount = transactionRequest.SenderAccountIBAN;
-                transaction.RecipientAccount = transactionRequest.RecipientAccountIBAN;
-                transaction.CurrencyFrom = senderAccount.Currency;
-                transaction.CurrencyTo = recipientAccount.Currency;
-                transaction.ConvertRate = await _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
+
+                var transaction = await CreateTransactionEntity(transactionRequest, senderAccount, recipientAccount);
                 
                 decimal transactionFee = 0;
                 if (senderAccount.UserId != recipientAccount.UserId)
@@ -48,15 +39,11 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 
                 if (senderAccount.UserId != int.Parse(authenticatedUserId))
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "You can operate only with your iban";
-                    return response;
+                    throw new Exception("You can operate only with your iban");
                 }
-                else if (senderAccount.Balance < transactionRequest.Amount + transactionFee) // added fee here 
+                else if (senderAccount.Balance < transactionRequest.Amount + transactionFee)
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "Not Enough Money";
-                    return response;
+                    throw new Exception("Not enough money");
                 }
                 else if (senderAccount.UserId == recipientAccount.UserId)
                 {
@@ -100,6 +87,21 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
                 response.ErrorMessage = ex.Message;
             }
             return response;
+        }
+
+        private async Task<TransactionEntity> CreateTransactionEntity(TransactionRequest transactionRequest, AccountEntity senderAccount, AccountEntity recipientAccount)
+        {
+            var transaction = new TransactionEntity();
+            transaction.CreatedAt = DateTime.UtcNow;
+            transaction.SenderAccountId = senderAccount.Id;
+            transaction.RecipientAccountId = recipientAccount.Id;
+            transaction.Amount = transactionRequest.Amount;
+            transaction.SenderAccount = transactionRequest.SenderAccountIBAN;
+            transaction.RecipientAccount = transactionRequest.RecipientAccountIBAN;
+            transaction.CurrencyFrom = senderAccount.Currency;
+            transaction.CurrencyTo = recipientAccount.Currency;
+            transaction.ConvertRate = await _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
+            return transaction;
         }
     }
 }
