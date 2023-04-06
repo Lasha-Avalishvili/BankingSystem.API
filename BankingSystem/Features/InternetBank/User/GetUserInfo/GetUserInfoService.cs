@@ -22,51 +22,52 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
             _repository = repository;
         }
 
-        public async Task<List<GetAccountsResponse>> GetAccountsAsync(string authenticatedUserId)
+        public async Task<GetAccountsResponse> GetAccountsAsync(string authenticatedUserId)
         {
-            var response = new List<GetAccountsResponse>();
+            var response = new GetAccountsResponse();
 
             var account = await _repository.GetUserAccountsAsync(authenticatedUserId);
             bool authorized = account.Any(a => a.UserId.ToString() == authenticatedUserId);
             try
             {
-                if (authorized)
+                if (authorized == false)
                 {
-                    var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
-                    response = accounts.Select(a => new GetAccountsResponse
-                    {
-                        //  IsSuccessful = true,
-                        //  Error = null,
-                        AccountId = a.Id,
-                        IBAN = a.IBAN,
-                        Balance = a.Balance,
-                        Currency = a.Currency
-                    }).ToList();
+                    throw new Exception("Denied access to this account");
                 }
-                else
+                var accounts = await _repository.GetUserAccountsAsync(authenticatedUserId);
+              
+                if (accounts.Count == 0)
                 {
-                    response.Add(new GetAccountsResponse
-                    {
-                        //IsSuccessful = false,
-                        // Error = "Unauthorized access"
-                    });
+                    throw new Exception("No accounts");
                 }
+                var accountObjects = accounts.Select(a => new AccountObject
+                {
+                    AccountId = a.Id,
+                    IBAN = a.IBAN,
+                    Balance = a.Balance,
+                    Currency = a.Currency
+                }).ToList();
+
+                response.Accounts = accountObjects;
+                response.IsSuccessful= true;
+               
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                response.ErrorMessage= ex.Message;
+                response.IsSuccessful= false;
             }
             return response;
         }
 
-        public async Task<List<GetCardsResponse>> GetCardsAsync(string authenticatedUserId, string Iban)
+        public async Task<GetCardsResponse> GetCardsAsync(string authenticatedUserId, string Iban)
         {
-            var response = new List<GetCardsResponse>();
+            var response = new GetCardsResponse();
             try
             {
                 var cards = await _repository.GetUserCardsAsync(authenticatedUserId, Iban);
 
-                response = cards.Select(a => new GetCardsResponse
+                var cardObjects = cards.Select(a => new CardObject
                 {
                     CardStatus = GetCardStatus(a.ExpirationDate),
                     FullName = a.FullName,
@@ -76,10 +77,19 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                     Pin = a.PIN
                 }
                 ).ToList();
+                if (cardObjects.Count == 0)
+                {
+                    throw new Exception("No cards with this IBAN");
+                }
+
+                response.IsSuccessful = true;
+                response.Cards = cardObjects;
             }
             catch (Exception ex)
             {
-                new Exception(ex.Message);
+                response.IsSuccessful = false;
+                response.ErrorMessage = ex.Message;
+
             }
             return response;
 
@@ -91,8 +101,8 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
             try
             {
-                var account =await _repository.GetAccountWithIban(IBAN);
-                if(account== null)
+                var account = await _repository.GetAccountWithIban(IBAN);
+                if (account == null)
                 {
                     throw new Exception("Incorrect IBAN");
                 }
@@ -104,11 +114,11 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
                 var transactions = await _repository.GetTransactionsWithIban(IBAN);
 
-                if(transactions== null)
+                if (transactions == null)
                 {
                     throw new Exception("No Transactions with this IBAN");
                 }
-               
+
                 response.TransactionReponse = transactions.Select(a => new TransactionObject
                 {
                     TransactionDate = a.CreatedAt,
@@ -119,12 +129,12 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                 }
                 ).ToList();
 
-                response.IsSuccessful= true;    
-               
+                response.IsSuccessful = true;
+
             }
             catch (Exception ex)
             {
-                response.IsSuccessful= false;
+                response.IsSuccessful = false;
                 response.ErrorMessage = ex.Message;
             }
             return response;
