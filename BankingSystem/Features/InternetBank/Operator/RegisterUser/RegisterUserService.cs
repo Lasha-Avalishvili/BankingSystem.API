@@ -14,7 +14,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
 {
     public class RegisterUserService
     {
-        private readonly RegisterUserRepository _repository;  
+        private readonly RegisterUserRepository _repository;
         private readonly UserManager<UserEntity> _userManager;
         private readonly RoleManager<RoleEntity> _roleManager;
         public RegisterUserService(RegisterUserRepository repository, UserManager<UserEntity> userManager, RoleManager<RoleEntity> roleManager)
@@ -30,33 +30,41 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
             {
                 var userByEmail = await _userManager.FindByEmailAsync(request.Email);
 
-                if(userByEmail != null)
+                if (userByEmail != null)
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "User with this email already exists";
+                    throw new Exception("User with this email already exists");
                 }
-                else
+                var userExists = await _repository.UserExists(request.PersonalNumber);
+                var userByPersonalNumber = await _repository.FindUser(request.PersonalNumber);
+                IList<string> userRole = null;
+                if (userByPersonalNumber != null)
                 {
-                    var newUser = new UserEntity();
-                    newUser.FirstName = request.FirstName;
-                    newUser.LastName = request.LastName;
-                    newUser.PersonalNumber = request.PersonalNumber;
-                    newUser.UserName = request.Email;
-                    newUser.Email = request.Email;
-                    newUser.DateOfBirth = request.DateOfBirth;
-                    newUser.RegisteredAt = DateTime.UtcNow;
-                    newUser.EmailConfirmed = true;
-                    
-                    var result = await _userManager.CreateAsync(newUser, request.Password);
-
-                   var addToRoleResult = await _userManager.AddToRoleAsync(newUser, "api-user");
-
-                    response.IsSuccessful = result.Succeeded;
-                    response.ErrorMessage = result.Errors?.FirstOrDefault()?.Description ?? "";
-                    response.FirstName = request.FirstName;
-                    response.LastName = request.LastName;
-                    response.UserId = newUser.Id;
+                     userRole = await _repository.GetRoleAsync(userByPersonalNumber);
                 }
+                if (userExists == true && userRole[0] != "api-admin")
+                {
+                    throw new Exception("User with this personal number already exists");
+                }
+                var newUser = new UserEntity();
+                newUser.FirstName = request.FirstName;
+                newUser.LastName = request.LastName;
+                newUser.PersonalNumber = request.PersonalNumber;
+                newUser.UserName = request.Email;
+                newUser.Email = request.Email;
+                newUser.DateOfBirth = request.DateOfBirth;
+                newUser.RegisteredAt = DateTime.UtcNow;
+                newUser.EmailConfirmed = true;
+
+                var result = await _userManager.CreateAsync(newUser, request.Password);
+
+                var addToRoleResult = await _userManager.AddToRoleAsync(newUser, "api-user");
+
+                response.IsSuccessful = result.Succeeded;
+                response.ErrorMessage = result.Errors?.FirstOrDefault()?.Description ?? "";
+                response.FirstName = request.FirstName;
+                response.LastName = request.LastName;
+                response.UserId = newUser.Id;
+
             }
             catch (Exception ex)
             {

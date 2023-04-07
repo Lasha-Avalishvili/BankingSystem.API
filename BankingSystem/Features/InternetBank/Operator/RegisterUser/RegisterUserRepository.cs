@@ -1,10 +1,6 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Auth;
-using BankingSystem.Features.InternetBank.Operator.RegisterUser;
-using BankingSystem.Features.InternetBank.User;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
@@ -15,6 +11,8 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public Task SaveChangesAsync();
         public Task<bool> UserExists(string personalNumber);
         public Task<IdentityResult> AddToRoleAsync(UserEntity user, string role);
+        public Task<IList<string>> GetRoleAsync(UserEntity user);
+        public Task<UserEntity> FindUser(string personalNumber);
 
 
     }
@@ -42,6 +40,20 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public async Task SaveChangesAsync()
         {
             await _db.SaveChangesAsync();
+        }
+
+        public async Task<UserEntity> FindUser(string personalNumber)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.PersonalNumber == personalNumber);
+            
+            return user;
+        }
+
+        public async Task<IList<string>>GetRoleAsync(UserEntity user)
+        {
+            var userRole = await _userManager.GetRolesAsync(user);
+
+            return userRole;
         }
 
         public async Task<bool> UserExists(string personalNumber)

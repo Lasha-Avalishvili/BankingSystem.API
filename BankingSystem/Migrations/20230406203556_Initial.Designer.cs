@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230405183753_Initial")]
+    [Migration("20230406203556_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -281,20 +281,20 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5a424a2a-2e57-42e7-a645-f4420ca09f3c",
+                            ConcurrencyStamp = "e5e2dc08-17c9-4d8b-a001-fc2732251358",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "lasha@gmail.com",
+                            Email = "ilia@gmail.com",
                             EmailConfirmed = true,
-                            FirstName = "Lasha",
-                            LastName = "Avalishvili",
+                            FirstName = "Ilia",
+                            LastName = "Chavchavadze",
                             LockoutEnabled = false,
-                            NormalizedEmail = "LASHA@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMombp4wd826H+uXCLg+miYXoyU3bAVpEgG4K3DZKiu/rgg7XTfatV4n36vDw+x5ew==",
-                            PersonalNumber = "19001108016",
+                            NormalizedEmail = "ILIA@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMwoP/zTn0She1YH5JqAIvFuw1ZwhlHe7j5OVt5v2ZD6bTqAfLcxUu8PGlUAHq9UaQ==",
+                            PersonalNumber = "11111111111",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 5, 22, 37, 50, 576, DateTimeKind.Local).AddTicks(2345),
+                            RegisteredAt = new DateTime(2023, 4, 7, 0, 35, 56, 352, DateTimeKind.Local).AddTicks(7066),
                             TwoFactorEnabled = false,
-                            UserName = "Lasha123"
+                            UserName = "Ilo112"
                         });
                 });
 
