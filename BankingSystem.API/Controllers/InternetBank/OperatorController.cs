@@ -34,7 +34,7 @@ namespace BankingSystem.API.Controllers.InternetBank
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("register-user")]
-        public async Task<ActionResult<UserEntity>> RegisterUser(RegisterUserRequest request)
+        public async Task<IActionResult> RegisterUser(RegisterUserRequest request)
         {
             var result = await _registerUserService.RegisterUserAsync(request);
             return Ok(result);
@@ -42,7 +42,7 @@ namespace BankingSystem.API.Controllers.InternetBank
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("add-user-account")]
-        public async Task<ActionResult<AccountEntity>> AddAccount([FromBody] AddAccountRequest request)
+        public async Task<IActionResult> AddAccount([FromBody] AddAccountRequest request)
         {
             var result = await _addUserDetailsService.AddAccountAsync(request);
             return Ok(result);
@@ -50,7 +50,7 @@ namespace BankingSystem.API.Controllers.InternetBank
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
         [HttpPost("add-user-card")]
-        public async Task<ActionResult<CardEntity>> AddCard([FromBody] AddCardRequest request)
+        public async Task<IActionResult> AddCard([FromBody] AddCardRequest request)
         {
             var result = await _addUserDetailsService.AddCardAsync(request);
             return Ok(result);

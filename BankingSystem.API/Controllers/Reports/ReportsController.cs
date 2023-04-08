@@ -63,8 +63,8 @@ namespace BankingSystem.API.Controllers.Reports
         }
 
         [Authorize("ApiAdmin", AuthenticationSchemes = "Bearer")]
-        [HttpGet("get-ATM-cashout-count")]
-        public async Task<ActionResult<decimal>> ATMCashouts()
+        [HttpGet("calculate-ATM-cashout")]
+        public async Task<IActionResult> ATMCashouts()
         {
             var result = await _reportsService.GetTotalCashout();
             return Ok(result);

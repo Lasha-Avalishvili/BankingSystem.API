@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BankingSystem.DB.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BankingSystem.Features.Reports
 {
@@ -15,7 +16,7 @@ namespace BankingSystem.Features.Reports
         public Task<CalculateIncomeResponse> CalculateIncome(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay);
         public Task<AverageTransactionFeeResponse> CalculateAverageTransactionFee(DateTime date);
         public Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date);
-        public Task<decimal> GetTotalCashout();
+        public Task<TotalCashoutsResponse> GetTotalCashout();
 
     }
     public class ReportsService : IReportsService
@@ -26,22 +27,22 @@ namespace BankingSystem.Features.Reports
             _reportsRepository = reportsRepository;
         }
 
-        public async Task <UsersCountResponse> GetUsersRegistered (DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days)
+        public async Task<UsersCountResponse> GetUsersRegistered(DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days)
         {
             var usersThisYear = await _reportsRepository.GetUserCountAsync(firstDayOfYear);
             var usersIn1Year = await _reportsRepository.GetUserCountAsync(lastYearSameDay);
             var usersIn30Days = await _reportsRepository.GetUserCountAsync(last30Days);
-           
-            return new UsersCountResponse {UsersThisYear= usersThisYear, UsersInOneYear = usersIn1Year, UsersInLast30Days = usersIn30Days};
+
+            return new UsersCountResponse { UsersThisYear = usersThisYear, UsersInOneYear = usersIn1Year, UsersInLast30Days = usersIn30Days };
         }
 
-        public async Task<TransactionsCountResponse> GetTransactionsCount(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay) 
+        public async Task<TransactionsCountResponse> GetTransactionsCount(DateTime last30Days, DateTime last6Months, DateTime lastYearSameDay)
         {
             var transactionsIn30Days = await CountTransactionsByDate(last30Days);
             var transactionsIn6Months = await CountTransactionsByDate(last6Months);
             var transactionsInOneYear = await CountTransactionsByDate(lastYearSameDay);
 
-            return new TransactionsCountResponse {TransactionsInLast30Days = transactionsIn30Days, TransactionsInLast6Months = transactionsIn6Months, TransactionsInOneYear = transactionsInOneYear};
+            return new TransactionsCountResponse { TransactionsInLast30Days = transactionsIn30Days, TransactionsInLast6Months = transactionsIn6Months, TransactionsInOneYear = transactionsInOneYear };
         }
 
         public async Task<TransactionTypesCount> CountTransactionsByDate(DateTime date)
@@ -128,18 +129,20 @@ namespace BankingSystem.Features.Reports
             var transactions = await _reportsRepository.GetTransactionsAsync(date);
             var transactionCountByDay = new Dictionary<DateTime, int>();
 
-            for(var startdate = date; date <= DateTime.UtcNow; date = date.AddDays(1))
+            for (var startdate = date; date <= DateTime.UtcNow; date = date.AddDays(1))
             {
-                var transactionsCount = transactions.Count(x => x.CreatedAt.Date== date.Date);
+                var transactionsCount = transactions.Count(x => x.CreatedAt.Date == date.Date);
                 transactionCountByDay.Add(date, transactionsCount);
             }
 
             return transactionCountByDay;
         }
 
-        public async Task<decimal> GetTotalCashout()
+        public async Task<TotalCashoutsResponse> GetTotalCashout()
         {
-            return await _reportsRepository.GettotalCashOutInGELAsync();
+            var result = new TotalCashoutsResponse();
+            result.TotalCashoutsInGel = await _reportsRepository.GettotalCashOutInGELAsync();
+            return result;
         }
     }
 
