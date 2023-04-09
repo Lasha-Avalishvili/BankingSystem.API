@@ -48,17 +48,17 @@ namespace BankingSystem.Features.Reports
         public async Task<TransactionTypesCount> CountTransactionsByDate(DateTime date)
         {
             var transactions = await _reportsRepository.GetTransactionsAsync(date);
-            var groupedtransactions = transactions.GroupBy(t => t.TransactionType)
+            var groupedTransactions = transactions.GroupBy(t => t.TransactionType)
                 .Select(g => new
                 {
                     TransactionType = g.Key,
                     Count = g.Count()
                 });
 
-            var all = groupedtransactions.Sum(t => t.Count);
-            var inner = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Inner)?.Count ?? 0;
-            var outer = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Outer)?.Count ?? 0;
-            var ATM = groupedtransactions.FirstOrDefault(t => t.TransactionType == TransactionType.ATM)?.Count ?? 0;
+            var all = groupedTransactions.Sum(t => t.Count);
+            var inner = groupedTransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Inner)?.Count ?? 0;
+            var outer = groupedTransactions.FirstOrDefault(t => t.TransactionType == TransactionType.Outer)?.Count ?? 0;
+            var ATM = groupedTransactions.FirstOrDefault(t => t.TransactionType == TransactionType.ATM)?.Count ?? 0;
 
             return new TransactionTypesCount { ATM = ATM, inner = inner, outer = outer, total = all };
         }
