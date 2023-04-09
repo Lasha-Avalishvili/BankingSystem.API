@@ -13,10 +13,10 @@ namespace BankingSystem.Features.ATM.AccountBlance
     {
         public Task<CardEntity> GetCardAsync(GetBalanceRequest request);
     }
-    public class GetBalanceRepsoitory : IGetBalanceRepository
+    public class GetBalanceRepository : IGetBalanceRepository
     {
         private readonly AppDbContext _db;
-        public GetBalanceRepsoitory(AppDbContext db)
+        public GetBalanceRepository(AppDbContext db)
         {
             _db = db;
         }

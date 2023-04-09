@@ -2,7 +2,7 @@
 
 namespace BankingSystem.Features.ATM.ChangePin
 {
-    public class ChangeCardPinRequest
+    public class ChangePinRequest
     {
         [RegularExpression(@"^\d{16}$", ErrorMessage = "Card number must be 16 digits")]
         public string? CardNumber { get; set; }

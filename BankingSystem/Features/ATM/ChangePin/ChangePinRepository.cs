@@ -17,11 +17,11 @@ namespace BankingSystem.Features.ATM.ChangePin
         public Task SaveChangesAsync();
         public Task<CardEntity> AuthorizeCardAsync(string cardNumber, string pin);
     }
-    public class ChangeCardPinRepository : IChangeCardPinRepository
+    public class ChangePinRepository : IChangeCardPinRepository
     {
         private readonly AppDbContext _db;
 
-        public ChangeCardPinRepository(AppDbContext db)
+        public ChangePinRepository(AppDbContext db)
         {
             _db = db;
         }

@@ -141,7 +141,7 @@ namespace BankingSystem.Features.Reports
         public async Task<TotalCashoutsResponse> GetTotalCashout()
         {
             var result = new TotalCashoutsResponse();
-            result.TotalCashoutsInGel = await _reportsRepository.GettotalCashOutInGELAsync();
+            result.TotalCashoutsInGel = await _reportsRepository.GettotalCashoutInGELAsync();
             return result;
         }
     }

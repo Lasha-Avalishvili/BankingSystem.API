@@ -10,7 +10,7 @@ namespace BankingSystem.Features.ATM.ChangePin
 {
     public interface IChangePinService
     {
-        public Task<ChangePinResponse> ChangePin(ChangeCardPinRequest changeCardPINRequest);
+        public Task<ChangePinResponse> ChangePin(ChangePinRequest changeCardPINRequest);
     }
     public class ChangePinService : IChangePinService
     {
@@ -19,7 +19,7 @@ namespace BankingSystem.Features.ATM.ChangePin
         {
             _changePinRepository = changePinRepository;
         }
-        public async Task<ChangePinResponse> ChangePin(ChangeCardPinRequest request)
+        public async Task<ChangePinResponse> ChangePin(ChangePinRequest request)
         {
             var response = new ChangePinResponse();
             try

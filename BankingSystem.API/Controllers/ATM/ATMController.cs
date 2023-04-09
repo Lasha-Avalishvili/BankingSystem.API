@@ -32,7 +32,7 @@ namespace BankingSystem.API.Controllers.ATM
         }
 
         [HttpPost("change-pin")]
-        public async Task<IActionResult> ChangePIN([FromBody] ChangeCardPinRequest changeCardPINRequest)
+        public async Task<IActionResult> ChangePIN([FromBody] ChangePinRequest changeCardPINRequest)
         {
             var response = await _changePinService.ChangePin(changeCardPINRequest);
             return Ok(response);

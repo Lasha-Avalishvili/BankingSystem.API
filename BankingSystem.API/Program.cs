@@ -42,7 +42,7 @@ namespace BankingSystem
         
 
             builder.Services.AddTransient<IRegisterUserRepository, RegisterUserRepository>();
-            builder.Services.AddTransient<IGetBalanceRepository, GetBalanceRepsoitory>();
+            builder.Services.AddTransient<IGetBalanceRepository, GetBalanceRepository>();
             builder.Services.AddTransient<IGetUserInfoRepository, GetUserInfoRepository>();
             builder.Services.AddTransient<ITransactionService, TransactionService>();
             builder.Services.AddTransient<IGetBalanceService, GetBalanceService>();
@@ -51,7 +51,7 @@ namespace BankingSystem
             builder.Services.AddTransient<IWithdrawRepository, WithdrawRepository>();
             builder.Services.AddTransient<IWithdrawService, WithdrawService>();
             builder.Services.AddTransient<IChangePinService, ChangePinService>();
-            builder.Services.AddTransient<IChangeCardPinRepository, ChangeCardPinRepository>();
+            builder.Services.AddTransient<IChangeCardPinRepository, ChangePinRepository>();
             builder.Services.AddTransient<IReportsRepository, ReportsRepository>();
             builder.Services.AddTransient<IReportsService, ReportsService>();
             builder.Services.AddTransient<RegisterUserService>();
