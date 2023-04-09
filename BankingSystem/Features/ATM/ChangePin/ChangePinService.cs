@@ -1,10 +1,4 @@
-﻿using Azure;
-using BankingSystem.DB.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BankingSystem.DB.Entities;
 
 namespace BankingSystem.Features.ATM.ChangePin
 {
@@ -25,27 +19,23 @@ namespace BankingSystem.Features.ATM.ChangePin
             try
             {
                 var card = await _changePinRepository.AuthorizeCardAsync(request.CardNumber, request.PIN);
-                if (card != null && request.NewPIN != card.PIN && request.NewPIN != null)
-                {
-                    CheckCardExpiration(card);
-                    card.PIN = request.NewPIN;
-                    await _changePinRepository.SaveChangesAsync();
-
-                    response.IsSuccessful = true;
-                    response.Error = null;
-                }
-                else
+                if (card == null || request.NewPIN == card.PIN || request.NewPIN == null)
                 {
                     throw new Exception("Incorrect credentials");
                 }
-            }catch(Exception ex)
+                CheckCardExpiration(card);
+                card.PIN = request.NewPIN;
+                await _changePinRepository.SaveChangesAsync();
+                response.IsSuccessful = true;
+            }
+            catch (Exception ex)
             {
                 response.IsSuccessful = false;
                 response.Error = ex.Message;
             }
             return response;
-         
         }
+
         public void CheckCardExpiration(CardEntity card)
         {
             var isExpired = card.ExpirationDate < DateTime.UtcNow;

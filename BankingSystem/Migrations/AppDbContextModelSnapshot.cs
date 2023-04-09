@@ -183,15 +183,15 @@ namespace BankingSystem.Migrations
                     b.Property<string>("RecipientAccount")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long?>("RecipientAccountId")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("RecipientAccountId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SenderAccount")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("SenderAccountId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("SenderAccountId")
+                        .HasColumnType("int");
 
                     b.Property<int>("TransactionType")
                         .HasColumnType("int");
@@ -278,7 +278,7 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "dbff2a6c-1bad-4bde-88c2-a25badece906",
+                            ConcurrencyStamp = "87944401-a9e1-4f6b-9c5e-c498eda6ffca",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "ilia@gmail.com",
                             EmailConfirmed = true,
@@ -286,10 +286,10 @@ namespace BankingSystem.Migrations
                             LastName = "Chavchavadze",
                             LockoutEnabled = false,
                             NormalizedEmail = "ILIA@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENHl8cLe7uERqr/bNE0DCaZaO/9udc9hlIH8LlDprSkrfpssv+6FEETlissj6FikKA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJPISCRc3MBTcIHc2YS4j0n8HKyHux5DXdsb4+PEkD6V2TKH64FrmBjT03WSq0a2Mw==",
                             PersonalNumber = "11111111111",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 8, 19, 34, 18, 912, DateTimeKind.Local).AddTicks(5978),
+                            RegisteredAt = new DateTime(2023, 4, 9, 22, 4, 12, 811, DateTimeKind.Local).AddTicks(5475),
                             TwoFactorEnabled = false,
                             UserName = "Ilo112"
                         });

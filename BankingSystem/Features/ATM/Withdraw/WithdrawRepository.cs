@@ -49,7 +49,6 @@ namespace BankingSystem.Features.ATM.Withdraw
         .SumAsync(x => x.Transaction.Amount);
 
             return ATMCashout;
-            
         }
 
         public async Task SaveChangesAsync()

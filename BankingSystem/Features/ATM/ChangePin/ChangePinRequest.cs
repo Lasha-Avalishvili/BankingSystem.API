@@ -5,10 +5,10 @@ namespace BankingSystem.Features.ATM.ChangePin
     public class ChangePinRequest
     {
         [RegularExpression(@"^\d{16}$", ErrorMessage = "Card number must be 16 digits")]
-        public string? CardNumber { get; set; }
+        public string CardNumber { get; set; }
         [RegularExpression(@"^\d{4}$", ErrorMessage = "PIN must be 4 digits")]
-        public string? PIN { get; set; }
+        public string PIN { get; set; }
         [RegularExpression(@"^\d{4}$", ErrorMessage = "New PIN must be 4 digits")]
-        public string? NewPIN { get; set; }
+        public string NewPIN { get; set; }
     }
 }

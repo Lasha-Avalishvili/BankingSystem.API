@@ -108,8 +108,8 @@ namespace BankingSystem.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SenderAccountId = table.Column<long>(type: "bigint", nullable: false),
-                    RecipientAccountId = table.Column<long>(type: "bigint", nullable: true),
+                    SenderAccountId = table.Column<int>(type: "int", nullable: false),
+                    RecipientAccountId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     SenderAccount = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -235,7 +235,7 @@ namespace BankingSystem.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PersonalNumber", "PhoneNumber", "PhoneNumberConfirmed", "RegisteredAt", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "dbff2a6c-1bad-4bde-88c2-a25badece906", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "ilia@gmail.com", true, "Ilia", "Chavchavadze", false, null, "ILIA@GMAIL.COM", null, "AQAAAAIAAYagAAAAENHl8cLe7uERqr/bNE0DCaZaO/9udc9hlIH8LlDprSkrfpssv+6FEETlissj6FikKA==", "11111111111", null, true, new DateTime(2023, 4, 8, 19, 34, 18, 912, DateTimeKind.Local).AddTicks(5978), null, false, "Ilo112" });
+                values: new object[] { 1, 0, "87944401-a9e1-4f6b-9c5e-c498eda6ffca", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "ilia@gmail.com", true, "Ilia", "Chavchavadze", false, null, "ILIA@GMAIL.COM", null, "AQAAAAIAAYagAAAAEJPISCRc3MBTcIHc2YS4j0n8HKyHux5DXdsb4+PEkD6V2TKH64FrmBjT03WSq0a2Mw==", "11111111111", null, true, new DateTime(2023, 4, 9, 22, 4, 12, 811, DateTimeKind.Local).AddTicks(5475), null, false, "Ilo112" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",

@@ -7,17 +7,13 @@ namespace BankingSystem.DB
 {
     public class AppDbContext : IdentityDbContext<UserEntity, RoleEntity, int>
     {
-        
-
         public DbSet<AccountEntity> Accounts { get; set; }
         public DbSet<CardEntity> Cards { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
 
- 
         public AppDbContext(DbContextOptions options) : base(options)
-        {
-          
+        { 
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -45,17 +41,13 @@ namespace BankingSystem.DB
                 b.HasKey(i => new { i.UserId, i.RoleId });
             });
 
-
             modelBuilder.Entity<RoleEntity>().HasData(
                new RoleEntity { Id = 1, Name = "api-admin", NormalizedName = "API-ADMIN" },
                new RoleEntity { Id = 2, Name = "api-user", NormalizedName = "API-USER" }
                );
 
             var hasher = new PasswordHasher<UserEntity>();
-
-           
             var newOperator = new UserEntity()
-
             {
                 Id = 1,
                 FirstName = "Ilia",
@@ -69,13 +61,11 @@ namespace BankingSystem.DB
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
                PasswordHash = hasher.HashPassword(new UserEntity(), "password")
-
             };
-            modelBuilder.Entity<UserEntity>().HasData(newOperator);
 
+            modelBuilder.Entity<UserEntity>().HasData(newOperator);
             modelBuilder.Entity<IdentityUserRole<int>>()
                 .HasData(new IdentityUserRole<int> { UserId = 1, RoleId = 1 });
-
         }
     }
 }

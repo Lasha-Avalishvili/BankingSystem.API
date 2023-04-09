@@ -7,7 +7,6 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
     {
         public Task<decimal> ConvertCurrency(decimal amount, string SenderAccountCurrency, string recipientAccountCurrency);
         public Task<decimal> GetRate(string senderAccountCurrency, string recipientAccountCurrency);
-        public Task<decimal> GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency);
     }
     public class ConvertService : IConvertService
     {
@@ -50,15 +49,5 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             return rate;
         }
 
-        public async Task<decimal> GetDailyLimitForEachCurrency(decimal amountOfLimit, string limitCurrency, string senderAccountCurrency)
-        {
-            var currencyRates = await _transactionRepository.GetCurrenciesAsync();
-            var sourceRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == limitCurrency)?.Rate ?? 1;
-            var targetRate = currencyRates.FirstOrDefault(cr => cr.QuoteCurrency == senderAccountCurrency)?.Rate ?? 1;
-
-            var convertedLimit = amountOfLimit * (targetRate / sourceRate);
-
-            return convertedLimit;
-        }
     }
 }

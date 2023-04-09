@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 using BankingSystem.DB.Entities;
 
 namespace BankingSystem.Features.ATM.Withdraw
@@ -11,6 +6,8 @@ namespace BankingSystem.Features.ATM.Withdraw
     public class WithdrawRequest
     {
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a valid number")]
+        [Range(typeof(decimal), "0.01", "1000000000000", ErrorMessage = "Amount must be greater than zero.")]
+
         public decimal Amount { get; set; }
 
         [Range(0, 3, ErrorMessage = "Currency must be a number between 0 and 3")]
