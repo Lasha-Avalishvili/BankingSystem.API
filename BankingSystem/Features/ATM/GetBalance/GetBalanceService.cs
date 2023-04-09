@@ -1,4 +1,5 @@
-﻿using BankingSystem.Features.ATM.AccountBlance;
+﻿using BankingSystem.DB.Entities;
+using BankingSystem.Features.ATM.AccountBlance;
 
 namespace BankingSystem.Features.ATM.GetBalance
 {
@@ -17,27 +18,39 @@ namespace BankingSystem.Features.ATM.GetBalance
 
         public async Task<GetBalanceResponse> GetBalance (GetBalanceRequest request)
         {
-            var card = await _getBalanceRepsoitory.GetBalanceAsync(request);
-
-            if (card == null)
+            var response = new GetBalanceResponse();
+            try
             {
-                return new GetBalanceResponse
+                var card = await _getBalanceRepsoitory.GetCardAsync(request);
+                if (card == null)
                 {
-                    IsSuccessful = false,
-                    ErrorMessage = "Invalid card number or PIN"
-                };
-            }
+                    throw new Exception("Invalid card number or PIN");
+                }
 
-            var account = card.Account;
+                CheckCardExpiration(card);
+                var account = card.Account;
+                response.IsSuccessful = true;
+                response.Balance=account.Balance;
+                response.Currency=account.Currency;
 
-            return new GetBalanceResponse
+            } 
+            catch (Exception ex)
             {
-                IsSuccessful = true,
-                ErrorMessage = null,
-                Balance = account.Balance,
-                Currency = account.Currency
-            };
+                response.IsSuccessful = false;
+                response.ErrorMessage = ex.Message;
+            }
+            return response;
         }
+
+        public void CheckCardExpiration(CardEntity card)
+        {
+            var isExpired = card.ExpirationDate < DateTime.UtcNow;
+            if (isExpired)
+            {
+                throw new InvalidOperationException("Your card is Expired");
+            }
+        }
+
     }
 }
 

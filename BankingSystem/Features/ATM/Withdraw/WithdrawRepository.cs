@@ -44,7 +44,7 @@ namespace BankingSystem.Features.ATM.Withdraw
            (t, a) => new { Transaction = t, Account = a })
         .Where(x => x.Account.UserId == userId) 
         .Where(x => x.Transaction.TransactionType == TransactionType.ATM)
-        .Where(x => x.Transaction.CurrencyFrom == currency)
+        .Where(x => x.Transaction.CurrencyTo == currency)
         .Where(x => x.Transaction.CreatedAt > DateTime.UtcNow.AddHours(-24))
         .SumAsync(x => x.Transaction.Amount);
 

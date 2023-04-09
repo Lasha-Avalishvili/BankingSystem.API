@@ -34,10 +34,7 @@ namespace BankingSystem.Features.ATM.Withdraw
                 var card = await _withdrawRepository.AuthorizeCardAsync(request.CardNumber, request.PIN);
                 if (card == null)
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "Incorrect Card Credentials";
-
-                    return response;
+                    throw new Exception("Incorrect card credentials");
                 }
                 CheckCardExpiration(card);
 
@@ -51,11 +48,12 @@ namespace BankingSystem.Features.ATM.Withdraw
 
                 if (requestedAmountAndFee > accountBalance)
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "Not enought money";
-
-                    return response;
+                    throw new Exception("Not enought money");
                 }
+
+
+                // CheckWithdrawalLimit(request, account, 10000);
+
                 var requestedAmountInGel = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
                 var AtmTransactionsAmountInGel = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.GEL);
                 var AtmTransactionsAmountInUSD = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.USD);
@@ -65,11 +63,9 @@ namespace BankingSystem.Features.ATM.Withdraw
 
                 var allAtmTransactionsInGel = AtmTransactionsAmountInGel + AtmTrasactionInUSDConverted + AtmTransactionInEURConverted;
                 var dailyLimitInGel = 10000;
-                if(dailyLimitInGel< allAtmTransactionsInGel + requestedAmountInGel)
+                if (dailyLimitInGel < allAtmTransactionsInGel + requestedAmountInGel)
                 {
-                    response.IsSuccessful = false;
-                    response.ErrorMessage = "daily withdrawal limit is not enough";
-                    return response;
+                    throw new Exception("Daily withdrawal limit is not enough");
                 }
 
                 account.Balance -= requestedAmountAndFee;
@@ -113,5 +109,23 @@ namespace BankingSystem.Features.ATM.Withdraw
                 throw new InvalidOperationException("Your card is Expired");
             }
         }
+
+        public async void CheckWithdrawalLimit(WithdrawRequest request, AccountEntity account, decimal dailyLimit)
+        {
+            var requestedAmountInGel = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
+            var AtmTransactionsAmountInGel = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.GEL);
+            var AtmTransactionsAmountInUSD = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.USD);
+            var AtmTrasactionInUSDConverted = await _convertService.ConvertCurrency(AtmTransactionsAmountInUSD, "USD", "GEL");
+            var AtmTransactionsAmountInEUR = await _withdrawRepository.GetUserAtmTransactions(account.UserId, Currency.EUR);
+            var AtmTransactionInEURConverted = await _convertService.ConvertCurrency(AtmTransactionsAmountInEUR, "EUR", "GEL");
+
+            var allAtmTransactionsInGel = AtmTransactionsAmountInGel + AtmTrasactionInUSDConverted + AtmTransactionInEURConverted;
+            var dailyLimitInGel = dailyLimit;
+            if (dailyLimitInGel < allAtmTransactionsInGel + requestedAmountInGel)
+            {
+                throw new Exception("Daily withdrawal limit is not enough");
+            }
+        }
+
     }
 }
