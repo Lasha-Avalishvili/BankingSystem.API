@@ -7,7 +7,7 @@ namespace BankingSystem.Features.Reports
     public interface IReportsRepository
     {
         public Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date);
-        public Task<int> GetUserCountAsync(DateTime date);
+        public Task<int> GetUsersCountAsync(DateTime date);
         public Task<decimal> GettotalCashoutInGELAsync();
     }
 
@@ -19,15 +19,22 @@ namespace BankingSystem.Features.Reports
             _db = db;
         }
 
-        public async Task<int> GetUserCountAsync(DateTime date)
+        public async Task<int> GetUsersCountAsync(DateTime date)
         {
-            var userCount = await _db.Users.CountAsync(i => i.RegisteredAt >= date);
+            var userCount = await _db.Users
+                .Join(_db.UserRoles, 
+                u => u.Id,
+                a => a.UserId,
+           (u, a) => new { Users = u, UserRoles = a })
+                .Where(x=>x.UserRoles.RoleId==2)
+                .CountAsync(x => x.Users.RegisteredAt >= date);
+          
             return userCount;
         }
 
-        public Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date)
+        public async Task<List<TransactionEntity>> GetTransactionsAsync(DateTime date)
         {
-            return _db.Transactions
+            return await _db.Transactions
                 .Where(t => t.CreatedAt >= date)
                 .ToListAsync();
         }

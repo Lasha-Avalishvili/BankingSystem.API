@@ -22,9 +22,9 @@ namespace BankingSystem.Features.Reports
 
         public async Task<UsersCountResponse> GetUsersRegistered(DateTime firstDayOfYear, DateTime lastYearSameDay, DateTime last30Days)
         {
-            var usersThisYear = await _reportsRepository.GetUserCountAsync(firstDayOfYear);
-            var usersIn1Year = await _reportsRepository.GetUserCountAsync(lastYearSameDay);
-            var usersIn30Days = await _reportsRepository.GetUserCountAsync(last30Days);
+            var usersThisYear = await _reportsRepository.GetUsersCountAsync(firstDayOfYear);
+            var usersIn1Year = await _reportsRepository.GetUsersCountAsync(lastYearSameDay);
+            var usersIn30Days = await _reportsRepository.GetUsersCountAsync(last30Days);
 
             return new UsersCountResponse { UsersThisYear = usersThisYear, UsersInOneYear = usersIn1Year, UsersInLast30Days = usersIn30Days };
         }
@@ -148,10 +148,10 @@ namespace BankingSystem.Features.Reports
 
     public class TransactionTypesCount
     {
-        public int inner { get; set; }
-        public int outer { get; set; }
-        public int ATM { get; set; }
-        public int total { get; set; }
+        public long inner { get; set; }
+        public long outer { get; set; }
+        public long ATM { get; set; }
+        public long total { get; set; }
     }
 
 }
