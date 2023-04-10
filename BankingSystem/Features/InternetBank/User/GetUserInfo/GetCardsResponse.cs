@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
-using BankingSystem.DB.Entities;
-
-namespace BankingSystem.Features.InternetBank.User.GetUserInfo
+﻿namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
     public class GetCardsResponse
     {
@@ -29,5 +21,4 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
         public string CVV { get; set; }
         public string Pin { get; set; }
     }
-
 }

@@ -13,8 +13,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
         public Task<IdentityResult> AddToRoleAsync(UserEntity user, string role);
         public Task<IList<string>> GetRoleAsync(UserEntity user);
         public Task<UserEntity> FindUser(string personalNumber);
-
-
     }
 
     public class RegisterUserRepository : IRegisterUserRepository

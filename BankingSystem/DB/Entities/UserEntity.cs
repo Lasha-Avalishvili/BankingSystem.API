@@ -10,6 +10,5 @@ namespace BankingSystem.DB.Entities
         public DateTime DateOfBirth { get; set; }
         public string PersonalNumber { get; set; }
         public List<AccountEntity> Accounts { get; set; }
-
     }
 }

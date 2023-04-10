@@ -1,7 +1,5 @@
 ﻿using BankingSystem.DB;
 using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Operator.AddUser;
-using IbanNet;
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddAccountForUser

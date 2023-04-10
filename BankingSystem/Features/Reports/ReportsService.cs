@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankingSystem.DB.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
+﻿using BankingSystem.DB.Entities;
 
 namespace BankingSystem.Features.Reports
 {
@@ -17,8 +10,8 @@ namespace BankingSystem.Features.Reports
         public Task<AverageTransactionFeeResponse> CalculateAverageTransactionFee(DateTime date);
         public Task<Dictionary<DateTime, int>> GetTrasnactionsChart(DateTime date);
         public Task<TotalCashoutsResponse> GetTotalCashout();
-
     }
+
     public class ReportsService : IReportsService
     {
         private readonly IReportsRepository _reportsRepository;

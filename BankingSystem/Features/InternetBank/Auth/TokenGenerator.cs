@@ -4,7 +4,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-
 namespace BankingSystem.Features.InternetBank.Auth
 {
     public class TokenGenerator
@@ -43,8 +42,8 @@ namespace BankingSystem.Features.InternetBank.Auth
 
             var tokenGenerator = new JwtSecurityTokenHandler();
             var jwtString = tokenGenerator.WriteToken(token);
-            return jwtString;
 
+            return jwtString;
         }
     }
 }

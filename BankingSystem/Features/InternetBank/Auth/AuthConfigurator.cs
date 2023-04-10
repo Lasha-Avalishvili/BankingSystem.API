@@ -2,7 +2,6 @@
 using BankingSystem.DB;
 using BankingSystem.Features.InternetBank.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
@@ -14,7 +13,6 @@ namespace BankingSystem.Features.InternetBank.Operator.Auth
 {
     public class AuthConfigurator
     {
-
         public static void Configure (WebApplicationBuilder builder)
         {
             var issuer = builder.Configuration["jwt:Issuer"];

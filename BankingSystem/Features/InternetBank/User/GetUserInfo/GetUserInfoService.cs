@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Azure.Core;
-using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Operator.AuthUser;
-using BankingSystem.Features.InternetBank.Operator.RegisterUser;
-using BankingSystem.Features.InternetBank.User.Transactions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace BankingSystem.Features.InternetBank.User.GetUserInfo
+﻿namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 {
     public class GetUserInfoService
     {
@@ -50,7 +36,6 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
                 response.Accounts = accountObjects;
                 response.IsSuccessful= true;
-               
             }
             catch (Exception ex)
             {
@@ -92,13 +77,11 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
 
             }
             return response;
-
         }
 
         public async Task<GetTransactionsResponse> GetTransactionsAsync(string IBAN, string authenticatedUserId)
         {
             var response = new GetTransactionsResponse();
-
             try
             {
                 var account = await _repository.GetAccountWithIban(IBAN);

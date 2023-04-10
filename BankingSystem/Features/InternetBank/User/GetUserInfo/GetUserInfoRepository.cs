@@ -51,8 +51,5 @@ namespace BankingSystem.Features.InternetBank.User.GetUserInfo
                .ToListAsync();
             return transactions;
         }
-
-       
-        
     }
 }

@@ -14,8 +14,6 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
     public class TransactionRepository : ITransactionRepository
     {
         private readonly AppDbContext _db;
-
-
         public TransactionRepository(AppDbContext db)
         {
             _db = db;

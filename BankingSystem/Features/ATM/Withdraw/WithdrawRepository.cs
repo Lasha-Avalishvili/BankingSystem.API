@@ -60,6 +60,5 @@ namespace BankingSystem.Features.ATM.Withdraw
         {
             await _db.Transactions.AddAsync(transaction);
         }
-
     }
 }

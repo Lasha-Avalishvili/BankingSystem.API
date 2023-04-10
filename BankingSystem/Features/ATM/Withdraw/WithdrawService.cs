@@ -109,6 +109,5 @@ namespace BankingSystem.Features.ATM.Withdraw
             transaction.AmountInGEL = await _convertService.ConvertCurrency(request.Amount, request.Currency.ToString(), "GEL");
             return transaction;
         }
-
     }
 }

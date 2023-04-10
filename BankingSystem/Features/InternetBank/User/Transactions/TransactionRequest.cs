@@ -9,7 +9,6 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 
         [RegularExpression(@"^\d+$", ErrorMessage = "Amount must be a valid number")]
         [Range(typeof(decimal), "0.01", "1000000000000", ErrorMessage = "Amount must be greater than zero.")]
-
         public decimal Amount { get; set; }
 
     }

@@ -235,7 +235,7 @@ namespace BankingSystem.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "DateOfBirth", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PersonalNumber", "PhoneNumber", "PhoneNumberConfirmed", "RegisteredAt", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { 1, 0, "87944401-a9e1-4f6b-9c5e-c498eda6ffca", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "ilia@gmail.com", true, "Ilia", "Chavchavadze", false, null, "ILIA@GMAIL.COM", null, "AQAAAAIAAYagAAAAEJPISCRc3MBTcIHc2YS4j0n8HKyHux5DXdsb4+PEkD6V2TKH64FrmBjT03WSq0a2Mw==", "11111111111", null, true, new DateTime(2023, 4, 9, 22, 4, 12, 811, DateTimeKind.Local).AddTicks(5475), null, false, "Ilo112" });
+                values: new object[] { 1, 0, "98521b51-5444-43b7-b603-340888e184d2", new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), "operator1@example.com", true, "operator1firstname", "operator1lastname", false, null, "OPERATOR1@EXAMPLE.COM", null, "AQAAAAIAAYagAAAAENE0uahdC/a3Tb4heIYqnIVMrW9oDkuV+q2vGOZM+no2hWRem+DWy84cAm2nIqB3CQ==", "11111111111", null, true, new DateTime(2023, 4, 10, 21, 21, 40, 450, DateTimeKind.Local).AddTicks(1685), null, false, "operator1username" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_UserId",

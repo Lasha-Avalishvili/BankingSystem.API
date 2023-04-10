@@ -50,17 +50,17 @@ namespace BankingSystem.DB
             var newOperator = new UserEntity()
             {
                 Id = 1,
-                FirstName = "Ilia",
-                LastName = "Chavchavadze",
-                UserName = "Ilo112",
-                Email = "ilia@gmail.com",
+                FirstName = "operator1firstname",
+                LastName = "operator1lastname",
+                UserName = "operator1username",
+                Email = "operator1@example.com",
                 PersonalNumber = "11111111111",
                 DateOfBirth = DateTime.Parse("1999/04/04"),
                 RegisteredAt = DateTime.Now,
-                NormalizedEmail= "ILIA@GMAIL.COM",
+                NormalizedEmail= "OPERATOR1@EXAMPLE.COM",
                 EmailConfirmed = true,
                 PhoneNumberConfirmed = true,
-               PasswordHash = hasher.HashPassword(new UserEntity(), "password")
+               PasswordHash = hasher.HashPassword(new UserEntity(), "operator1password")
             };
 
             modelBuilder.Entity<UserEntity>().HasData(newOperator);

@@ -1,5 +1,4 @@
-﻿using BankingSystem.DB.Entities;
-using BankingSystem.Features.InternetBank.Auth;
+﻿using BankingSystem.Features.InternetBank.Auth;
 using BankingSystem.Features.InternetBank.Operator.AddAccountForUser;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
 using BankingSystem.Features.InternetBank.Operator.AddUserDetails;

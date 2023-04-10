@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230409180413_Initial")]
+    [Migration("20230410172140_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -281,20 +281,20 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "87944401-a9e1-4f6b-9c5e-c498eda6ffca",
+                            ConcurrencyStamp = "98521b51-5444-43b7-b603-340888e184d2",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "ilia@gmail.com",
+                            Email = "operator1@example.com",
                             EmailConfirmed = true,
-                            FirstName = "Ilia",
-                            LastName = "Chavchavadze",
+                            FirstName = "operator1firstname",
+                            LastName = "operator1lastname",
                             LockoutEnabled = false,
-                            NormalizedEmail = "ILIA@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJPISCRc3MBTcIHc2YS4j0n8HKyHux5DXdsb4+PEkD6V2TKH64FrmBjT03WSq0a2Mw==",
+                            NormalizedEmail = "OPERATOR1@EXAMPLE.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAENE0uahdC/a3Tb4heIYqnIVMrW9oDkuV+q2vGOZM+no2hWRem+DWy84cAm2nIqB3CQ==",
                             PersonalNumber = "11111111111",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 9, 22, 4, 12, 811, DateTimeKind.Local).AddTicks(5475),
+                            RegisteredAt = new DateTime(2023, 4, 10, 21, 21, 40, 450, DateTimeKind.Local).AddTicks(1685),
                             TwoFactorEnabled = false,
-                            UserName = "Ilo112"
+                            UserName = "operator1username"
                         });
                 });
 

@@ -50,7 +50,6 @@ namespace BankingSystem.Features.ATM.GetBalance
                 throw new InvalidOperationException("Your card is Expired");
             }
         }
-
     }
 }
 

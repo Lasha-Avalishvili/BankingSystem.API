@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankingSystem.DB.Entities;
+﻿using BankingSystem.DB.Entities;
 using BankingSystem.Features.InternetBank.Operator.AddUser;
 using BankingSystem.Features.InternetBank.Operator.RegisterUser;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Identity.Client;
 
 namespace BankingSystem.Features.InternetBank.Operator.AuthUser
 {
@@ -28,6 +21,11 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
             var response = new RegisterUserResponse();
             try
             {
+                var limitedAge = DateTime.UtcNow.AddYears(-18);
+                if (request.DateOfBirth > limitedAge)
+                {
+                    throw new Exception("User must be at least 18 years old");
+                }
                 var userByEmail = await _userManager.FindByEmailAsync(request.Email);
 
                 if (userByEmail != null)
@@ -64,7 +62,6 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
                 response.FirstName = request.FirstName;
                 response.LastName = request.LastName;
                 response.UserId = newUser.Id;
-
             }
             catch (Exception ex)
             {
@@ -74,6 +71,5 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
 
             return response;
         }
-
     }
 }

@@ -1,8 +1,4 @@
-﻿using BankingSystem.DB;
-using BankingSystem.DB.Entities;
-using BankingSystem.Features.ATM.Withdraw;
-using System.Reflection.Metadata.Ecma335;
-using System.Threading.Tasks;
+﻿using BankingSystem.DB.Entities;
 
 namespace BankingSystem.Features.InternetBank.User.Transactions
 {
@@ -27,8 +23,6 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             {
                 var senderAccount = await _transactionRepository.GetAccountAsync(transactionRequest.SenderAccountIBAN); 
                 var recipientAccount = await _transactionRepository.GetAccountAsync(transactionRequest.RecipientAccountIBAN);
-
-
                 var transaction = await CreateTransactionEntity(transactionRequest, senderAccount, recipientAccount);
                 
                 decimal transactionFee = 0;
@@ -101,6 +95,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             transaction.CurrencyFrom = senderAccount.Currency;
             transaction.CurrencyTo = recipientAccount.Currency;
             transaction.ConvertRate = await _convertService.GetRate(senderAccount.Currency.ToString(), recipientAccount.Currency.ToString());
+            
             return transaction;
         }
     }

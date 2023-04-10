@@ -1,10 +1,6 @@
-﻿using BankingSystem.DB;
-using BankingSystem.DB.Entities;
-using BankingSystem.Features.Reports;
+﻿using BankingSystem.Features.Reports;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.EntityFrameworkCore;
 
 namespace BankingSystem.API.Controllers.Reports
 {
@@ -69,6 +65,5 @@ namespace BankingSystem.API.Controllers.Reports
             var result = await _reportsService.GetTotalCashout();
             return Ok(result);
         }
-
     }
 }
