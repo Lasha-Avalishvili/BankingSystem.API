@@ -278,7 +278,7 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "98521b51-5444-43b7-b603-340888e184d2",
+                            ConcurrencyStamp = "1a1b8df5-597f-41aa-a280-0dcc68b21d14",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "operator1@example.com",
                             EmailConfirmed = true,
@@ -286,10 +286,10 @@ namespace BankingSystem.Migrations
                             LastName = "operator1lastname",
                             LockoutEnabled = false,
                             NormalizedEmail = "OPERATOR1@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENE0uahdC/a3Tb4heIYqnIVMrW9oDkuV+q2vGOZM+no2hWRem+DWy84cAm2nIqB3CQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO3lbSPmgF/tDz3eUcMhIb1U8/jVdlS0w4VcJx9PHGMjx9Vc6m+IKJr5VVatg0aDPw==",
                             PersonalNumber = "11111111111",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 10, 21, 21, 40, 450, DateTimeKind.Local).AddTicks(1685),
+                            RegisteredAt = new DateTime(2023, 4, 10, 21, 33, 32, 732, DateTimeKind.Local).AddTicks(1330),
                             TwoFactorEnabled = false,
                             UserName = "operator1username"
                         });

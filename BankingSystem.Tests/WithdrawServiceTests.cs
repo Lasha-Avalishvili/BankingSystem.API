@@ -11,9 +11,10 @@ namespace BankingSystem.Tests
     {
         private AppDbContext _dbContext;
 
-        [TestCase(100, Currency.GEL, 11898, true)]
-        [TestCase(5000, Currency.USD, 12000, false)]
-        [TestCase(11000, Currency.GEL, 12000, false)]
+        [TestCase(100, Currency.GEL, 11898, true)]      // 12000 - 100 - 100*2% = 11898
+        [TestCase(100, Currency.USD, 11741.94, true)]  // 12000 - 100 * 2.53 - 100*2%*2.53 = 11741,94
+        [TestCase(5000, Currency.USD, 12000, false)]   // above daily limit
+        [TestCase(11000, Currency.GEL, 12000, false)]  // above daily limit
 
 
 

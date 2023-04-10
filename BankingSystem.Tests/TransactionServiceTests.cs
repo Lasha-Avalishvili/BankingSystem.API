@@ -92,7 +92,6 @@ namespace BankingSystem.Tests
             Assert.That(accounts[1].Balance, Is.EqualTo(expectedRecipientBalance));
         }
 
-
         [TearDown]
         public void Cleanup()
         {
