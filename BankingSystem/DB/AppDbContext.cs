@@ -11,6 +11,7 @@ namespace BankingSystem.DB
         public DbSet<CardEntity> Cards { get; set; }
         public DbSet<TransactionEntity> Transactions { get; set; }
         public DbSet<ExchangeRateEntity> ExchangeRates { get; set; }
+        public DbSet<LoggerEntity> Logs { get; set; }
 
         public AppDbContext(DbContextOptions options) : base(options)
         { 

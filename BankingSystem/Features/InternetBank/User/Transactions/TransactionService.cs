@@ -1,4 +1,8 @@
-﻿using BankingSystem.DB.Entities;
+﻿using System.Diagnostics;
+using BankingSystem.DB;
+using BankingSystem.DB.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace BankingSystem.Features.InternetBank.User.Transactions
 {
@@ -10,14 +14,19 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
     {
         private readonly IConvertService _convertService;
         private readonly ITransactionRepository _transactionRepository;
+        //  private readonly ILogger<TransactionService> _logger;
+        
         public TransactionService(IConvertService convertService, ITransactionRepository transactionRepository)
         {
             _convertService = convertService;
             _transactionRepository = transactionRepository;
+           // _logger = logger;
+          
         }
 
         public async Task<TransactionResponse> TransferFunds(TransactionRequest transactionRequest, string authenticatedUserId)
         {
+            var start = Stopwatch.GetTimestamp();
             var response = new TransactionResponse();
             try
             {
@@ -77,11 +86,35 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
             }
             catch (Exception ex)
             {
+                
+                LogInfo("transaction", ex.Message, 0);
                 response.IsSuccessful = false;
                 response.ErrorMessage = ex.Message;
             }
             return response;
         }
+
+        private async Task LogInfo(string name, string message, double transactionTime)
+        {
+            var log = new LoggerEntity()
+            {
+                Name= name,
+                Exception = message,
+                TransactionRequiredTime = transactionTime
+
+            };
+           await _transactionRepository.AddLogAsync(log);
+            await _transactionRepository.SaveChangesAsync();
+        }
+
+
+        //public IActionResult MyAction()
+        //{
+        //    _logger.LogInformation("Transaction");
+
+        //    var data = GetMyData(); // Get some data from somewhere
+        //    new JsonResult(data);
+        //}
 
         private async Task<TransactionEntity> CreateTransactionEntity(TransactionRequest transactionRequest, AccountEntity senderAccount, AccountEntity recipientAccount)
         {

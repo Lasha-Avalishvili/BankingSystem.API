@@ -4,6 +4,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 {
     public class TransactionRequest
     {
+        [RegularExpression(@"^\d{23}$", ErrorMessage = "Iban must be 23 characters long")]
         public string SenderAccountIBAN { get; set; }
         public string RecipientAccountIBAN { get; set; }
 

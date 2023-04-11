@@ -4,6 +4,7 @@ using BankingSystem.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankingSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230411141809_addLogs")]
+    partial class addLogs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,10 +121,6 @@ namespace BankingSystem.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Exception")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("TransactionRequiredTime")
@@ -301,7 +300,7 @@ namespace BankingSystem.Migrations
                         {
                             Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "57edf944-9fa8-42c3-9f6d-e5408d3e7466",
+                            ConcurrencyStamp = "a2ad0cca-250d-461d-8e85-ba23e9ac53fd",
                             DateOfBirth = new DateTime(1999, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "operator1@example.com",
                             EmailConfirmed = true,
@@ -309,10 +308,10 @@ namespace BankingSystem.Migrations
                             LastName = "operator1lastname",
                             LockoutEnabled = false,
                             NormalizedEmail = "OPERATOR1@EXAMPLE.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPOoGQqa390qMo1RrvvUW1h2/AHj+eYJZau5pvq9eT5DCXJ+RdlEB7rfPTD1fZPqmQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHOViNBEe29Vdix1w1yHNuE2nnZuyy9Dz0Z/qBGWpwnPM8R0SVyIvp8Dty8TBrtKvQ==",
                             PersonalNumber = "11111111111",
                             PhoneNumberConfirmed = true,
-                            RegisteredAt = new DateTime(2023, 4, 11, 19, 13, 11, 119, DateTimeKind.Local).AddTicks(6267),
+                            RegisteredAt = new DateTime(2023, 4, 11, 18, 18, 8, 871, DateTimeKind.Local).AddTicks(9918),
                             TwoFactorEnabled = false,
                             UserName = "operator1username"
                         });

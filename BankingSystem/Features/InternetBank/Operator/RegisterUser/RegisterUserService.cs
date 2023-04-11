@@ -21,6 +21,10 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
             var response = new RegisterUserResponse();
             try
             {
+                if(!IsPasswordValid(request.Password))
+                {
+                    throw new Exception("Invalid Password");
+                }
                 var limitedAge = DateTime.UtcNow.AddYears(-18);
                 if (request.DateOfBirth > limitedAge)
                 {
@@ -53,6 +57,8 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
                 newUser.RegisteredAt = DateTime.UtcNow;
                 newUser.EmailConfirmed = true;
 
+              
+
                 var result = await _userManager.CreateAsync(newUser, request.Password);
 
                 var addToRoleResult = await _userManager.AddToRoleAsync(newUser, "api-user");
@@ -71,5 +77,16 @@ namespace BankingSystem.Features.InternetBank.Operator.AuthUser
 
             return response;
         }
+
+        public bool IsPasswordValid(string password)
+        {
+            return password.Length >= 6 &&
+                   password.Length <= 15 &&
+                   password.Any(char.IsDigit) &&
+                   password.Any(char.IsLetter) &&
+                   (password.Any(char.IsSymbol) || password.Any(char.IsPunctuation))
+                   && (password.Any(char.IsLower) || password.Any(char.IsUpper));
+        }
+
     }
 }

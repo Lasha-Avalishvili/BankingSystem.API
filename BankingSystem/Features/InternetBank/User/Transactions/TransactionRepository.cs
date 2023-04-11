@@ -10,6 +10,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
         public Task<List<ExchangeRateEntity>> GetCurrenciesAsync();
         public Task AddChangesAsync(TransactionEntity transaction);
         public Task SaveChangesAsync();
+        public Task AddLogAsync(LoggerEntity log);
     }
     public class TransactionRepository : ITransactionRepository
     {
@@ -21,13 +22,7 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
 
         public async Task<AccountEntity> GetAccountAsync(string Iban)
         {
-            var account = await _db.Accounts.Where(sr => sr.IBAN == Iban).FirstOrDefaultAsync();
-            if (account == null)
-            {
-                return null;
-            }
-
-            return account;
+            return await _db.Accounts.Where(sr => sr.IBAN == Iban).FirstOrDefaultAsync();
         }
 
         public async Task<List<ExchangeRateEntity>> GetCurrenciesAsync()
@@ -44,6 +39,11 @@ namespace BankingSystem.Features.InternetBank.User.Transactions
         public async Task AddChangesAsync(TransactionEntity transaction)
         {
             await _db.Transactions.AddAsync(transaction);
+        }
+
+        public async Task AddLogAsync(LoggerEntity log)
+        {
+            await _db.Logs.AddAsync(log);
         }
     }
 }

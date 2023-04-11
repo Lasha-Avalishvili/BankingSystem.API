@@ -4,6 +4,7 @@ using System.Security.Claims;
 using BankingSystem.Features.InternetBank.User.GetUserInfo;
 using BankingSystem.Features.InternetBank.User.Transactions;
 using BankingSystem.Features.InternetBank.Auth;
+using BankingSystem.DB;
 
 namespace BankingSystem.Features.InternetBank.Operator.AddUser
 {
@@ -13,12 +14,14 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
     {
         private readonly ITransactionService _transactionService;
         private readonly GetUserInfoService _getUserInfoService;
-        private readonly AuthService _authService;  
+        private readonly AuthService _authService;
+        
         public UserController(ITransactionService transactionService, GetUserInfoService getUserInfoService, AuthService authService)
         {
             _transactionService = transactionService;
             _getUserInfoService = getUserInfoService;
             _authService = authService;
+            
         }
 
         [HttpPost("login")]
@@ -63,5 +66,7 @@ namespace BankingSystem.Features.InternetBank.Operator.AddUser
             var transaction = await _transactionService.TransferFunds(transactionRequest, authenticatedUserId);
             return Ok(transaction);
         }
+
+        
     }
 }

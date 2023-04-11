@@ -38,9 +38,10 @@ namespace BankingSystem.API.Controllers.ATM
             return Ok(response);
         }
 
-        [HttpPost("get-balance")]
-        public async Task<IActionResult> ChangePIN([FromBody] GetBalanceRequest request)
+        [HttpGet("/{cardNumber}/balance")]
+        public async Task<IActionResult> ChangePIN(string cardNumber, string PIN)
         {
+            var request = new GetBalanceRequest() { CardNumber= cardNumber, PIN = PIN };
             var response = await _getBalanceService.GetBalance(request);
             return Ok(response);
         }

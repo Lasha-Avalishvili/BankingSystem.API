@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Serilog;
 
 namespace BankingSystem
 {
@@ -56,6 +57,13 @@ namespace BankingSystem
             builder.Services.AddTransient<GetUserInfoService>();
             builder.Services.AddTransient<GetUserInfoRepository>();
             builder.Services.AddTransient<AuthService>();
+
+  //          var logger = new LoggerConfiguration()
+  //.ReadFrom.Configuration(builder.Configuration)
+  //.Enrich.FromLogContext()
+  //.CreateLogger();
+  //          builder.Logging.ClearProviders();
+  //          builder.Logging.AddSerilog(logger);
 
             builder.Services.AddSwaggerGen(c =>
             {
